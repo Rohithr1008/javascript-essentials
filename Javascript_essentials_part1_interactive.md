@@ -2,10 +2,11 @@
 
 A quick reference covering the JavaScript fundamentals you have learned so far.
 
-<div class="interactive-note">💡 <strong>Interactive guide:</strong> quizzes, flashcards, tabs and hide/reveal answers work best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>), Typora, or Markdown Preview Enhanced. In plain viewers everything is still readable — just not styled.</div>
+<div class="interactive-note">💡 <strong>Interactive guide v2 — every section has something to DO:</strong> quizzes, 🤔 predict-the-output cards, 🃏 flashcards, 💡 hint buttons and 😅 mood checks. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>), Typora, or the bundled <strong>.html edition</strong> (dark-mode toggle + saved progress). In plain viewers everything stays readable — just not styled.</div>
 
 <style>
-/* ===== JavaScript Essentials — Interactive Styles ===== */
+/* ===== JavaScript Essentials — Interactive Styles v2 ===== */
+h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
 .tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
 .warn   { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; }
@@ -37,6 +38,70 @@ A quick reference covering the JavaScript fundamentals you have learned so far.
 .answer-key details { border: 1px solid #b2dfdb; border-radius: 8px; padding: 8px 12px; margin: 10px 0; background: #fafffe; }
 .answer-key summary { cursor: pointer; font-weight: 600; color: #2c7a7b; }
 .footer { text-align: center; padding: 18px; margin-top: 30px; background: #2b6cb0; color: #fff; border-radius: 10px; }
+
+/* v2: difficulty & time badges */
+.badge { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; margin-left: 6px; vertical-align: middle; font-weight: 700; }
+.b-green  { background: #c6f6d5; color: #22543d; }
+.b-yellow { background: #fefcbf; color: #744210; }
+.b-red    { background: #fed7d7; color: #742a2a; }
+.b-time   { background: #e2e8f0; color: #2d3748; font-weight: 600; }
+
+/* v2: predict-the-output cards */
+.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin: 14px 0; }
+.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
+.predict summary { cursor: pointer; font-weight: 600; }
+
+/* v2: hint cards */
+.hint { background: #fffbeb; border: 1px dashed #d69e2e; border-radius: 8px; padding: 8px 12px; margin: 10px 0; }
+.hint summary { cursor: pointer; font-weight: 700; color: #744210; }
+
+/* v2: mood check */
+.mood { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mood > span { font-weight: 700; margin-right: 4px; }
+.mood input { display: none; }
+.mood label { cursor: pointer; border: 1px solid #a0aec0; border-radius: 999px; padding: 4px 12px; background: #fff; font-size: 14px; user-select: none; }
+.mood input:checked + label { background: #38a169; border-color: #38a169; color: #fff; font-weight: 700; }
+
+/* v2: study plan & certificate */
+.study-plan { background: #ebf8ff; border: 1px solid #4299e1; border-radius: 10px; padding: 10px 16px; margin: 14px 0; }
+.study-plan summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.05em; }
+.cert { background: linear-gradient(135deg, #2b6cb0, #6b46c1); color: #fff; border-radius: 14px; padding: 26px; text-align: center; margin: 30px 0; }
+.cert h2 { color: #fff; border-bottom: none; }
+.cert ul { text-align: left; display: inline-block; }
+.totop { text-align: right; margin: 6px 0; }
+.totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
+
+/* v2: micro-animations */
+details[open] > :not(summary) { animation: pop .25s ease; }
+@keyframes pop { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-color-scheme: dark) {
+/*DM-START*/
+h2 { border-bottom-color: #63b3ed; }
+.interactive-note { background: #17202b; }
+.tip { background: #132a1c; }
+.warn { background: #2b2013; }
+.danger { background: #2b1414; }
+.quiz-box { background: #141c28; border-color: #2b6cb0; }
+.quiz-box h3 { color: #90cdf4; }
+.quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+.quiz-correct { color: #68d391; }
+.quiz-wrong { color: #fc8181; }
+.flashcard { background: #241d0e; border-color: #975a16; }
+.flashcard summary { color: #f6e05e; }
+.tabs label { background: #141c28; color: #bee3f8; border-color: #2b6cb0; }
+.tabs .tab-page { background: #0f1622; color: #e2e8f0; }
+.solution, .answer-key details { background: #0e1c1b; border-color: #285e61; color: #e2e8f0; }
+.solution summary, .answer-key summary { color: #81e6d9; }
+.predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+.hint { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
+.hint summary { color: #f6e05e; }
+.mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+.study-plan { background: #141c28; color: #e2e8f0; }
+.study-plan summary { color: #90cdf4; }
+.totop a { color: #90cdf4; }
+/*DM-END*/
+}
 </style>
 
 ---
@@ -68,6 +133,19 @@ A quick reference covering the JavaScript fundamentals you have learned so far.
 - [ ] Exercises 1–10 attempted
 - [ ] Challenges 1–9 attempted
 - [ ] All answers checked
+
+<details class="study-plan">
+<summary>📅 Suggested 7-day study plan (click to open)</summary>
+<ol>
+<li><strong>Day 1:</strong> Sections 1–3 — variables, conditions, loops. Do every Self-Test.</li>
+<li><strong>Day 2:</strong> Sections 4–7 — logic, data types, mutability, operators.</li>
+<li><strong>Day 3:</strong> Section 8 — functions, closures, hoisting. Rewrite one example from memory.</li>
+<li><strong>Day 4:</strong> Section 9 — arrays. Redo the predict cards until you go 6-for-6.</li>
+<li><strong>Day 5:</strong> Sections 10–12 — strings, objects, symbols. Flip all flashcards.</li>
+<li><strong>Day 6:</strong> Section 13 — pitfalls. Take the Spot-the-bug quiz cold.</li>
+<li><strong>Day 7:</strong> Sections 14–15 — all exercises &amp; challenges, then check the Answer Key. 🏆</li>
+</ol>
+</details>
 
 ---
 
@@ -274,9 +352,15 @@ console.log(functionScoped); // "var" (works - var is function-scoped)
 <p><span class="quiz-wrong">❌ <code>8</code></span> — only <code>- * / %</code> would coerce the string to a number.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-var-1" name="mood-var"><label for="mood-var-1">😅 Again, please</label>
+<input type="radio" id="mood-var-2" name="mood-var"><label for="mood-var-2">🙂 Getting there</label>
+<input type="radio" id="mood-var-3" name="mood-var"><label for="mood-var-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 2. Conditions: `if...else` and `switch`
 
@@ -457,9 +541,15 @@ if (booking.seatsAvailable) {
 <p><span class="quiz-wrong">❌ When conditions are ranges</span> — <code>score &gt;= 40</code> style checks fit <code>if</code> better.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-cond-1" name="mood-cond"><label for="mood-cond-1">😅 Again, please</label>
+<input type="radio" id="mood-cond-2" name="mood-cond"><label for="mood-cond-2">🙂 Getting there</label>
+<input type="radio" id="mood-cond-3" name="mood-cond"><label for="mood-cond-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 3. Loops: `while`, `do...while`, `for`
 
@@ -702,9 +792,15 @@ console.log("Locked!");   // runs after loop ends
 <p><span class="quiz-wrong">❌ <code>for...in</code></span> — on arrays it gives string indexes and can surprise you.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-loops-1" name="mood-loops"><label for="mood-loops-1">😅 Again, please</label>
+<input type="radio" id="mood-loops-2" name="mood-loops"><label for="mood-loops-2">🙂 Getting there</label>
+<input type="radio" id="mood-loops-3" name="mood-loops"><label for="mood-loops-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 4. Logical Operators
 
@@ -880,9 +976,41 @@ console.log(user.id && process(user.id));  // undefined (no id, short-circuits)
 <p><span class="quiz-correct">✅ <code>0 || "default"</code> → <code>"default"</code> (0 is falsy!), but <code>0 ?? "default"</code> → <code>0</code> — <code>??</code> only falls back on <code>null</code>/<code>undefined</code>.</span></p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-logic-1" name="mood-logic"><label for="mood-logic-1">😅 Again, please</label>
+<input type="radio" id="mood-logic-2" name="mood-logic"><label for="mood-logic-2">🙂 Getting there</label>
+<input type="radio" id="mood-logic-3" name="mood-logic"><label for="mood-logic-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+> 🎮 **Predict first, then flip** — say the answer out loud before opening each card.
+
+<div class="predict">
+
+<details><summary>🤔 <code>console.log(1 &amp;&amp; 2)</code></summary>
+<p><span class="quiz-correct">✅ 2</span> — <code>&amp;&amp;</code> returns the <strong>last</strong> truthy operand.</p>
+</details>
+
+<details><summary>🤔 <code>console.log(0 || "fallback")</code></summary>
+<p><span class="quiz-correct">✅ "fallback"</span> — <code>||</code> returns the <strong>first</strong> truthy operand (0 is falsy).</p>
+</details>
+
+<details><summary>🤔 <code>console.log(null ?? 0)</code></summary>
+<p><span class="quiz-correct">✅ 0</span> — <code>??</code> falls back only on <code>null</code>/<code>undefined</code>.</p>
+</details>
+
+<details><summary>🤔 <code>console.log(!"hello")</code></summary>
+<p><span class="quiz-correct">✅ false</span> — a non-empty string is truthy, and <code>!</code> flips it.</p>
+</details>
+
+<details><summary>🤔 <code>console.log(5 > 3 && 2 > 4)</code></summary>
+<p><span class="quiz-correct">✅ false</span> — AND needs <strong>both</strong> sides true.</p>
+</details>
+
+</div>
+
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 5. Data Types
 
@@ -991,6 +1119,7 @@ console.log(parseFloat("3.5rem")); // 3.5 (keeps decimals, unlike parseInt)
 ```
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 6. Mutable vs Immutable
 
@@ -1119,6 +1248,29 @@ console.log(frozen.score); // 10
 ```
 
 ---
+> 🎮 **Predict the output** — mutation traps. Commit to an answer before flipping!
+
+<div class="predict">
+
+<details><summary>🤔 <code>const a = [1, 2]; const b = a; b.push(3);</code> — what is <code>a.length</code>?</summary>
+<p><span class="quiz-correct">✅ 3</span> — <code>b</code> points to the <strong>same array</strong> as <code>a</code>. Assignment copies the reference, not the array.</p>
+</details>
+
+<details><summary>🤔 <code>let s = "hi"; s[0] = "H";</code> — what is <code>s</code>?</summary>
+<p><span class="quiz-correct">✅ "hi" — unchanged!</span> Strings are <strong>immutable</strong>: index assignment is silently ignored. Build a new string instead: <code>s = "H" + s.slice(1)</code>.</p>
+</details>
+
+<details><summary>🤔 <code>const copy = { ...user }; copy.tags.push("x");</code> — did <code>user.tags</code> change?</summary>
+<p><span class="quiz-correct">✅ Yes — spread is a shallow copy</span>. The top level is new, but nested arrays/objects are still <strong>shared</strong>. Use <code>structuredClone(user)</code> for a true deep copy.</p>
+</details>
+
+<details><summary>🤔 <code>Object.freeze({ theme: "dark" })</code>, then <code>cfg.theme = "light"</code> — result?</summary>
+<p><span class="quiz-correct">✅ Still "dark"</span> — <code>Object.freeze</code> locks the contents. <code>const</code> alone only locks the binding.</p>
+</details>
+
+</div>
+
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 7. Operators
 
@@ -1298,9 +1450,15 @@ console.log(total >= 200 && total < 300); // true (comparison + logical)
 <p><span class="quiz-wrong">❌ <code>20</code></span> — that would be <code>2 * 10</code>.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-ops-1" name="mood-ops"><label for="mood-ops-1">😅 Again, please</label>
+<input type="radio" id="mood-ops-2" name="mood-ops"><label for="mood-ops-2">🙂 Getting there</label>
+<input type="radio" id="mood-ops-3" name="mood-ops"><label for="mood-ops-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 8. Functions and Arrow Functions
 
@@ -1574,9 +1732,15 @@ console.log(next());  // 4 (next still remembers its own count)
 <p><span class="quiz-wrong">❌ A <code>const</code> arrow function</span> — it sits in the temporal dead zone until its line.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-func-1" name="mood-func"><label for="mood-func-1">😅 Again, please</label>
+<input type="radio" id="mood-func-2" name="mood-func"><label for="mood-func-2">🙂 Getting there</label>
+<input type="radio" id="mood-func-3" name="mood-func"><label for="mood-func-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 9. Arrays and Methods
 
@@ -2206,7 +2370,43 @@ console.log(`Most ordered: ${mostOrdered[0]} (${mostOrdered[1]} units)`);
 <p><span class="quiz-correct">✅ An empty array <code>[]</code> — never <code>null</code> or <code>undefined</code>, so chaining is always safe.</span></p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-arr-1" name="mood-arr"><label for="mood-arr-1">😅 Again, please</label>
+<input type="radio" id="mood-arr-2" name="mood-arr"><label for="mood-arr-2">🙂 Getting there</label>
+<input type="radio" id="mood-arr-3" name="mood-arr"><label for="mood-arr-3">😎 Mastered</label>
 </div>
+</div>
+> 🎮 **Predict the output** — array methods rapid-fire.
+
+<div class="predict">
+
+<details><summary>🤔 <code>[10, 1, 2].sort()</code></summary>
+<p><span class="quiz-correct">✅ [1, 10, 2]</span> — default sort compares as <strong>strings</strong>! Numbers need <code>.sort((a, b) =&gt; a - b)</code>.</p>
+</details>
+
+<details><summary>🤔 <code>[1, 2, 3].slice(-2)</code></summary>
+<p><span class="quiz-correct">✅ [2, 3]</span> — negative indexes count from the end, and <code>slice</code> never mutates.</p>
+</details>
+
+<details><summary>🤔 <code>[1, 2, 3].indexOf(4)</code></summary>
+<p><span class="quiz-correct">✅ -1</span> — the universal "not found" signal.</p>
+</details>
+
+<details><summary>🤔 <code>["a", "b", "c"].includes("b")</code></summary>
+<p><span class="quiz-correct">✅ true</span> — <code>includes</code> returns a boolean; cleaner than <code>indexOf(...) !== -1</code>.</p>
+</details>
+
+<details><summary>🤔 <code>[1, 2, 3].at(-1)</code></summary>
+<p><span class="quiz-correct">✅ 3</span> — <code>.at()</code> supports negative indexes, <code>[]</code> does not.</p>
+</details>
+
+<details><summary>🤔 <code>[1, 2, 3].flatMap(n =&gt; [n, n * 10])</code></summary>
+<p><span class="quiz-correct">✅ [1, 10, 2, 20, 3, 30]</span> — <code>map</code> then flatten one level.</p>
+</details>
+
+</div>
+
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 10. Strings and Common Methods
 
@@ -2756,9 +2956,15 @@ console.log([setting.slice(0, eqIndex), setting.slice(eqIndex + 1)]);
 <p><span class="quiz-correct">✅ <code>["a", "b"]</code> — the limit <em>drops</em> the rest, it does NOT keep "b-c" together. Use split + rest to split once.</span></p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-str-1" name="mood-str"><label for="mood-str-1">😅 Again, please</label>
+<input type="radio" id="mood-str-2" name="mood-str"><label for="mood-str-2">🙂 Getting there</label>
+<input type="radio" id="mood-str-3" name="mood-str"><label for="mood-str-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 11. Objects
 
@@ -3131,9 +3337,15 @@ if ("price" in product) {
 <p><span class="quiz-wrong">❌ Never — dot always works</span> — dot fails on keys with spaces or from variables.</p>
 </details>
 
+<div class="mood"><span>How did this feel?</span>
+<input type="radio" id="mood-obj-1" name="mood-obj"><label for="mood-obj-1">😅 Again, please</label>
+<input type="radio" id="mood-obj-2" name="mood-obj"><label for="mood-obj-2">🙂 Getting there</label>
+<input type="radio" id="mood-obj-3" name="mood-obj"><label for="mood-obj-3">😎 Mastered</label>
+</div>
 </div>
 
 ---
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 12. Symbols Cheat Sheet
 
@@ -3201,6 +3413,21 @@ console.log(merged);                        // {"theme":"dark","fontSize":16,"la
 ```
 
 <div style="page-break-after: always;"></div>
+### 🃏 Flip-card drills — symbol → meaning
+
+<details class="flashcard"><summary>🃏 <code>user?.address?.city</code></summary><div class="back"><strong>Optional chaining (?.)</strong> — short-circuits to <code>undefined</code> instead of crashing when a link is null/undefined.</div></details>
+
+<details class="flashcard"><summary>🃏 <code>input ?? "default"</code></summary><div class="back"><strong>Nullish coalescing (??)</strong> — falls back only on <code>null</code>/<code>undefined</code>; keeps <code>0</code> and <code>""</code>.</div></details>
+
+<details class="flashcard"><summary>🃏 <code>...arr</code> / <code>...obj</code></summary><div class="back"><strong>Spread</strong> — expands elements/properties into a new array, object or call. On the left of <code>=</code> it becomes <strong>rest</strong> (collects).</div></details>
+
+<details class="flashcard"><summary>🃏 <code>(a, b) =&gt; a + b</code></summary><div class="back"><strong>Arrow function</strong> — compact function syntax. Expression body returns implicitly; a <code>{}</code> body needs an explicit <code>return</code>.</div></details>
+
+<details class="flashcard"><summary>🃏 <code>score &gt;= 90 ? "A" : "B"</code></summary><div class="back"><strong>Ternary (?:)</strong> — a one-line if/else that returns a value: <code>condition ? then : else</code>.</div></details>
+
+<details class="flashcard"><summary>🃏 <code>0 || "hi"</code> vs <code>0 ?? "hi"</code></summary><div class="back"><code>||</code> → <code>"hi"</code> (0 is falsy). <code>??</code> → <code>0</code> (0 is not nullish). Prefer <code>??</code> when <code>0</code>/<code>""</code> are valid values.</div></details>
+
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 13. Common Pitfalls
 
@@ -3329,59 +3556,104 @@ console.log(original); // [3, 1, 2] ✅ untouched
 // Or use the ES2023 non-mutating versions:
 console.log(original.toSorted((a, b) => a - b)); // [1, 2, 3]
 ```
+<div class="quiz-box">
+
+<h3>🐞 Spot the bug — pitfalls final boss</h3>
+
+<details><summary>Q1. <code>if (user = "admin") { grantAccess(); }</code></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> <code>=</code> <strong>assigns</strong> instead of comparing — the condition is always the truthy string <code>"admin"</code>.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>if (user === "admin")</code>.</p>
+</details>
+
+<details><summary>Q2. <code>[10, 9, 1].sort()</code> gives <code>[1, 10, 9]</code></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> default sort compares as <strong>strings</strong>, so <code>"10" &lt; "9"</code>.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>.sort((a, b) =&gt; a - b)</code> → <code>[1, 9, 10]</code>.</p>
+</details>
+
+<details><summary>Q3. <code>let name = "hi"; name[0] = "H";</code> — name stays "hi"</summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> strings are <strong>immutable</strong> — index assignment is silently ignored.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>name = "H" + name.slice(1)</code>.</p>
+</details>
+
+<details><summary>Q4. <code>nums.map(n =&gt; { n * 2 })</code> returns <code>[undefined, ...]</code></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> an arrow with <code>{}</code> braces needs an explicit <code>return</code>.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>nums.map(n =&gt; n * 2)</code> — or add <code>return</code> inside the braces.</p>
+</details>
+
+</div>
+
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 14. Practice Exercises
 
 <div class="tip">✍️ <strong>How to use:</strong> write your solution below each TODO, run it with Node, and compare with the <strong>Expected</strong> output. Full solutions are in <a href="#16-answer-key">Section 16</a> — no peeking until you have tried!</div>
 
-### Ex 1 — Split once (arrays + rest)
+### Ex 1 — Split once (arrays + rest) <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 2 min</span>
 
 ```javascript
 // TODO: split "a-b-c-d" at the FIRST "-" only
 const input = "a-b-c-d";
 // Expected: ["a", "b-c-d"]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Resist <code>split("-")</code> — it cuts at <em>every</em> dash. Find the first one with <code>indexOf("-")</code>, then <code>slice</code> before and after it.</p>
+</details>
 
-### Ex 2 — Split once when the value contains `=`
+### Ex 2 — Split once when the value contains `=` <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 3 min</span>
 
 ```javascript
 // TODO: split into key and FULL value (value itself contains "=")
 const setting = "color=blue=dark";
 // Expected: ["color", "blue=dark"]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Same split-once trick as Ex 1: <code>indexOf("=")</code> locates the first <code>=</code>; everything <strong>after</strong> it stays together — even more <code>=</code> signs.</p>
+</details>
 
-### Ex 3 — Parse an email
+### Ex 3 — Parse an email <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 2 min</span>
 
 ```javascript
 // TODO: extract the username and the domain
 const email = "rohit.g@example.com";
 // Expected: username "rohit.g", domain "example.com"
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>One <code>split("@")</code> is safe here (an email has exactly one <code>@</code>) — destructure into <code>[username, domain]</code>.</p>
+</details>
 
-### Ex 4 — Reformat a date
+### Ex 4 — Reformat a date <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 5 min</span>
 
 ```javascript
 // TODO: convert "2026-08-31" to "31/08/2026"
 const date = "2026-08-31";
 // Expected: "31/08/2026"
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>split("-")</code> gives <code>["2026", "08", "31"]</code> — destructure as <code>[y, m, d]</code> and rebuild with a template literal: <code>`${d}/${m}/${y}`</code>.</p>
+</details>
 
-### Ex 5 — Rest parameters
+### Ex 5 — Rest parameters <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 3 min</span>
 
 ```javascript
 // TODO: write sumAny(...) that adds ANY number of arguments
 // Expected: sumAny(1, 2, 3, 4) → 10
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Rest parameters: <code>const sumAny = (...nums) =&gt; nums.reduce((t, n) =&gt; t + n, 0)</code>.</p>
+</details>
 
-### Ex 6 — Spread into Math.max
+### Ex 6 — Spread into Math.max <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 2 min</span>
 
 ```javascript
 // TODO: find the largest number WITHOUT a loop
 const scores = [3, 9, 2];
 // Expected: 9
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>Math.max</code> accepts any number of arguments — spread the array in: <code>Math.max(...scores)</code>.</p>
+</details>
 
-### Ex 7 — Merge + dedupe + sort
+### Ex 7 — Merge + dedupe + sort <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 5 min</span>
 
 ```javascript
 // TODO: combine both arrays — no duplicates, sorted
@@ -3389,38 +3661,51 @@ const a = [1, 2, 3];
 const b = [3, 4];
 // Expected: [1, 2, 3, 4]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Spread both arrays into one, de-duplicate with <code>new Set(...)</code>, spread back into an array, then <code>.sort((a, b) =&gt; a - b)</code>.</p>
+</details>
 
-### Ex 8 — Map to HTML list items
+### Ex 8 — Map to HTML list items <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 3 min</span>
 
 ```javascript
 // TODO: turn each language into an <li> item
 const langs = ["HTML", "CSS"];
 // Expected: ["<li>HTML</li>", "<li>CSS</li>"]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>map</code> with a template literal: <code>langs.map(lang =&gt; `&lt;li&gt;${lang}&lt;/li&gt;`)</code>.</p>
+</details>
 
-### Ex 9 — Copy an object and override a key (no mutation!)
+### Ex 9 — Copy an object and override a key (no mutation!) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 5 min</span>
 
 ```javascript
 // TODO: create a NEW object with role "admin" — original must stay "viewer"
 const user = { name: "Rohit", role: "viewer" };
 // Expected: original {name "Rohit", role "viewer"}, copy {name "Rohit", role "admin"}
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>One-liner: <code>{ ...user, role: "admin" }</code> — spread copies first, then the later key wins. Original untouched.</p>
+</details>
 
-### Ex 10 — Drop the first element without mutating
+### Ex 10 — Drop the first element without mutating <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 3 min</span>
 
 ```javascript
 // TODO: return [20, 30, 40] — original must stay unchanged
 const queue = [10, 20, 30, 40];
 // Expected: [20, 30, 40], original [10, 20, 30, 40]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>queue.slice(1)</code> returns a new array without the first element — the original stays intact.</p>
+</details>
 
 <div style="page-break-after: always;"></div>
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 15. Challenges
 
 <div class="warn">🔥 <strong>Level up:</strong> each challenge mixes 2–4 concepts from earlier sections. Try them before opening the <a href="#16-answer-key">Answer Key</a>.</div>
 
-### C1 — Cart total (map + reduce + operators)
+### C1 — Cart total (map + reduce + operators) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span>
 
 ```javascript
 // TODO: total = sum of (price × qty), applying discount when present (0.1 = 10%)
@@ -3431,16 +3716,22 @@ const cart = [
 ];
 // Expected: 3300
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Two steps: <code>map</code> each item to <code>price * qty * (1 - discount)</code> (discount may be missing — default it with <code>?? 0</code>), then <code>reduce</code> to a total.</p>
+</details>
 
-### C2 — Longest word (split + reduce)
+### C2 — Longest word (split + reduce) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span>
 
 ```javascript
 // TODO: find the longest word; on a tie keep the FIRST one
 const sentence = "The quick brown fox jumps over the lazy dog";
 // Expected: "quick"
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>split(" ")</code> into words, then <code>reduce</code>: keep whichever word is <strong>strictly longer</strong> — that automatically keeps the FIRST word on ties.</p>
+</details>
 
-### C3 — Merge + dedupe + sort (spread + Set + sort)
+### C3 — Merge + dedupe + sort (spread + Set + sort) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 5 min</span>
 
 ```javascript
 // TODO: merge into one sorted array with no duplicates
@@ -3448,30 +3739,42 @@ const arrA = [3, 1, 2];
 const arrB = [2, 5, 4];
 // Expected: [1, 2, 3, 4, 5]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>[...new Set([...arrA, ...arrB])]</code> dedupes the merge — then sort numerically with a compare function.</p>
+</details>
 
-### C4 — Palindrome checker (strings + conditions)
+### C4 — Palindrome checker (strings + conditions) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span>
 
 ```javascript
 // TODO: return true if the word reads the same reversed
 // Expected: isPalindrome("madam") → true, isPalindrome("hello") → false
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>A palindrome reads the same reversed: compare <code>word</code> with <code>[...word].reverse().join("")</code>.</p>
+</details>
 
-### C5 — Word frequency (split + reduce + object)
+### C5 — Word frequency (split + reduce + object) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span>
 
 ```javascript
 // TODO: count how many times each word appears (case-insensitive)
 const text = "The cat and the dog and the bird";
 // Expected: { the: 3, cat: 1, and: 2, dog: 1, bird: 1 }
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Lowercase first (<code>toLowerCase()</code>), split into words, then <code>reduce</code> into an object: <code>acc[w] = (acc[w] || 0) + 1</code>.</p>
+</details>
 
-### C6 — FizzBuzz (loop + ternary)
+### C6 — FizzBuzz (loop + ternary) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span>
 
 ```javascript
 // TODO: 1..15 → multiples of 3 "Fizz", of 5 "Buzz", of both "FizzBuzz"
 // Expected: [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz", 11, "Fizz", 13, 14, "FizzBuzz"]
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Loop 1–15 building an array. Check <code>% 15</code> FIRST (FizzBuzz), then <code>% 3</code>, then <code>% 5</code> — order matters, or 15 prints "Fizz".</p>
+</details>
 
-### C7 — Group by category (reduce building an object)
+### C7 — Group by category (reduce building an object) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span>
 
 ```javascript
 // TODO: group product names by their category
@@ -3483,24 +3786,34 @@ const items = [
 ];
 // Expected: { food: ["Apple", "Bread"], tech: ["Laptop", "Phone"] }
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>reduce((acc, item) =&gt; ...)</code>: ensure the bucket exists — <code>acc[item.cat] = acc[item.cat] || []</code> — push the name, <code>return acc</code>.</p>
+</details>
 
-### C8 — Flatten + sum (flat + reduce)
+### C8 — Flatten + sum (flat + reduce) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span>
 
 ```javascript
 // TODO: fully flatten AND sum in one pipeline
 const nested = [1, [2, [3, [4, 5]]]];
 // Expected: [1, 2, 3, 4, 5] and 15
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p><code>flat(Infinity)</code> flattens any depth, then <code>reduce</code> to sum. Bonus: do both in ONE <code>reduce</code> with <code>concat</code>.</p>
+</details>
 
-### C9 — Email with `+tag` (split-once thinking!)
+### C9 — Email with `+tag` (split-once thinking!) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 12 min</span>
 
 ```javascript
 // TODO: parse "rohit.dev+news@example.com" into parts
 const email = "rohit.dev+news@example.com";
 // Expected: { username: "rohit.dev", tag: "news", domain: "example.com" }
 ```
+<details class="hint"><summary>💡 Hint</summary>
+<p>Split at <code>"@"</code> first (once) → local part + domain. Then split the local part at the <strong>first</strong> <code>"+"</code> with <code>indexOf</code> + <code>slice</code> — <code>split("+")</code> would break on extra pluses.</p>
+</details>
 
 <div style="page-break-after: always;"></div>
+<p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 16. Answer Key
 
@@ -3508,7 +3821,7 @@ const email = "rohit.dev+news@example.com";
 
 <div class="answer-key">
 
-<details class="solution"><summary>✅ Ex 1 — Split once</summary>
+<details class="solution"><summary>✅ Ex 1 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱2m</span> — Split once</summary>
 
 ```javascript
 const input = "a-b-c-d";
@@ -3518,7 +3831,7 @@ console.log([first, restParts.join("-")]); // ["a", "b-c-d"]
 
 </details>
 
-<details class="solution"><summary>✅ Ex 2 — Split once with <code>=</code> in the value</summary>
+<details class="solution"><summary>✅ Ex 2 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱3m</span> — Split once with <code>=</code> in the value</summary>
 
 ```javascript
 const setting = "color=blue=dark";
@@ -3528,7 +3841,7 @@ console.log([setting.slice(0, eq), setting.slice(eq + 1)]); // ["color", "blue=d
 
 </details>
 
-<details class="solution"><summary>✅ Ex 3 — Parse an email</summary>
+<details class="solution"><summary>✅ Ex 3 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱2m</span> — Parse an email</summary>
 
 ```javascript
 const email = "rohit.g@example.com";
@@ -3538,7 +3851,7 @@ console.log(username, domain); // rohit.g example.com
 
 </details>
 
-<details class="solution"><summary>✅ Ex 4 — Reformat a date</summary>
+<details class="solution"><summary>✅ Ex 4 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱5m</span> — Reformat a date</summary>
 
 ```javascript
 const date = "2026-08-31";
@@ -3548,7 +3861,7 @@ console.log([d, m, y].join("/")); // 31/08/2026
 
 </details>
 
-<details class="solution"><summary>✅ Ex 5 — Rest parameters</summary>
+<details class="solution"><summary>✅ Ex 5 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱3m</span> — Rest parameters</summary>
 
 ```javascript
 const sumAny = (...nums) => nums.reduce((total, n) => total + n, 0);
@@ -3557,7 +3870,7 @@ console.log(sumAny(1, 2, 3, 4)); // 10
 
 </details>
 
-<details class="solution"><summary>✅ Ex 6 — Spread into Math.max</summary>
+<details class="solution"><summary>✅ Ex 6 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱2m</span> — Spread into Math.max</summary>
 
 ```javascript
 const scores = [3, 9, 2];
@@ -3566,7 +3879,7 @@ console.log(Math.max(...scores)); // 9
 
 </details>
 
-<details class="solution"><summary>✅ Ex 7 — Merge + dedupe + sort</summary>
+<details class="solution"><summary>✅ Ex 7 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱5m</span> — Merge + dedupe + sort</summary>
 
 ```javascript
 const a = [1, 2, 3];
@@ -3576,7 +3889,7 @@ console.log([...new Set([...a, ...b])].sort((x, y) => x - y)); // [1, 2, 3, 4]
 
 </details>
 
-<details class="solution"><summary>✅ Ex 8 — Map to HTML list items</summary>
+<details class="solution"><summary>✅ Ex 8 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱3m</span> — Map to HTML list items</summary>
 
 ```javascript
 const langs = ["HTML", "CSS"];
@@ -3586,7 +3899,7 @@ console.log(langs.map((lang) => `<li>${lang}</li>`));
 
 </details>
 
-<details class="solution"><summary>✅ Ex 9 — Copy + override (no mutation)</summary>
+<details class="solution"><summary>✅ Ex 9 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱5m</span> — Copy + override (no mutation)</summary>
 
 ```javascript
 const user = { name: "Rohit", role: "viewer" };
@@ -3597,7 +3910,7 @@ console.log(user, admin);
 
 </details>
 
-<details class="solution"><summary>✅ Ex 10 — Drop first without mutating</summary>
+<details class="solution"><summary>✅ Ex 10 <span class="badge b-green">🟢</span> <span class="badge b-time">⏱3m</span> — Drop first without mutating</summary>
 
 ```javascript
 const queue = [10, 20, 30, 40];
@@ -3607,7 +3920,7 @@ console.log(withoutFirst, queue); // [20,30,40] [10,20,30,40]
 
 </details>
 
-<details class="solution"><summary>✅ C1 — Cart total</summary>
+<details class="solution"><summary>✅ C1 <span class="badge b-red">🔴</span> <span class="badge b-time">⏱10m</span> — Cart total</summary>
 
 ```javascript
 const cart = [
@@ -3625,7 +3938,7 @@ console.log(total); // 3300
 
 </details>
 
-<details class="solution"><summary>✅ C2 — Longest word</summary>
+<details class="solution"><summary>✅ C2 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱7m</span> — Longest word</summary>
 
 ```javascript
 const sentence = "The quick brown fox jumps over the lazy dog";
@@ -3637,7 +3950,7 @@ console.log(longest); // quick (first max wins on ties)
 
 </details>
 
-<details class="solution"><summary>✅ C3 — Merge + dedupe + sort</summary>
+<details class="solution"><summary>✅ C3 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱5m</span> — Merge + dedupe + sort</summary>
 
 ```javascript
 const arrA = [3, 1, 2];
@@ -3648,7 +3961,7 @@ console.log([...new Set([...arrA, ...arrB])].sort((a, b) => a - b));
 
 </details>
 
-<details class="solution"><summary>✅ C4 — Palindrome checker</summary>
+<details class="solution"><summary>✅ C4 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱7m</span> — Palindrome checker</summary>
 
 ```javascript
 const isPalindrome = (word) => word === word.split("").reverse().join("");
@@ -3657,7 +3970,7 @@ console.log(isPalindrome("madam"), isPalindrome("hello")); // true false
 
 </details>
 
-<details class="solution"><summary>✅ C5 — Word frequency</summary>
+<details class="solution"><summary>✅ C5 <span class="badge b-red">🔴</span> <span class="badge b-time">⏱10m</span> — Word frequency</summary>
 
 ```javascript
 const text = "The cat and the dog and the bird";
@@ -3673,7 +3986,7 @@ console.log(counts); // {"the":3,"cat":1,"and":2,"dog":1,"bird":1}
 
 </details>
 
-<details class="solution"><summary>✅ C6 — FizzBuzz</summary>
+<details class="solution"><summary>✅ C6 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱7m</span> — FizzBuzz</summary>
 
 ```javascript
 const result = [];
@@ -3686,7 +3999,7 @@ console.log(result);
 
 </details>
 
-<details class="solution"><summary>✅ C7 — Group by category</summary>
+<details class="solution"><summary>✅ C7 <span class="badge b-red">🔴</span> <span class="badge b-time">⏱10m</span> — Group by category</summary>
 
 ```javascript
 const items = [
@@ -3705,7 +4018,7 @@ console.log(grouped); // {"food":["Apple","Bread"],"tech":["Laptop","Phone"]}
 
 </details>
 
-<details class="solution"><summary>✅ C8 — Flatten + sum</summary>
+<details class="solution"><summary>✅ C8 <span class="badge b-yellow">🟡</span> <span class="badge b-time">⏱7m</span> — Flatten + sum</summary>
 
 ```javascript
 const nested = [1, [2, [3, [4, 5]]]];
@@ -3715,7 +4028,7 @@ console.log(flat, flat.reduce((s, n) => s + n, 0)); // [1,2,3,4,5] 15
 
 </details>
 
-<details class="solution"><summary>✅ C9 — Email with <code>+tag</code></summary>
+<details class="solution"><summary>✅ C9 <span class="badge b-red">🔴</span> <span class="badge b-time">⏱12m</span> — Email with <code>+tag</code></summary>
 
 ```javascript
 const email = "rohit.dev+news@example.com";
@@ -3730,6 +4043,13 @@ console.log({ username, tag, domain });
 
 </div>
 
+<div class="cert">
+<h2>🏆 Certificate of Completion</h2>
+<p>This certifies that <strong>Rohit</strong> has completed</p>
+<p><strong>JavaScript Essentials — Part 1</strong></p>
+<p><em>16 sections · 9 self-tests · 16 flashcards · 10 exercises · 9 challenges · 13 pitfalls survived</em></p>
+<p>Next stop: <strong>Part 2 — promises, async/await, classes &amp; modules</strong> 🚀</p>
+</div>
 ---
 
 <footer align="center">
