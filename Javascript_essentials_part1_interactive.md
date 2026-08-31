@@ -465,7 +465,7 @@ if (booking.seatsAvailable) {
 
 ### `while` - Basic Example
 
-> Syntax: `while (condition) { ... }`  
+> Syntax: `while (condition) { ... }`
 > Checks the condition **first**.
 
 ```javascript
@@ -485,7 +485,7 @@ const correctPassword = "secret123";
 
 while (attempts < 3 && !isPasswordCorrect) {
   const entered = prompt(`Attempt ${attempts + 1}/3: Enter password`);
-  
+
   if (entered === correctPassword) {
     isPasswordCorrect = true;
     console.log("Access granted!");
@@ -502,7 +502,7 @@ if (!isPasswordCorrect) {
 
 ### `do...while` - Basic Example
 
-> Syntax: `do { ... } while (condition);`  
+> Syntax: `do { ... } while (condition);`
 > Runs the body **at least once**, then checks the condition.
 
 ```javascript
@@ -524,9 +524,9 @@ do {
   console.log("2. Transfer Money");
   console.log("3. Withdraw");
   console.log("4. Exit");
-  
+
   userChoice = prompt("Enter choice (1-4):");
-  
+
   switch (userChoice) {
     case "1":
       console.log("Account Balance: ₹50,000");
@@ -571,13 +571,13 @@ let totalDebit = 0;
 
 for (let i = 0; i < transactions.length; i++) {
   const txn = transactions[i];
-  
+
   if (txn.type === "credit") {
     totalCredit += txn.amount;
   } else {
     totalDebit += txn.amount;
   }
-  
+
   console.log(`${txn.date}: ${txn.type.toUpperCase()} ₹${txn.amount}`);
 }
 
@@ -610,7 +610,7 @@ let totalBill = 0;
 for (const item of cartItems) {
   const itemTotal = item.price * item.quantity;
   totalBill += itemTotal;
-  
+
   console.log(`${item.product}: ₹${item.price} × ${item.quantity} = ₹${itemTotal}`);
 }
 
@@ -757,9 +757,9 @@ const customer = {
 };
 
 // At least one condition must be true
-const isEligibleForDiscount = 
-  customer.isPremium || 
-  customer.totalSpent >= 50000 || 
+const isEligibleForDiscount =
+  customer.isPremium ||
+  customer.totalSpent >= 50000 ||
   customer.referralCount >= 5;
 
 console.log(isEligibleForDiscount); // false
@@ -776,9 +776,9 @@ const booking = {
 };
 
 // Complex logic: booking confirmed AND (weekend special OR has voucher) AND seats available
-const canProceedBooking = 
-  booking.paymentConfirmed && 
-  (booking.isWeekend || booking.userHasVoucher) && 
+const canProceedBooking =
+  booking.paymentConfirmed &&
+  (booking.isWeekend || booking.userHasVoucher) &&
   booking.seatsAvailable;
 
 console.log(canProceedBooking); // true
@@ -1174,7 +1174,7 @@ const purchaseAmount = 5000;
 const customerType = "gold";
 const isMonthEnd = true;
 
-const discount = purchaseAmount > 10000 ? 0.20 : 
+const discount = purchaseAmount > 10000 ? 0.20 :
                  purchaseAmount > 5000 ? 0.15 :
                  customerType === "gold" ? 0.10 : 0;
 
@@ -1210,7 +1210,7 @@ for (let i = 0; i < inventory.length; i++) {
   const item = inventory[i];
   const status = item.stock > 0 ? "In Stock" : "Out of Stock";
   const stockLevel = item.stock <= 10 ? "Low Stock" : "Good Stock";
-  
+
   console.log(`${item.product}: ${status} (${stockLevel})`);
 }
 ```
@@ -1353,19 +1353,19 @@ const add3 = (a, b) => {
 // Function with multiple conditions
 function calculateFinalPrice(basePrice, quantity, customerType) {
   let discount = 0;
-  
+
   // Bulk discount
   if (quantity >= 10) {
     discount += 0.10;
   }
-  
+
   // Customer type discount
   if (customerType === "gold") {
     discount += 0.05;
   } else if (customerType === "silver") {
     discount += 0.03;
   }
-  
+
   const finalPrice = basePrice * quantity * (1 - discount);
   return {
     basePrice,
@@ -1395,7 +1395,7 @@ const isValidPassword = (password) => {
   const hasUppercase = /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecial = /[!@#$%^&*]/.test(password);
-  
+
   return hasMinLength && hasUppercase && hasNumber && hasSpecial;
 };
 
@@ -1410,18 +1410,18 @@ function analyzeGrades(students) {
   let totalScore = 0;
   let topStudent = null;
   let topScore = 0;
-  
+
   for (const student of students) {
     totalScore += student.grade;
-    
+
     if (student.grade > topScore) {
       topScore = student.grade;
       topStudent = student;
     }
   }
-  
+
   const average = totalScore / students.length;
-  
+
   return {
     average: average.toFixed(2),
     topStudent: topStudent.name,
@@ -1672,7 +1672,7 @@ const marks = [20, 40, 50, 35, 60, 15];
 
 #### `push`
 
-> Syntax: `array.push(item1, item2, ...)`  
+> Syntax: `array.push(item1, item2, ...)`
 > Adds items to the **end** of the array. Changes the **existing array**. Returns the new length.
 
 ```javascript
@@ -1683,7 +1683,7 @@ console.log(fruits); // ["apple", "banana", "mango"]
 
 #### `pop`
 
-> Syntax: `array.pop()`  
+> Syntax: `array.pop()`
 > Removes the **last** item from the array. Changes the **existing array**. Returns the removed item.
 
 ```javascript
@@ -1694,7 +1694,7 @@ console.log(colors, removed); // ["red", "green"], "blue"
 
 #### `unshift`
 
-> Syntax: `array.unshift(item1, item2, ...)`  
+> Syntax: `array.unshift(item1, item2, ...)`
 > Adds items to the **beginning** of the array. Changes the **existing array**. Returns the new length.
 
 ```javascript
@@ -1705,7 +1705,7 @@ console.log(numbers); // [1, 2, 3, 4]
 
 #### `shift`
 
-> Syntax: `array.shift()`  
+> Syntax: `array.shift()`
 > Removes the **first** item from the array. Changes the **existing array**. Returns the removed item.
 
 ```javascript
@@ -1716,7 +1716,7 @@ console.log(queue); // ["second", "third"]
 
 #### `splice`
 
-> Syntax: `array.splice(startIndex, deleteCount, item1?, item2?, ...)`  
+> Syntax: `array.splice(startIndex, deleteCount, item1?, item2?, ...)`
 > Adds, removes, or replaces items at any index. Changes the **existing array**. Returns the removed items.
 
 ```javascript
@@ -1735,7 +1735,7 @@ console.log(sample3); // [100, 20, 30]  (replace)
 
 #### `slice`
 
-> Syntax: `array.slice(startIndex?, endIndex?)`  
+> Syntax: `array.slice(startIndex?, endIndex?)`
 > Copies a portion of the array into a **new array**. The original array is **not changed**.
 
 ```javascript
@@ -1746,7 +1746,7 @@ console.log(sliced, letters); // ["b", "c"], original unchanged
 
 #### `includes`
 
-> Syntax: `array.includes(value, fromIndex?)`  
+> Syntax: `array.includes(value, fromIndex?)`
 > Checks whether the array contains a value. Returns `true` or `false`. Original array is not changed.
 
 ```javascript
@@ -1756,7 +1756,7 @@ console.log(marks.includes(999)); // false
 
 #### `indexOf`
 
-> Syntax: `array.indexOf(value, fromIndex?)`  
+> Syntax: `array.indexOf(value, fromIndex?)`
 > Finds the **first index** of a value. Returns the index, or `-1` if not found. Original array is not changed.
 
 ```javascript
@@ -1767,7 +1767,7 @@ console.log(items.indexOf("phone")); // -1
 
 #### `join`
 
-> Syntax: `array.join(separator?)`  
+> Syntax: `array.join(separator?)`
 > Joins all items into a **new string** using a separator. Original array is not changed.
 
 ```javascript
@@ -1777,8 +1777,8 @@ console.log(tags.join(", ")); // "html, css, js"
 
 #### `concat` and spread
 
-> Syntax: `array.concat(array2, array3, ...)`  
-> Spread syntax: `[...array1, ...array2]`  
+> Syntax: `array.concat(array2, array3, ...)`
+> Spread syntax: `[...array1, ...array2]`
 > Combines arrays into a **new array**. Original arrays are not changed.
 
 ```javascript
@@ -1790,7 +1790,7 @@ console.log([...groupA, ...groupB]);       // [1, 2, 3, 4]
 
 #### `forEach`
 
-> Syntax: `array.forEach((element, index?, array?) => { ... })`  
+> Syntax: `array.forEach((element, index?, array?) => { ... })`
 > Runs a function on each item. Does **not** return a new array. Used for side effects like printing.
 
 ```javascript
@@ -1805,7 +1805,7 @@ marks.forEach((mark) => {
 
 #### `map`
 
-> Syntax: `array.map((element, index?, array?) => newValue)`  
+> Syntax: `array.map((element, index?, array?) => newValue)`
 > Creates a **new array** with each item transformed. Original array is not changed.
 
 ```javascript
@@ -1815,7 +1815,7 @@ console.log(doubled); // [40, 80, 100, 70, 120, 30]
 
 #### `filter`
 
-> Syntax: `array.filter((element, index?, array?) => condition)`  
+> Syntax: `array.filter((element, index?, array?) => condition)`
 > Creates a **new array** with items that pass the condition. Original array is not changed.
 
 ```javascript
@@ -1825,7 +1825,7 @@ console.log(passing); // [40, 50, 60]
 
 #### `find`
 
-> Syntax: `array.find((element, index?, array?) => condition)`  
+> Syntax: `array.find((element, index?, array?) => condition)`
 > Returns the **first item** that matches the condition, or `undefined`. Original array is not changed.
 
 ```javascript
@@ -1835,7 +1835,7 @@ console.log(firstHigh); // 40
 
 #### `findIndex`
 
-> Syntax: `array.findIndex((element, index?, array?) => condition)`  
+> Syntax: `array.findIndex((element, index?, array?) => condition)`
 > Returns the **index of the first match**, or `-1` if not found. Original array is not changed.
 
 ```javascript
@@ -1845,7 +1845,7 @@ console.log(highIndex); // 1
 
 #### `some`
 
-> Syntax: `array.some((element, index?, array?) => condition)`  
+> Syntax: `array.some((element, index?, array?) => condition)`
 > Returns `true` if **at least one** item matches. Original array is not changed.
 
 ```javascript
@@ -1854,7 +1854,7 @@ console.log(marks.some((mark) => mark > 50)); // true
 
 #### `every`
 
-> Syntax: `array.every((element, index?, array?) => condition)`  
+> Syntax: `array.every((element, index?, array?) => condition)`
 > Returns `true` only if **all** items match. Original array is not changed.
 
 ```javascript
@@ -1863,8 +1863,8 @@ console.log(marks.every((mark) => mark > 0)); // true
 
 #### `sort`
 
-> Syntax: `array.sort(compareFn?)`  
-> Compare: `(a, b) => a - b` for ascending, `b - a` for descending.  
+> Syntax: `array.sort(compareFn?)`
+> Compare: `(a, b) => a - b` for ascending, `b - a` for descending.
 > Sorts the **existing array in place**. Returns the same array.
 
 ```javascript
@@ -1875,7 +1875,7 @@ console.log([...random].sort((a, b) => b - a)); // [100, 40, 5, 1]
 
 #### `reverse`
 
-> Syntax: `array.reverse()`  
+> Syntax: `array.reverse()`
 > Reverses the order in the **existing array**. Returns the same array.
 
 ```javascript
@@ -1886,7 +1886,7 @@ console.log(reverseNumbers); // [4, 3, 2, 1]
 
 #### `flat`
 
-> Syntax: `array.flat(depth?)`  
+> Syntax: `array.flat(depth?)`
 > Flattens nested arrays into a **new array**. Original array is not changed.
 
 ```javascript
@@ -1897,7 +1897,7 @@ console.log(nested.flat(2));  // [1, 2, 3, 4, 5, 6]
 
 #### `flatMap`
 
-> Syntax: `array.flatMap((element, index?, array?) => newValue)`  
+> Syntax: `array.flatMap((element, index?, array?) => newValue)`
 > Maps each item, then flattens the result by one level into a **new array**. Original array is not changed.
 
 ```javascript
@@ -1908,7 +1908,7 @@ console.log(words); // ["Hello", "world", "Good", "morning"]
 
 #### `reduce` (sum)
 
-> Syntax: `array.reduce((accumulator, current, index?, array?) => ..., initialValue)`  
+> Syntax: `array.reduce((accumulator, current, index?, array?) => ..., initialValue)`
 > Combines all items into a **single value**. Can return a number, string, array, or object.
 
 ```javascript
@@ -1918,7 +1918,7 @@ console.log(total); // 220
 
 #### `reduce` (build object)
 
-> Same syntax as above. Initial value can be an object `{}`.  
+> Same syntax as above. Initial value can be an object `{}`.
 > Builds a **new object** as the final result.
 
 ```javascript
@@ -2119,7 +2119,7 @@ const passedStudents = studentAverages.filter((s) => parseFloat(s.average) >= 50
 console.log(passedStudents.length); // 3
 
 // Get top performer
-const topStudent = studentAverages.reduce((top, current) => 
+const topStudent = studentAverages.reduce((top, current) =>
   parseFloat(current.average) > parseFloat(top.average) ? current : top
 );
 console.log(topStudent); // { name: "Priya", average: "91.00" }
@@ -2647,9 +2647,9 @@ function validatePasswordStrength(password) {
     hasNumber: /[0-9]/.test(password),
     hasSpecial: /[!@#$%^&*]/.test(password)
   };
-  
+
   const passedChecks = Object.values(checks).filter(Boolean).length;
-  
+
   return {
     isValid: passedChecks >= 4,
     strength: passedChecks <= 2 ? "Weak" : passedChecks === 3 ? "Medium" : "Strong",
@@ -2979,7 +2979,7 @@ order.pricing.subtotal = order.items.reduce((sum, item) => sum + (item.price * i
 // Calculate total with tax and shipping
 order.pricing.total = order.pricing.subtotal + (order.pricing.subtotal * order.pricing.taxRate) + order.pricing.shippingCost - order.pricing.discount;
 
-console.log(order.pricing); 
+console.log(order.pricing);
 // { subtotal: 17900, taxRate: 0.18, shippingCost: 200, discount: 0, total: 21322 }
 
 // Get order summary
@@ -3416,7 +3416,7 @@ const queue = [10, 20, 30, 40];
 
 <div style="page-break-after: always;"></div>
 
-## 15. Challenges — combine everything
+## 15. Challenges
 
 <div class="warn">🔥 <strong>Level up:</strong> each challenge mixes 2–4 concepts from earlier sections. Try them before opening the <a href="#16-answer-key">Answer Key</a>.</div>
 
