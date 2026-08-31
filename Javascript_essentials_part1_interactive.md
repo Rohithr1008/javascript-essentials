@@ -2,7 +2,7 @@
 
 A quick reference covering the JavaScript fundamentals you have learned so far.
 
-<div class="interactive-note">💡 <strong>Interactive guide v2 — every section has something to DO:</strong> quizzes, 🤔 predict-the-output cards, 🃏 flashcards, 💡 hint buttons and 😅 mood checks. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>), Typora, or the bundled <strong>.html edition</strong> (dark-mode toggle + saved progress). In plain viewers everything stays readable — just not styled.</div>
+<div class="interactive-note">💡 <strong>Interactive guide v2 — every section has something to DO:</strong> quizzes, 🤔 predict-the-output cards, 🃏 flashcards, 💡 hint buttons and 😅 mood checks. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or Typora; an optional standalone <strong>.html edition</strong> (dark-mode button + saved progress) can be generated from this file on request. In plain viewers everything stays readable — just not styled.</div>
 
 <style>
 /* ===== JavaScript Essentials — Interactive Styles v2 ===== */
