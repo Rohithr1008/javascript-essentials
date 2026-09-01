@@ -1778,6 +1778,55 @@ console.log(total >= 200 && total < 300); // true (comparison + logical)
 
 > Assignment (`=`, `+=`…) and ternary sit at the very bottom.
 
+### 🛡️ Optional Chaining vs `&&` Comparison
+
+Four ways to safely access nested properties — know when to use each:
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>🛡️ Optional Chaining (<code>?.</code>)</strong></summary>
+<p>Returns <code>undefined</code> immediately if any link in the chain is null/undefined. <strong>Best for deep nesting.</strong></p>
+<pre><code>const user = { address: null };
+console.log(user?.address?.city);      // undefined (safe!)
+console.log(user?.name);               // undefined
+// Also works with arrays & functions:
+console.log(arr?.[0]);                 // undefined if arr is null
+console.log(func?.());                 // undefined if func is null</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>⚡ Logical AND (<code>&amp;&amp;</code>)</strong></summary>
+<p>Traditional guard pattern. Returns the first falsy value or the last truthy value. <strong>Verbose for deep chains.</strong></p>
+<pre><code>const user = { address: null };
+console.log(user && user.name);                    // "Alice"
+console.log(user && user.address && user.address.city);  // null
+// Common guard pattern:
+if (user && user.address && user.address.city) {
+  console.log(user.address.city);
+}</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>🔄 Nullish Coalescing (<code>??</code>)</strong></summary>
+<p>Returns the right side <strong>only</strong> when left is <code>null</code>/<code>undefined</code> (NOT for <code>0</code>, <code>""</code>, <code>false</code>).</p>
+<pre><code>const val = 0;
+console.log(val || 42);     // 42 (0 is falsy → fallback)
+console.log(val ?? 42);     // 0 (only null/undefined trigger fallback)
+// Common use case:
+const settings = { theme: "dark", fontSize: 0 };
+const size = settings.fontSize ?? 16;  // 0 (not 16!)</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>❓ Ternary / Conditional</strong></summary>
+<p>Traditional if-else in expression form. <strong>Most verbose</strong> for deep nesting.</p>
+<pre><code>const user = { address: null };
+const city = user !== null && user.address !== null
+  ? user.address.city
+  : undefined;
+// vs optional chaining (much cleaner):
+const city2 = user?.address?.city;</code></pre>
+</details>
+
 ## 8. Functions and Arrow Functions
 
 ### Function Declaration - Basic
@@ -4222,6 +4271,43 @@ console.log(firstSkill); // "JS"
 
 </div>
 
+### 🎯 `this` Context Comparison
+
+`this` is decided by **how a function is called**, not where it's defined. Click each scenario:
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>📌 Method Call: <code>obj.method()</code></strong></summary>
+<p>When called as a method on an object, <code>this</code> = the object before the dot.</p>
+<pre><code>const user = {
+  name: "Alice",
+  greet() { console.log(this.name); }  // this = user
+};
+user.greet(); // "Alice"</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>🔧 Standalone: <code>func()</code></strong></summary>
+<p>When called standalone, <code>this</code> = <code>undefined</code> (strict mode) or <code>globalThis</code>.</p>
+<pre><code>function showThis() { console.log(this); }
+showThis(); // undefined (strict mode)</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>➡️ Arrow Function: <code>() =&gt; {}</code></strong></summary>
+<p>Arrow functions have <strong>no own <code>this</code></strong> — they inherit from the enclosing scope!</p>
+<pre><code>const user = {
+  name: "Alice",
+  greet: () => console.log(this.name)  // undefined! inherits outer this
+};</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>🏗️ Constructor: <code>new Func()</code></strong></summary>
+<p>With <code>new</code>, <code>this</code> = the newly created object instance.</p>
+<pre><code>function Person(name) { this.name = name; }  // this = new object
+const alice = new Person("Alice");</code></pre>
+</details>
+
 <div class="quiz-box">
 
 <h3>🧪 Self-Test — Objects</h3>
@@ -4368,6 +4454,50 @@ console.log(merged);                        // {"theme":"dark","fontSize":16,"la
 ## 13. Common Pitfalls
 
 <div class="danger">🚨 <strong>The #1 trap:</strong> <code>[10, 1, 2].sort()</code> sorts numbers as <strong>strings</strong>. Always pass a compare function: <code>.sort((a, b) =&gt; a - b)</code>.</div>
+
+### ⚠️ Error Types Explorer
+
+Click each error type to see when it occurs and how to fix it:
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>❌ ReferenceError: Variable not defined</strong></summary>
+<p>Occurs when you try to use a variable that hasn't been declared or is out of scope.</p>
+<pre><code>console.log(myVar);
+// ReferenceError: myVar is not defined
+// Fix: Declare the variable first
+let myVar = "hello";
+console.log(myVar); // "hello"</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>❌ TypeError: Wrong type operation</strong></summary>
+<p>Occurs when you try to use a value in a way that's not allowed for its type.</p>
+<pre><code>const num = 42;
+num.toUpperCase();
+// TypeError: num.toUpperCase is not a function
+// Fix: Check the type before operating
+if (typeof num === "string") num.toUpperCase();</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>❌ SyntaxError: Invalid code structure</strong></summary>
+<p>Occurs when code violates JavaScript grammar rules. Caught at parse time — before anything runs!</p>
+<pre><code>const obj = { name: "Alice" age: 30 };
+// SyntaxError: Unexpected identifier (missing comma)
+// Fix: Add the missing comma
+const obj = { name: "Alice", age: 30 };</code></pre>
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>❌ RangeError: Value out of allowed range</strong></summary>
+<p>Occurs when a value is outside the allowed range (e.g., array with invalid length).</p>
+<pre><code>const arr = new Array(-1);
+// RangeError: Invalid array length
+// Fix: Validate the value before using
+if (length > 0) {
+  const arr = new Array(length);
+}</code></pre>
+</details>
 
 ### 1. `=` vs `===` (assignment inside a condition)
 
