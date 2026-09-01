@@ -2,7 +2,9 @@
 
 <p>A quick reference covering the JavaScript fundamentals you have learned so far.</p>
 
-<div class="interactive-note">💡 <strong>Interactive guide v2 — every section has something to DO:</strong> quizzes, 🤔 predict-the-output cards, 🃏 flashcards, 💡 hint buttons and 😅 mood checks. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or Typora; an optional standalone <strong>.html edition</strong> (dark-mode button + saved progress) can be generated from this file on request. In plain viewers everything stays readable — just not styled.</div>
+<div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/16 sections (0%)</div>
+
+<div class="interactive-note">💡 <strong>Interactive guide v3 — enhanced with Phase 1 & 2 features:</strong> Truthy/Falsy checker, JavaScript Sandbox, Hoisting Visualizer, Type Coercion Flowchart, Worked Examples, 12 Spot-the-Bug challenges, Difficulty Filters, Predict-Output cards, and more! Best viewed in a browser.</div>
 
 <style>
 /* ===== JavaScript Essentials — Interactive Styles v2 ===== */
@@ -889,6 +891,21 @@ console.log(response?.data?.user?.profile?.avatar); <c>// <s>"</s></c>
 console.log(response?.data?.products?.list?.items); <c>// undefined (safely returns undefined)</c></code></pre>
 
 <h3 id="more-examples">More Examples</h3>
+
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #38a169;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#68d391;margin-top:0;">🛡️ Optional Chaining vs && Comparison</h3>
+  <p style="color:#e2e8f0;">Click to compare safe property access approaches:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <button onclick="showOptionalExample('chaining')" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Optional Chaining ?.</button>
+    <button onclick="showOptionalExample('and')" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Logical &&</button>
+    <button onclick="showOptionalExample('nullish')" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Nullish ??</button>
+    <button onclick="showOptionalExample('ternary')" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Ternary</button>
+  </div>
+  <div id="optionalResult" style="display:none;">
+    <div id="optionalText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:10px;"></div>
+    <pre id="optionalCode" style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:0;font-size:13px;"></pre>
+  </div>
+</div>
 
 <h4 id="simple-truthy-vs-falsy-values">Simple: Truthy vs falsy values</h4>
 
@@ -3242,6 +3259,21 @@ if (<s>"</s> in product) {
   console.log(<s>"</s>); <c>// runs</c>
 }</code></pre>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #9f7aea;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#b794f4;margin-top:0;">🎯 `this` Context Comparison</h3>
+  <p style="color:#e2e8f0;">Click each scenario to see how <code>this</code> is determined:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <button onclick="showThisExample('method')" style="padding:8px 16px;background:#6b46c1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Method Call</button>
+    <button onclick="showThisExample('standalone')" style="padding:8px 16px;background:#6b46c1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Standalone</button>
+    <button onclick="showThisExample('arrow')" style="padding:8px 16px;background:#6b46c1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Arrow Function</button>
+    <button onclick="showThisExample('constructor')" style="padding:8px 16px;background:#6b46c1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Constructor</button>
+  </div>
+  <div id="thisResult" style="display:none;">
+    <div id="thisText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:10px;"></div>
+    <pre id="thisCode" style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:0;font-size:13px;"></pre>
+  </div>
+</div>
+
 <div class="quiz-box">
 
 <h3>🧪 Self-Test — Objects</h3>
@@ -3547,11 +3579,69 @@ console.log(original.toSorted((a, b) =&gt; a - b)); <c>// [<n>1</n>, <n>2</n>, <
 
 </div>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #e53e3e;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#fc8181;margin-top:0;">⚠️ Error Types Explorer</h3>
+  <p style="color:#e2e8f0;">Click each error type to see when it occurs and how to fix it:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <button onclick="showErrorExample('reference')" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">ReferenceError</button>
+    <button onclick="showErrorExample('type')" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">TypeError</button>
+    <button onclick="showErrorExample('syntax')" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">SyntaxError</button>
+    <button onclick="showErrorExample('range')" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">RangeError</button>
+  </div>
+  <div id="errorResult" style="display:none;">
+    <div id="errorText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:10px;"></div>
+    <pre id="errorCode" style="background:#2d3748;color:#fc8181;padding:14px;border-radius:8px;overflow-x:auto;margin:0;font-size:13px;"></pre>
+    <pre id="errorFix" style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:8px 0 0 0;font-size:13px;"></pre>
+  </div>
+</div>
+
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="14-practice-exercises">14. Practice Exercises</h2>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #805ad5;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#b794f4;margin-top:0;">🎯 Difficulty Filters</h3>
+  <p style="color:#e2e8f0;">Filter exercises by difficulty level:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <button onclick="filterExercises('all')" style="padding:8px 16px;background:#805ad5;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">All</button>
+    <button onclick="filterExercises('warmup')" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🟢 Warm-up</button>
+    <button onclick="filterExercises('standard')" style="padding:8px 16px;background:#d69e2e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🟡 Standard</button>
+    <button onclick="filterExercises('challenging')" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔴 Challenging</button>
+  </div>
+</div>
+
 <div class="tip">✍️ <strong>How to use:</strong> write your solution below each TODO, run it with Node, and compare with the <strong>Expected</strong> output. Full solutions are in <a href="#16-answer-key">Section 16</a> — no peeking until you have tried!</div>
+
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #5a67d8;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#7f9cf5;margin-top:0;">🤔 Predict the Output</h3>
+  <p style="color:#e2e8f0;">Test your understanding! Read the code, predict the output, then click to reveal:</p>
+  <div class="predict-card" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:14px;margin:10px 0;">
+    <pre style="color:#68d391;margin:0;"><code>console.log([] + []);    // What's the output?
+console.log([] + {});    // And this?
+console.log({} + []);    // Tricky!</code></pre>
+    <button onclick="toggleAnswer(this)" style="margin-top:8px;padding:6px 14px;background:#5a67d8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">Show Answer</button>
+    <div class="answer" style="display:none;margin-top:8px;color:#f6e05e;"><code>""</code> (empty string), <code>"[object Object]"</code>, <code>0</code> or <code>"[object Object]"</code></div>
+  </div>
+  <div class="predict-card" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:14px;margin:10px 0;">
+    <pre style="color:#68d391;margin:0;"><code>const x = "5";
+console.log(x++ + ++x);  // What's the output?</code></pre>
+    <button onclick="toggleAnswer(this)" style="margin-top:8px;padding:6px 14px;background:#5a67d8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">Show Answer</button>
+    <div class="answer" style="display:none;margin-top:8px;color:#f6e05e;"><code>"57"</code> — x++ returns "5", ++x makes x=7, "5"+7="57"</div>
+  </div>
+  <div class="predict-card" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:14px;margin:10px 0;">
+    <pre style="color:#68d391;margin:0;"><code>console.log(true + false);     // ?
+console.log(true + true);      // ?
+console.log(false + false);    // ?</code></pre>
+    <button onclick="toggleAnswer(this)" style="margin-top:8px;padding:6px 14px;background:#5a67d8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">Show Answer</button>
+    <div class="answer" style="display:none;margin-top:8px;color:#f6e05e;"><code>1, 2, 0</code> — booleans coerce to numbers!</div>
+  </div>
+  <div class="predict-card" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:14px;margin:10px 0;">
+    <pre style="color:#68d391;margin:0;"><code>const arr = [1, 2, 3];
+console.log(arr.map(x => x * 2).filter(x => x > 2).reduce((a, b) => a + b));</code></pre>
+    <button onclick="toggleAnswer(this)" style="margin-top:8px;padding:6px 14px;background:#5a67d8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">Show Answer</button>
+    <div class="answer" style="display:none;margin-top:8px;color:#f6e05e;"><code>10</code> — map: [2,4,6], filter: [4,6], reduce: 10</div>
+  </div>
+</div>
 
 <h3 id="ex-1-split-once-arrays-rest-span-class-b">Ex 1 — Split once (arrays + rest) <span class="badge b-green">🟢 Warm-up</span> <span class="badge b-time">⏱ 2 min</span></h3>
 
@@ -4134,8 +4224,109 @@ function showCoercionExample(type) {
   if (result) result.style.display = 'block';
 }
 
+// ===== this Context Comparison =====
+function showThisExample(type) {
+  const result = document.getElementById('thisResult');
+  const text = document.getElementById('thisText');
+  const code = document.getElementById('thisCode');
+  const examples = {
+    method: { title: '📌 Method Call: obj.method()', explanation: 'this = object before the dot.', code: 'const user = {\n  name: "Alice",\n  greet() { console.log(this.name); }\n};\nuser.greet(); // this = user → "Alice"' },
+    standalone: { title: '🔧 Standalone: func()', explanation: 'this = undefined (strict mode) or globalThis.', code: 'function showThis() { console.log(this); }\nshowThis(); // this = undefined' },
+    arrow: { title: '➡️ Arrow Function', explanation: 'No own this — inherits from enclosing scope!', code: 'const user = {\n  name: "Alice",\n  greet: () => console.log(this.name) // undefined!\n};' },
+    constructor: { title: '🏗️ Constructor: new Func()', explanation: 'this = newly created object instance.', code: 'function Person(name) { this.name = name; }\nconst alice = new Person("Alice");' }
+  };
+  const ex = examples[type];
+  if (text) text.innerHTML = `<strong>${ex.title}</strong><br>${ex.explanation}`;
+  if (code) code.textContent = ex.code;
+  if (result) result.style.display = 'block';
+}
+
+// ===== Error Types Explorer =====
+function showErrorExample(type) {
+  const result = document.getElementById('errorResult');
+  const text = document.getElementById('errorText');
+  const code = document.getElementById('errorCode');
+  const fix = document.getElementById('errorFix');
+  const examples = {
+    reference: { title: '❌ ReferenceError', explanation: 'Variable not declared or out of scope.', code: 'console.log(myVar);\n// ReferenceError: myVar is not defined', fix: '// Fix: Declare first\nlet myVar = "hello";' },
+    type: { title: '❌ TypeError', explanation: 'Operation on wrong type.', code: 'const num = 42;\nnum.toUpperCase();\n// TypeError: not a function', fix: '// Fix: Check type first\nif (typeof num === "string") num.toUpperCase();' },
+    syntax: { title: '❌ SyntaxError', explanation: 'Invalid code structure (caught at parse time).', code: 'const obj = { name: "Alice" age: 30 };\n// SyntaxError: missing comma', fix: '// Fix: Add comma\nconst obj = { name: "Alice", age: 30 };' },
+    range: { title: '❌ RangeError', explanation: 'Value outside allowed range.', code: 'const arr = new Array(-1);\n// RangeError: Invalid array length', fix: '// Fix: Validate first\nif (length > 0) const arr = new Array(length);' }
+  };
+  const ex = examples[type];
+  if (text) text.innerHTML = `<strong>${ex.title}</strong><br>${ex.explanation}`;
+  if (code) code.textContent = ex.code;
+  if (fix) fix.textContent = '✅ ' + ex.fix;
+  if (result) result.style.display = 'block';
+}
+
+// ===== Optional Chaining vs && =====
+function showOptionalExample(type) {
+  const result = document.getElementById('optionalResult');
+  const text = document.getElementById('optionalText');
+  const code = document.getElementById('optionalCode');
+  const examples = {
+    chaining: { title: '🛡?. Optional Chaining', explanation: 'Returns undefined if any link is null/undefined.', code: 'const user = { address: null };\nconsole.log(user?.address?.city); // undefined (safe!)' },
+    and: { title: '⚡ Logical AND (&&)', explanation: 'Traditional guard. Returns first falsy or last truthy.', code: 'const user = { address: null };\nconsole.log(user && user.address && user.address.city); // null' },
+    nullish: { title: '🔄 Nullish Coalescing (??)', explanation: 'Fallback ONLY for null/undefined (not 0 or "").', code: 'const val = 0;\nconsole.log(val || 42);  // 42\nconsole.log(val ?? 42); // 0' },
+    ternary: { title: '❓ Ternary', explanation: 'Verbose for deep nesting.', code: 'const city = user !== null && user.address !== null\n  ? user.address.city : undefined;' }
+  };
+  const ex = examples[type];
+  if (text) text.innerHTML = `<strong>${ex.title}</strong><br>${ex.explanation}`;
+  if (code) code.textContent = ex.code;
+  if (result) result.style.display = 'block';
+}
+
+// ===== Difficulty Filters =====
+function filterExercises(difficulty) {
+  const headings = document.querySelectorAll('h3[id^="ex-"]');
+  headings.forEach(h3 => {
+    if (difficulty === 'all') { h3.style.display = 'block'; return; }
+    const badges = h3.querySelectorAll('.badge');
+    let match = false;
+    badges.forEach(b => { if (b.textContent.toLowerCase().includes(difficulty)) match = true; });
+    h3.style.display = match ? 'block' : 'none';
+  });
+}
+
+// ===== Predict Output Toggle =====
+function toggleAnswer(btn) {
+  const answer = btn.nextElementSibling;
+  if (answer && answer.classList.contains('answer')) {
+    answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+    btn.textContent = answer.style.display === 'none' ? 'Show Answer' : 'Hide Answer';
+  }
+}
+
+// ===== Copy Code =====
+function copyCode(btn) {
+  const code = btn.closest('pre')?.querySelector('code');
+  if (code) {
+    navigator.clipboard.writeText(code.textContent).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+    });
+  }
+}
+
+// ===== Progress Tracking =====
+function saveProgress(id) {
+  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  p[id] = true; p.updated = new Date().toISOString();
+  localStorage.setItem('js-progress', JSON.stringify(p));
+}
+function loadProgress() {
+  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  const done = Object.keys(p).filter(k => k !== 'updated').length;
+  const el = document.getElementById('progressBar');
+  if (el) el.textContent = `📊 Progress: ${done}/16 sections (${Math.round(done/16*100)}%)`;
+}
+
 // Add event listener for Truthy/Falsy input
 document.addEventListener('DOMContentLoaded', function() {
+  loadProgress();
+  
   const truthyInput = document.getElementById('truthyInput');
   if (truthyInput) {
     truthyInput.addEventListener('keypress', function(e) {
