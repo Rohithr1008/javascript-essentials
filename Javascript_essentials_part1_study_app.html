@@ -3929,6 +3929,22 @@ const cart = [
 <p>Two steps: <code>map</code> each item to <code>price * qty * (1 - discount)</code> (discount may be missing — default it with <code>?? 0</code>), then <code>reduce</code> to a total.</p>
 </details>
 
+<div class="auto-grade" style="background:#1a202c;border:2px solid #ed8936;border-radius:12px;padding:16px;margin:14px 0;" data-challenge="c1">
+  <h4 style="color:#ed8936;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <p style="color:#e2e8f0;font-size:13px;">Write your solution, then click Run Tests. Your code must define a variable total.</p>
+  <textarea class="code-editor" style="width:100%;height:140px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Write your solution here
+const total = cart
+  .map(item => item.price * item.qty * (1 - (item.discount ?? 0)))
+  .reduce((sum, val) => sum + val, 0);
+console.log(total);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+    <button onclick="runTests('c1')" style="padding:8px 20px;background:#ed8936;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c1')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;margin-left:8px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c2-longest-word-split-reduce-span-class-">C2 — Longest word (split + reduce) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span></h3>
 
 <pre><code><c>// TODO: find the longest word; on a tie keep the FIRST one</c>
@@ -4363,6 +4379,68 @@ function clearSandboxCode() {
     output.innerHTML = '// Output will appear here';
     output.style.color = '#e2e8f0';
   }
+}
+
+// ===== PHASE 3: Auto-Graded Challenges =====
+const challengeTests = {
+  c1: {
+    varName: 'total',
+    tests: [
+      { desc: 'total is defined', check: (r) => r.total !== undefined },
+      { desc: 'total is a number', check: (r) => typeof r.total === 'number' },
+      { desc: 'total equals 3300', check: (r) => r.total === 3300 },
+      { desc: 'uses map()', check: (r) => r.code.includes('map') },
+      { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') }
+    ],
+    hint: 'Use .map() to transform each item to price*qty*(1-discount), then .reduce() to sum. Default missing discount with ?? 0.'
+  }
+};
+
+function runTests(challengeId) {
+  const container = document.querySelector(`[data-challenge="${challengeId}"]`);
+  const textarea = container.querySelector('.code-editor');
+  const resultsDiv = container.querySelector('.test-results');
+  const statusSpan = container.querySelector('.test-status');
+  const code = textarea.value;
+
+  let result;
+  try {
+    const fn = new Function(code + '; return { ' + challengeTests[challengeId].varName + ', code: `' + code.replace(/`/g, '\\`') + '` };');
+    result = fn();
+  } catch (e) {
+    resultsDiv.innerHTML = '<div style="color:#fc8181;padding:8px;">❌ Runtime Error: ' + e.message + '</div>';
+    statusSpan.textContent = 'Error';
+    return;
+  }
+
+  const tests = challengeTests[challengeId].tests;
+  let passed = 0;
+  let html = '';
+  tests.forEach((test, i) => {
+    const ok = test.check(result);
+    if (ok) passed++;
+    html += '<div style="padding:4px 8px;' + (ok ? 'color:#68d391;' : 'color:#fc8181;') + '">' + (ok ? '✅' : '❌') + ' ' + test.desc + '</div>';
+  });
+
+  if (passed === tests.length) {
+    html += '<div style="padding:8px;margin-top:8px;background:#132a1c;border-radius:6px;color:#68d391;font-weight:600;">🎉 All tests passed! Challenge complete.</div>';
+    statusSpan.textContent = '✅ Passed';
+  } else {
+    html += '<div style="padding:8px;margin-top:8px;background:#2b2013;border-radius:6px;color:#f6ad55;font-size:13px;">💡 Hint: ' + challengeTests[challengeId].hint + '</div>';
+    statusSpan.textContent = '❌ ' + passed + '/' + tests.length + ' passed';
+  }
+  resultsDiv.innerHTML = html;
+}
+
+function resetCode(challengeId) {
+  const container = document.querySelector(`[data-challenge="${challengeId}"]`);
+  const textarea = container.querySelector('.code-editor');
+  const defaultCodes = {
+    c1: '// Write your solution here\nconst total = cart\n  .map(item => item.price * item.qty * (1 - (item.discount ?? 0)))\n  .reduce((sum, val) => sum + val, 0);\nconsole.log(total);'
+  };
+  textarea.value = defaultCodes[challengeId] || '';
+  container.querySelector('.test-results').innerHTML = '';
+  container.querySelector('.test-status').textContent = '';
 }
 
 // ===== PHASE 3: Memory Model Visualizer =====
