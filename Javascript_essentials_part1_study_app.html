@@ -10,6 +10,8 @@
 
 <h1>JavaScript Essentials - Part 1</h1>
 
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme">🌙 Dark mode</button>
+
 <p>A quick reference covering the JavaScript fundamentals you have learned so far.</p>
 
 <div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/16 sections (0%)</div>
@@ -39,6 +41,16 @@
 
 <style>
 /* ===== JavaScript Essentials — Interactive Styles v2 ===== */
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
+html { scroll-behavior: smooth; }
+h2[id], h3[id] { scroll-margin-top: 16px; }
+.theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+nav a { color: #2b6cb0; text-decoration: none; font-weight: 600; }
+nav a:hover { text-decoration: underline; }
+@media (prefers-color-scheme: dark) { nav a { color: #90cdf4; } }
+html.force-dark nav a { color: #90cdf4; }
+html.force-light nav a { color: #2b6cb0; }
+
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
 .tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
@@ -133,39 +145,83 @@ h2 { border-bottom-color: #63b3ed; }
 .study-plan { background: #141c28; color: #e2e8f0; }
 .study-plan summary { color: #90cdf4; }
 .totop a { color: #90cdf4; }
+body { background: #0f1216; color: #e2e8f0; }
 /*DM-END*/
 }
+
+/* ===== Manual theme toggle (overrides system preference) ===== */
+html.force-light body { background: #f7f9fc; color: #1a202c; }
+html.force-light .interactive-note { background: #eef6ff; color: #1a202c; }
+html.force-light .tip { background: #f0fff4; color: #1a202c; }
+html.force-light .warn { background: #fffaf0; color: #1a202c; }
+html.force-light .danger { background: #fff5f5; color: #1a202c; }
+html.force-light .quiz-box { background: #f7f9fc; color: #1a202c; }
+html.force-light .quiz-box details { background: #ffffff; color: #1a202c; }
+html.force-light .quiz-correct { color: #276749; }
+html.force-light .quiz-wrong { color: #9b2c2c; }
+html.force-light .flashcard { background: #fffbeb; color: #1a202c; }
+html.force-light .flashcard summary { color: #744210; }
+html.force-light .solution, html.force-light .answer-key details { background: #fafffe; color: #1a202c; }
+html.force-light .solution summary, html.force-light .answer-key summary { color: #2c7a7b; }
+html.force-light .predict details { background: #ffffff; color: #1a202c; }
+html.force-light .hint { background: #fffbeb; color: #1a202c; }
+html.force-light .hint summary { color: #744210; }
+html.force-light .tabs label { background: #ebf8ff; color: #2b6cb0; border-color: #4299e1; }
+html.force-light .tabs .tab-page { background: #ffffff; color: #1a202c; }
+html.force-light .mood label { background: #ffffff; color: #1a202c; border-color: #a0aec0; }
+html.force-dark .interactive-note { background: #17202b; color: #e2e8f0; }
+html.force-dark .tip { background: #132a1c; color: #e2e8f0; }
+html.force-dark .warn { background: #2b2013; color: #e2e8f0; }
+html.force-dark .danger { background: #2b1414; color: #e2e8f0; }
+html.force-dark .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+html.force-dark .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+html.force-dark .quiz-correct { color: #68d391; }
+html.force-dark .quiz-wrong { color: #fc8181; }
+html.force-dark .flashcard { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
+html.force-dark .flashcard summary { color: #f6e05e; }
+html.force-dark .solution, html.force-dark .answer-key details { background: #0e1c1b; border-color: #285e61; color: #e2e8f0; }
+html.force-dark .solution summary, html.force-dark .answer-key summary { color: #81e6d9; }
+html.force-dark .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+html.force-dark .hint { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
+html.force-dark .tabs label { background: #141c28; color: #bee3f8; border-color: #2b6cb0; }
+html.force-dark .tabs .tab-page { background: #0f1622; color: #e2e8f0; }
+html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+html.force-dark body { background: #0f1216; color: #e2e8f0; }
 </style>
 
 <hr>
 
 <h2 id="table-of-contents">Table of Contents</h2>
 
-<p>1. [Variables: `let`, `const`, `var`](#1-variables-let-const-var)</p>
-<p>2. [Conditions: `if...else` and `switch`](#2-conditions-ifelse-and-switch)</p>
-<p>3. [Loops: `while`, `do...while`, `for`](#3-loops-while-dowhile-for)</p>
-<p>4. [Logical Operators](#4-logical-operators)</p>
-<p>5. [Data Types](#5-data-types)</p>
-<p>6. [Mutable vs Immutable](#6-mutable-vs-immutable)</p>
-<p>7. [Operators](#7-operators)</p>
-<p>8. [Functions and Arrow Functions](#8-functions-and-arrow-functions)</p>
-<p>9. [Arrays and Methods](#9-arrays-and-methods)</p>
-<p>10. [Strings and Common Methods](#10-strings-and-common-methods)</p>
-<p>11. [Objects](#11-objects)</p>
-<p>12. [Symbols Cheat Sheet](#12-symbols-cheat-sheet)</p>
-<p>13. [Common Pitfalls](#13-common-pitfalls)</p>
-<p>14. [Practice Exercises](#14-practice-exercises)</p>
-<p>15. [Challenges](#15-challenges)</p>
-<p>16. [Answer Key](#16-answer-key)</p>
+<nav>
+<p>1. <a href="#1-variables-let-const-var">Variables: <code>let</code>, <code>const</code>, <code>var</code></a></p>
+<p>2. <a href="#2-conditions-if-else-and-switch">Conditions: <code>if...else</code> and <code>switch</code></a></p>
+<p>3. <a href="#3-loops-while-do-while-for">Loops: <code>while</code>, <code>do...while</code>, <code>for</code></a></p>
+<p>4. <a href="#4-logical-operators">Logical Operators</a></p>
+<p>5. <a href="#5-data-types">Data Types</a></p>
+<p>6. <a href="#6-mutable-vs-immutable">Mutable vs Immutable</a></p>
+<p>7. <a href="#7-operators">Operators</a></p>
+<p>8. <a href="#8-functions-and-arrow-functions">Functions and Arrow Functions</a></p>
+<p>9. <a href="#9-arrays-and-methods">Arrays and Methods</a></p>
+<p>10. <a href="#10-strings-and-common-methods">Strings and Common Methods</a></p>
+<p>11. <a href="#11-objects">Objects</a></p>
+<p>12. <a href="#12-symbols-cheat-sheet">Symbols Cheat Sheet</a></p>
+<p>13. <a href="#13-common-pitfalls">Common Pitfalls</a></p>
+<p>14. <a href="#14-practice-exercises">Practice Exercises</a></p>
+<p>15. <a href="#15-challenges">Challenges</a></p>
+<p>16. <a href="#16-answer-key">Answer Key</a></p>
+</nav>
 
-<p>**📈 Your progress** — tick as you go:</p>
+<p><strong>📈 Your progress</strong> — tick as you go:</p>
 
-<li>[ ] Sections 1–6 (basics)</li>
-<li>[ ] Sections 7–12 (core toolkit)</li>
-<li>[ ] Section 13 (pitfalls)</li>
-<li>[ ] Exercises 1–10 attempted</li>
-<li>[ ] Challenges 1–9 attempted</li>
-<li>[ ] All answers checked</li>
+<ul>
+<li>☐ Sections 1–6 (basics)</li>
+<li>☐ Sections 7–12 (core toolkit)</li>
+<li>☐ Section 13 (pitfalls)</li>
+<li>☐ Exercises 1–10 attempted</li>
+<li>☐ Challenges 1–9 attempted</li>
+<li>☐ All answers checked</li>
+</ul>
 
 <details class="study-plan">
 <summary>📅 Suggested 7-day study plan (click to open)</summary>
@@ -4633,8 +4689,35 @@ function updateLearningPath() {
   }
 }
 
+// ===== Theme Toggle (light/dark with saved preference) =====
+function applyTheme(theme) {
+  const root = document.documentElement;
+  root.classList.toggle('force-dark', theme === 'dark');
+  root.classList.toggle('force-light', theme === 'light');
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️ Light mode' : '🌙 Dark mode';
+}
+
+function currentTheme() {
+  const root = document.documentElement;
+  if (root.classList.contains('force-dark')) return 'dark';
+  if (root.classList.contains('force-light')) return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function toggleTheme() {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  localStorage.setItem('theme', next);
+}
+
 // Add event listener for Truthy/Falsy input
 document.addEventListener('DOMContentLoaded', function() {
+  // Restore saved theme (or follow system preference)
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) applyTheme(savedTheme);
+  else applyTheme(currentTheme());
+
   injectSectionButtons();
   injectCopyButtons();
   setupQuizPersistence();
