@@ -3954,6 +3954,19 @@ const sentence = <s>"</s>;
 <p><code>split(" ")</code> into words, then <code>reduce</code>: keep whichever word is <strong>strictly longer</strong> — that automatically keeps the FIRST word on ties.</p>
 </details>
 
+<div class="auto-grade" data-challenge="c2" style="background:#1a202c;border:2px solid #ed8936;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8936;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:100px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Find the longest word
+const longest = sentence.split(" ").reduce((a, b) => b.length > a.length ? b : a, "");
+console.log(longest);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c2')" style="padding:8px 20px;background:#ed8936;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c2')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c3-merge-dedupe-sort-spread-set-sort-spa">C3 — Merge + dedupe + sort (spread + Set + sort) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 5 min</span></h3>
 
 <pre><code><c>// TODO: merge into one sorted array with no duplicates</c>
@@ -3964,6 +3977,19 @@ const arrB = [<n>2</n>, <n>5</n>, <n>4</n>];
 <p><code>[...new Set([...arrA, ...arrB])]</code> dedupes the merge — then sort numerically with a compare function.</p>
 </details>
 
+<div class="auto-grade" data-challenge="c3" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Merge, dedupe, sort
+const merged = [...new Set([...arrA, ...arrB])].sort((a, b) => a - b);
+console.log(merged);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c3')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c3')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c4-palindrome-checker-strings-conditions">C4 — Palindrome checker (strings + conditions) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span></h3>
 
 <pre><code><c>// TODO: return true if the word reads the same reversed</c>
@@ -3971,6 +3997,19 @@ const arrB = [<n>2</n>, <n>5</n>, <n>4</n>];
 <details class="hint"><summary>💡 Hint</summary>
 <p>A palindrome reads the same reversed: compare <code>word</code> with <code>[...word].reverse().join("")</code>.</p>
 </details>
+
+<div class="auto-grade" data-challenge="c4" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Palindrome checker
+const isPalindrome = (word) => word === [...word].reverse().join("");
+console.log(isPalindrome("racecar"), isPalindrome("hello"));</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c4')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c4')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
 
 <h3 id="c5-word-frequency-split-reduce-object-sp">C5 — Word frequency (split + reduce + object) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span></h3>
 
@@ -3981,6 +4020,19 @@ const text = <s>"</s>;
 <p>Lowercase first (<code>toLowerCase()</code>), split into words, then <code>reduce</code> into an object: <code>acc[w] = (acc[w] || 0) + 1</code>.</p>
 </details>
 
+<div class="auto-grade" data-challenge="c5" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Word frequency count
+const freq = text.toLowerCase().split(" ").reduce((acc, w) => { acc[w] = (acc[w]||0)+1; return acc; }, {});
+console.log(freq);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c5')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c5')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c6-fizzbuzz-loop-ternary-span-class-badg">C6 — FizzBuzz (loop + ternary) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span></h3>
 
 <pre><code><c>// TODO: <n>1</n>..<n>15</n> → multiples of <n>3</n> <s>"</s>, of <n>5</n> <s>"</s>, of both <s>"</s></c>
@@ -3988,6 +4040,19 @@ const text = <s>"</s>;
 <details class="hint"><summary>💡 Hint</summary>
 <p>Loop 1–15 building an array. Check <code>% 15</code> FIRST (FizzBuzz), then <code>% 3</code>, then <code>% 5</code> — order matters, or 15 prints "Fizz".</p>
 </details>
+
+<div class="auto-grade" data-challenge="c6" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// FizzBuzz 1-15
+const fizzbuzz = Array.from({length:15}, (_,i) => { const n=i+1; return n%15===0?"FizzBuzz":n%3===0?"Fizz":n%5===0?"Buzz":n; });
+console.log(fizzbuzz);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c6')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c6')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
 
 <h3 id="c7-group-by-category-reduce-building-an-">C7 — Group by category (reduce building an object) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span></h3>
 
@@ -4003,6 +4068,19 @@ const items = [
 <p><code>reduce((acc, item) =&gt; ...)</code>: ensure the bucket exists — <code>acc[item.cat] = acc[item.cat] || []</code> — push the name, <code>return acc</code>.</p>
 </details>
 
+<div class="auto-grade" data-challenge="c7" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Group by category
+const grouped = items.reduce((acc, item) => { acc[item.cat]=acc[item.cat]||[]; acc[item.cat].push(item.name); return acc; }, {});
+console.log(grouped);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c7')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c7')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c8-flatten-sum-flat-reduce-span-class-ba">C8 — Flatten + sum (flat + reduce) <span class="badge b-yellow">🟡 Core</span> <span class="badge b-time">⏱ 7 min</span></h3>
 
 <pre><code><c>// TODO: fully flatten AND sum in one pipeline</c>
@@ -4012,6 +4090,20 @@ const nested = [<n>1</n>, [<n>2</n>, [<n>3</n>, [<n>4</n>, <n>5</n>]]]];
 <p><code>flat(Infinity)</code> flattens any depth, then <code>reduce</code> to sum. Bonus: do both in ONE <code>reduce</code> with <code>concat</code>.</p>
 </details>
 
+<div class="auto-grade" data-challenge="c8" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:90px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Flatten + sum
+const flat = nested.flat(Infinity);
+const sum = flat.reduce((a,b) => a+b, 0);
+console.log(flat, sum);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c8')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c8')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
+
 <h3 id="c9-email-with-tag-split-once-thinking-sp">C9 — Email with `+tag` (split-once thinking!) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 12 min</span></h3>
 
 <pre><code><c>// TODO: parse <s>"</s> into parts</c>
@@ -4020,6 +4112,21 @@ const email = <s>"</s>;
 <details class="hint"><summary>💡 Hint</summary>
 <p>Split at <code>"@"</code> first (once) → local part + domain. Then split the local part at the <strong>first</strong> <code>"+"</code> with <code>indexOf</code> + <code>slice</code> — <code>split("+")</code> would break on extra pluses.</p>
 </details>
+
+<div class="auto-grade" data-challenge="c9" style="background:#1a202c;border:2px solid #ed8536;border-radius:12px;padding:16px;margin:14px 0;">
+  <h4 style="color:#ed8536;margin-top:0;">🎯 Auto-Graded Editor</h4>
+  <textarea class="code-editor" style="width:100%;height:110px;background:#0f1622;color:#68d391;font-family:'Courier New',monospace;font-size:13px;border:1px solid #2d3748;border-radius:8px;padding:12px;resize:vertical;box-sizing:border-box;" spellcheck="false">// Parse email with +tag
+const [local, domain] = email.split("@");
+const plus = local.indexOf("+");
+const parsed = { username: plus>-1?local.slice(0,plus):local, tag: plus>-1?local.slice(plus+1):"", domain };
+console.log(parsed);</textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;">
+    <button onclick="runTests('c9')" style="padding:8px 20px;background:#ed8536;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Run Tests</button>
+    <button onclick="resetCode('c9')" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">↺ Reset</button>
+    <span class="test-status" style="color:#a0aec0;font-size:13px;"></span>
+  </div>
+  <div class="test-results" style="margin-top:12px;"></div>
+</div>
 
 <div style="page-break-after: always;"></div>
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
@@ -4383,17 +4490,69 @@ function clearSandboxCode() {
 
 // ===== PHASE 3: Auto-Graded Challenges =====
 const challengeTests = {
-  c1: {
-    varName: 'total',
-    tests: [
-      { desc: 'total is defined', check: (r) => r.total !== undefined },
-      { desc: 'total is a number', check: (r) => typeof r.total === 'number' },
-      { desc: 'total equals 3300', check: (r) => r.total === 3300 },
-      { desc: 'uses map()', check: (r) => r.code.includes('map') },
-      { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') }
-    ],
-    hint: 'Use .map() to transform each item to price*qty*(1-discount), then .reduce() to sum. Default missing discount with ?? 0.'
-  }
+  c1: { varName: 'total', data: 'const cart = [{ name: "Laptop", price: 500, qty: 2, discount: 0.1 }, { name: "Mouse", price: 300, qty: 3 }, { name: "Keyboard", price: 1500, qty: 1 }];', tests: [
+    { desc: 'total is defined', check: (r) => r.total !== undefined },
+    { desc: 'total is a number', check: (r) => typeof r.total === 'number' },
+    { desc: 'total equals 3300', check: (r) => r.total === 3300 },
+    { desc: 'uses map()', check: (r) => r.code.includes('map') },
+    { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') }
+  ], hint: 'Use .map() then .reduce(). Default discount with ?? 0.' },
+  c2: { varName: 'longest', data: 'const sentence = "the quick brown fox jumped over the lazy dog";', tests: [
+    { desc: 'longest defined', check: (r) => r.longest !== undefined },
+    { desc: 'longest is string', check: (r) => typeof r.longest === 'string' },
+    { desc: 'longest = "jumped"', check: (r) => r.longest === 'jumped' },
+    { desc: 'uses split()', check: (r) => r.code.includes('split') },
+    { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') }
+  ], hint: 'split(" ") then reduce — keep strictly longer word.' },
+  c3: { varName: 'merged', data: 'const arrA = [3, 1, 2]; const arrB = [2, 5, 4];', tests: [
+    { desc: 'merged defined', check: (r) => r.merged !== undefined },
+    { desc: 'merged is array', check: (r) => Array.isArray(r.merged) },
+    { desc: 'merged = [1,2,3,4,5]', check: (r) => JSON.stringify(r.merged) === '[1,2,3,4,5]' },
+    { desc: 'uses spread', check: (r) => r.code.includes('...') },
+    { desc: 'uses Set', check: (r) => r.code.includes('Set') }
+  ], hint: '[...new Set([...arrA,...arrB])] then sort((a,b)=>a-b).' },
+  c4: { varName: 'isPalindrome', data: '// isPalindrome takes a string argument', tests: [
+    { desc: 'defined', check: (r) => r.isPalindrome !== undefined },
+    { desc: 'is function', check: (r) => typeof r.isPalindrome === 'function' },
+    { desc: 'racecar = true', check: (r) => r.isPalindrome('racecar') === true },
+    { desc: 'hello = false', check: (r) => r.isPalindrome('hello') === false },
+    { desc: 'uses reverse()', check: (r) => r.code.includes('reverse') }
+  ], hint: 'Compare word with [...word].reverse().join("").' },
+  c5: { varName: 'freq', data: 'const text = "The cat and the dog and the bird";', tests: [
+    { desc: 'freq defined', check: (r) => r.freq !== undefined },
+    { desc: 'freq is object', check: (r) => typeof r.freq === 'object' },
+    { desc: 'the = 3', check: (r) => r.freq.the === 3 },
+    { desc: 'cat = 1', check: (r) => r.freq.cat === 1 },
+    { desc: 'uses toLowerCase', check: (r) => r.code.includes('toLowerCase') }
+  ], hint: 'toLowerCase, split, reduce: acc[w]=(acc[w]||0)+1.' },
+  c6: { varName: 'fizzbuzz', data: '// fizzbuzz array from 1 to 15', tests: [
+    { desc: 'defined', check: (r) => r.fizzbuzz !== undefined },
+    { desc: 'length 15', check: (r) => Array.isArray(r.fizzbuzz) && r.fizzbuzz.length === 15 },
+    { desc: 'index 2 = Fizz', check: (r) => r.fizzbuzz[2] === 'Fizz' },
+    { desc: 'index 4 = Buzz', check: (r) => r.fizzbuzz[4] === 'Buzz' },
+    { desc: 'index 14 = FizzBuzz', check: (r) => r.fizzbuzz[14] === 'FizzBuzz' }
+  ], hint: 'Loop 1-15. Check %15 FIRST, then %3, then %5.' },
+  c7: { varName: 'grouped', data: 'const items = [{ name: "Apple", cat: "food" }, { name: "Bread", cat: "food" }, { name: "Laptop", cat: "tech" }, { name: "Phone", cat: "tech" }];', tests: [
+    { desc: 'defined', check: (r) => r.grouped !== undefined },
+    { desc: 'is object', check: (r) => typeof r.grouped === 'object' },
+    { desc: 'food has 2', check: (r) => r.grouped.food?.length === 2 },
+    { desc: 'tech has 2', check: (r) => r.grouped.tech?.length === 2 },
+    { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') }
+  ], hint: 'reduce: acc[item.cat]=acc[item.cat]||[]; push name.' },
+  c8: { varName: 'sum', returns: ['sum', 'flat'], data: 'const nested = [1, [2, [3, [4, 5]]]];', tests: [
+    { desc: 'sum defined', check: (r) => r.sum !== undefined },
+    { desc: 'sum = 15', check: (r) => r.sum === 15 },
+    { desc: 'flat = [1,2,3,4,5]', check: (r) => JSON.stringify(r.flat) === '[1,2,3,4,5]' },
+    { desc: 'uses reduce()', check: (r) => r.code.includes('reduce') },
+    { desc: 'uses flat()', check: (r) => r.code.includes('flat') }
+  ], hint: 'flat(Infinity) then reduce to sum.' },
+  c9: { varName: 'parsed', data: 'const email = "rohithr1008+coding@gmail.com";', tests: [
+    { desc: 'defined', check: (r) => r.parsed !== undefined },
+    { desc: 'is object', check: (r) => typeof r.parsed === 'object' },
+    { desc: 'username correct', check: (r) => r.parsed.username === 'rohithr1008' },
+    { desc: 'tag correct', check: (r) => r.parsed.tag === 'coding' },
+    { desc: 'domain correct', check: (r) => r.parsed.domain === 'gmail.com' }
+  ], hint: 'Split at @ once, then local at first + with indexOf+slice.' }
 };
 
 function runTests(challengeId) {
@@ -4405,7 +4564,9 @@ function runTests(challengeId) {
 
   let result;
   try {
-    const fn = new Function(code + '; return { ' + challengeTests[challengeId].varName + ', code: `' + code.replace(/`/g, '\\`') + '` };');
+    const data = challengeTests[challengeId].data || '';
+    const vars = challengeTests[challengeId].returns || [challengeTests[challengeId].varName];
+    const fn = new Function(data + '\n' + code + '\n; return { ' + vars.join(', ') + ', code: `' + code.replace(/`/g, '\\`') + '` };');
     result = fn();
   } catch (e) {
     resultsDiv.innerHTML = '<div style="color:#fc8181;padding:8px;">❌ Runtime Error: ' + e.message + '</div>';
@@ -4425,6 +4586,7 @@ function runTests(challengeId) {
   if (passed === tests.length) {
     html += '<div style="padding:8px;margin-top:8px;background:#132a1c;border-radius:6px;color:#68d391;font-weight:600;">🎉 All tests passed! Challenge complete.</div>';
     statusSpan.textContent = '✅ Passed';
+    markChallengeComplete(challengeId);
   } else {
     html += '<div style="padding:8px;margin-top:8px;background:#2b2013;border-radius:6px;color:#f6ad55;font-size:13px;">💡 Hint: ' + challengeTests[challengeId].hint + '</div>';
     statusSpan.textContent = '❌ ' + passed + '/' + tests.length + ' passed';
@@ -4432,11 +4594,45 @@ function runTests(challengeId) {
   resultsDiv.innerHTML = html;
 }
 
+// Track challenge completions in localStorage
+function loadCompletedChallenges() {
+  try { return JSON.parse(localStorage.getItem('completed-challenges') || '{}'); } catch(e) { return {}; }
+}
+function saveCompletedChallenges(c) {
+  localStorage.setItem('completed-challenges', JSON.stringify(c));
+}
+function markChallengeComplete(challengeId) {
+  const c = loadCompletedChallenges();
+  c[challengeId] = true;
+  saveCompletedChallenges(c);
+  updateChallengeBadges();
+}
+function updateChallengeBadges() {
+  const completed = loadCompletedChallenges();
+  document.querySelectorAll('.auto-grade').forEach(el => {
+    const id = el.getAttribute('data-challenge');
+    if (completed[id]) {
+      const status = el.querySelector('.test-status');
+      if (status && !status.textContent.includes('✅')) {
+        status.textContent = '✅ Completed';
+      }
+    }
+  });
+}
+
 function resetCode(challengeId) {
   const container = document.querySelector(`[data-challenge="${challengeId}"]`);
   const textarea = container.querySelector('.code-editor');
   const defaultCodes = {
-    c1: '// Write your solution here\nconst total = cart\n  .map(item => item.price * item.qty * (1 - (item.discount ?? 0)))\n  .reduce((sum, val) => sum + val, 0);\nconsole.log(total);'
+    c1: '// Write your solution here\nconst total = cart\n  .map(item => item.price * item.qty * (1 - (item.discount ?? 0)))\n  .reduce((sum, val) => sum + val, 0);\nconsole.log(total);',
+    c2: '// Find the longest word\nconst longest = sentence.split(" ").reduce((a, b) => b.length > a.length ? b : a, "");\nconsole.log(longest);',
+    c3: '// Merge, dedupe, sort\nconst merged = [...new Set([...arrA, ...arrB])].sort((a, b) => a - b);\nconsole.log(merged);',
+    c4: '// Palindrome checker\nconst isPalindrome = (word) => word === [...word].reverse().join("");\nconsole.log(isPalindrome("racecar"), isPalindrome("hello"));',
+    c5: '// Word frequency count\nconst freq = text.toLowerCase().split(" ").reduce((acc, w) => { acc[w] = (acc[w]||0)+1; return acc; }, {});\nconsole.log(freq);',
+    c6: '// FizzBuzz 1-15\nconst fizzbuzz = Array.from({length:15}, (_,i) => { const n=i+1; return n%15===0?"FizzBuzz":n%3===0?"Fizz":n%5===0?"Buzz":n; });\nconsole.log(fizzbuzz);',
+    c7: '// Group by category\nconst grouped = items.reduce((acc, item) => { acc[item.cat]=acc[item.cat]||[]; acc[item.cat].push(item.name); return acc; }, {});\nconsole.log(grouped);',
+    c8: '// Flatten + sum\nconst flat = nested.flat(Infinity);\nconst sum = flat.reduce((a,b) => a+b, 0);\nconsole.log(flat, sum);',
+    c9: '// Parse email with +tag\nconst [local, domain] = email.split("@");\nconst plus = local.indexOf("+");\nconst parsed = { username: plus>-1?local.slice(0,plus):local, tag: plus>-1?local.slice(plus+1):"", domain };\nconsole.log(parsed);'
   };
   textarea.value = defaultCodes[challengeId] || '';
   container.querySelector('.test-results').innerHTML = '';
@@ -5009,6 +5205,9 @@ document.addEventListener('DOMContentLoaded', function() {
   if (document.getElementById('memCodeLines')) {
     memRender();
   }
+
+  // Initialize challenge completion badges
+  updateChallengeBadges();
 });
 
 </script>
