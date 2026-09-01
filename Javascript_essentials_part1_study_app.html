@@ -1754,52 +1754,23 @@ console.log(deepFlatten([<n>1</n>, [<n>2</n>, [<n>3</n>, [<n>4</n>]]]])); <c>// 
 
 <blockquote>Function **declarations** are hoisted — usable earlier in the file. `let`/`const` are not: using them before their line throws (the *temporal dead zone*).</blockquote>
 
-<div class="interactive-tool" style="background:#1a202c;border:2px solid #9f7aea;border-radius:12px;padding:18px 22px;margin:18px 0;">
-  <h3 style="color:#b794f4;margin-top:0;">📊 Hoisting Visualizer</h3>
-  <p style="color:#e2e8f0;">Click each phase to see how JavaScript hoists variables and functions:</p>
-  <div style="display:flex;gap:8px;margin:12px 0;">
-    <button id="btn-phase1" onclick="showHoistingPhase(1)" style="padding:10px 20px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Phase 1: Creation</button>
-    <button id="btn-phase2" onclick="showHoistingPhase(2)" style="padding:10px 20px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Phase 2: Execution</button>
+  <div class="interactive-tool" style="background:#1a202c;border:2px solid #9f7aea;border-radius:12px;padding:18px 22px;margin:18px 0;">
+    <h3 style="color:#b794f4;margin-top:0;">📊 Hoisting Visualizer</h3>
+    <p style="color:#e2e8f0;">Step through what JavaScript really does — watch <code>var</code> hoist to <code>undefined</code> and <code>let</code> wait in the TDZ until its line runs:</p>
+    <p id="hoistingStepLabel" style="color:#b794f4;font-weight:700;margin:4px 0 10px 0;">Step 1/8 — Start</p>
+    <div id="hoistingCode" style="background:#0f1622;color:#e2e8f0;padding:12px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;margin-bottom:12px;white-space:pre;overflow-x:auto;"></div>
+    <div style="margin-bottom:12px;">
+      <div style="color:#a0aec0;font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">💾 Memory state</div>
+      <div id="hoistingBoard"></div>
+    </div>
+    <div id="hoistingText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:12px;font-size:14px;"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="hoistingStep(-1)" style="padding:10px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">⬅ Prev</button>
+      <button onclick="hoistingStep(1)" style="padding:10px 16px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Next ➡</button>
+      <button id="hoistingPlayBtn" onclick="hoistingPlay()" style="padding:10px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Play</button>
+      <button onclick="hoistingReset()" style="padding:10px 16px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">↺ Reset</button>
+    </div>
   </div>
-  <div id="hoistingText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:12px;"></div>
-  <div id="hoistingPhase1" style="display:block;">
-    <pre style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:0;"><code>// Creation Phase — JavaScript scans your code:
-// ✅ Function declarations → fully hoisted (ready to use!)
-// ⚠️ var variables → hoisted as undefined
-// 🚫 let/const → exist but in TDZ (can't access yet)
-
-sayHi();  // ✅ Works! Function is fully hoisted
-
-function sayHi() {
-  console.log("Hello!");
-}
-
-console.log(x); // undefined (var hoisted but not assigned)
-var x = 5;
-
-console.log(y); // ❌ ReferenceError (y is in TDZ)
-let y = 10;</code></pre>
-  </div>
-  <div id="hoistingPhase2" style="display:none;">
-    <pre style="background:#2d3748;color:#63b3ed;padding:14px;border-radius:8px;overflow-x:auto;margin:0;"><code>// Execution Phase — code runs line by line:
-// Assignments happen NOW
-// Variables accessible after their line
-
-sayHi();  // ✅ "Hello!" — function already hoisted
-
-function sayHi() {
-  console.log("Hello!");
-}
-
-console.log(x); // undefined (hoisted, not yet assigned)
-var x = 5;      // ← Assignment happens HERE
-console.log(x); // 5 (now assigned)
-
-// console.log(y); // Would throw — TDZ ends after this line:
-let y = 10;     // ← y is now accessible
-console.log(y); // 10</code></pre>
-  </div>
-</div>
 
 <pre><code>sayHi(); <c>// <s>"</s> ✅ works — the whole declaration is hoisted to the top</c>
 
@@ -1868,7 +1839,18 @@ counter(); // 3</code></pre>
 }</code></pre>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: First Attempt (your turn!)</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">Fill in the inner function so each counter starts at 0 and returns the next number:</p>
+    <pre style="background:#0f1622;color:#f6e05e;padding:10px;border-radius:6px;margin:8px 0;"><code>function makeCounter() {
+      let count = 0;
+      return () => {
+        // Your code here — return count, then bump it by 1
+      };
+    }</code></pre>
+    <p style="color:#a0aec0;font-size:12px;">Hint: check your answer against <strong>Step 4</strong> below.</p>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Complete Solution</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>function makeCounter() {
   let count = 0;
   return () => ++count;
@@ -1884,7 +1866,7 @@ console.log(other()); // 1 (independent)
 console.log(counter()); // 4 (still remembers)</code></pre>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 5: Try Variations</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation: Counter with step size
 function makeCounterWithStep(step) {
   let count = 0;
@@ -2494,14 +2476,24 @@ console.log(<s>`</s>);
 // Result: 345</code></pre>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: First Attempt (your turn!)</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">Complete the <code>reduce()</code> body so it totals all scores (expected: <strong>345</strong>):</p>
+    <pre style="background:#0f1622;color:#f6e05e;padding:10px;border-radius:6px;margin:8px 0;"><code>const scores = [85, 90, 78, 92];
+    const total = scores.reduce((sum, score) => {
+      // Your code here — return the running total
+    }, 0);
+    console.log(total); // Should print 345</code></pre>
+    <p style="color:#a0aec0;font-size:12px;">Hint: check your answer against <strong>Step 4</strong> below.</p>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Complete Solution</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const scores = [85, 90, 78, 92];
 const total = scores.reduce((sum, score) => sum + score, 0);
 console.log(total);  // 345</code></pre>
     <p style="color:#e2e8f0;margin-top:8px;">The <code>0</code> at the end is the starting value for the accumulator.</p>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 5: Try Variations</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation 1: Find average
 const average = scores.reduce((sum, score) => sum + score, 0) / scores.length;
 // 345 / 4 = 86.25
@@ -3417,7 +3409,24 @@ const role = profile.role;</code></pre>
 //  ↑ new constants  ↑ keys to pull out</code></pre>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution (with defaults & renaming)</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: First Attempt (your turn!)</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">Pull out <code>name</code>, <code>role</code> and <code>city</code> in ONE line of destructuring:</p>
+    <pre style="background:#0f1622;color:#f6e05e;padding:10px;border-radius:6px;margin:8px 0;"><code>const profile = {
+      name: "Rohit",
+      role: "Developer",
+      city: "Bengaluru",
+      skills: ["JS", "HTML", "CSS"]
+    };
+
+    // Your code here — destructure name, role and city from profile
+
+    console.log(name); // "Rohit"
+    console.log(role); // "Developer"
+    console.log(city); // "Bengaluru"</code></pre>
+    <p style="color:#a0aec0;font-size:12px;">Hint: check your answer against <strong>Step 4</strong> below.</p>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Complete Solution (with defaults & renaming)</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const { name, role, city, country = "India" } = profile;
 
 console.log(name);    // "Rohit"
@@ -3428,7 +3437,7 @@ const { name: fullName } = profile;
 console.log(fullName); // "Rohit"</code></pre>
   </details>
   <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
-    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 5: Try Variations</summary>
     <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation 1: Nested destructuring
 const { skills, address } = profile;
 const { 0: firstSkill } = skills; // "JS"
@@ -4762,25 +4771,97 @@ function scopeReset() {
 }
 
 // ===== PHASE 2: Hoisting Visualizer =====
-function showHoistingPhase(phase) {
-  const phase1 = document.getElementById('hoistingPhase1');
-  const phase2 = document.getElementById('hoistingPhase2');
-  const btn1 = document.getElementById('btn-phase1');
-  const btn2 = document.getElementById('btn-phase2');
-  const text = document.getElementById('hoistingText');
-  
-  if (phase1) phase1.style.display = phase === 1 ? 'block' : 'none';
-  if (phase2) phase2.style.display = phase === 2 ? 'block' : 'none';
-  
-  if (btn1) btn1.style.background = phase === 1 ? '#2b6cb0' : '#718096';
-  if (btn2) btn2.style.background = phase === 2 ? '#2b6cb0' : '#718096';
-  
-  const explanations = {
-    1: '<strong>Phase 1 - Creation:</strong> JavaScript scans your code and creates variables. Functions are fully hoisted (ready to use). <code>var</code> variables get <code>undefined</code>. <code>let</code> and <code>const</code> go into the Temporal Dead Zone (TDZ) — they exist but you can\'t access them yet.',
-    2: '<strong>Phase 2 - Execution:</strong> Your code runs line by line. Assignments happen now. Variables and functions are now accessible. This is why you can call a function BEFORE it\'s declared (if it was hoisted), but not a <code>var</code> before assignment.'
-  };
-  
-  if (text) text.innerHTML = explanations[phase];
+// ===== PHASE 2: Hoisting Visualizer (v2 - step-through animation) =====
+const hoistingSource = [
+  'function sayHi() {',
+  '  console.log("Hello!");',
+  '}',
+  'sayHi();',
+  'console.log(x);',
+  'var x = 5;',
+  'console.log(y);',
+  'let y = 10;'
+];
+
+const hoistingSteps = [
+  { label: 'Start', highlight: -1, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'not in memory yet', 'var x': 'not in memory yet', 'let y': 'not in memory yet' },
+    note: 'Before this file runs, none of these names exist. Watch what hoisting does to each declaration!' },
+  { label: 'Creation', highlight: -1,
+    code: ['// Creation phase: JS scans every declaration', '//  * function sayHi -> fully hoisted', '//  * var x -> hoisted as undefined', '//  * let y -> enters the TDZ', ''].concat(hoistingSource),
+    board: { 'function sayHi': 'fully hoisted (ready)', 'var x': 'undefined (hoisted)', 'let y': '<TDZ> uninitialised' },
+    note: 'Creation phase: the function is <strong>fully hoisted</strong>. <code>var x</code> is hoisted as <code>undefined</code>. <code>let y</code> exists but sits in the Temporal Dead Zone (TDZ) - reading it throws.' },
+  { label: 'Execute 1: sayHi();', highlight: 3, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'called -> "Hello!"', 'var x': 'undefined', 'let y': '<TDZ>' },
+    note: 'You can call <code>sayHi()</code> before its line because the <strong>whole declaration</strong> was hoisted.' },
+  { label: 'Execute 2: console.log(x)', highlight: 4, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'hoisted', 'var x': 'undefined', 'let y': '<TDZ>' },
+    note: '<code>x</code> prints <code>undefined</code> - the binding was hoisted but <code>5</code> has not been assigned yet.' },
+{ label: 'Execute 3: var x = 5', highlight: 5, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'hoisted', 'var x': '5', 'let y': '<TDZ>' },
+    note: 'Now the assignment executes - <code>x</code> changes from <code>undefined</code> to <code>5</code>.' },
+  { label: 'Execute 4: console.log(y)', highlight: 6, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'hoisted', 'var x': '5', 'let y': '<TDZ>' },
+    note: 'Reading <code>y</code> throws <code>ReferenceError</code> - it is still in the Temporal Dead Zone.' },
+  { label: 'Execute 5: let y = 10', highlight: 7, code: hoistingSource.slice(),
+    board: { 'function sayHi': 'hoisted', 'var x': '5', 'let y': '10' },
+    note: 'Executing this line ends the TDZ - y is usable from here on.' },
+  { label: 'Final summary', highlight: -1,
+    code: ['// Final memory state:', '//  function sayHi -> fully hoisted', '//  var x -> 5', '//  let y -> 10'],
+    board: { 'function sayHi': 'hoisted', 'var x': '5', 'let y': '10' },
+    note: 'Recap: functions hoist fully, <code>var</code> hoists to <code>undefined</code> then assigns, <code>let</code>/<code>const</code> stay in the TDZ until their line runs.' }
+];
+
+let hoistingIndex = 0;
+let hoistingTimer = null;
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function hoistingRender() {
+  const s = hoistingSteps[hoistingIndex];
+  const labelEl = document.getElementById('hoistingStepLabel');
+  if (labelEl) labelEl.textContent = 'Step ' + (hoistingIndex + 1) + '/' + hoistingSteps.length + ' - ' + s.label;
+  const codeEl = document.getElementById('hoistingCode');
+  if (codeEl) codeEl.innerHTML = s.code.map((ln, i) => {
+    const esc = escapeHtml(ln) || '&nbsp;';
+    if (i === s.highlight) return '<span style="background:#3182ce;color:#fff;border-radius:3px;padding:0 4px;">-> ' + esc + '</span>';
+    return '<span>' + esc + '</span>';
+  }).join('\n');
+  const boardEl = document.getElementById('hoistingBoard');
+  if (boardEl) boardEl.innerHTML = Object.entries(s.board).map(([k, v]) => {
+    let color = '#68d391';
+    if (v.indexOf('<TDZ>') === 0) color = '#fc8181';
+    else if (v.indexOf('undefined') !== -1) color = '#f6e05e';
+    else if (v.indexOf('not in memory') !== -1) color = '#718096';
+    return '<div style="padding:5px 8px;margin:4px 0;border-radius:4px;background:#0f1622;font-family:monospace;font-size:13px;"><span style="color:#f6e05e;">' + k + '</span> = <span style="color:' + color + ';">' + v + '</span></div>';
+  }).join('');
+  const textEl = document.getElementById('hoistingText');
+  if (textEl) textEl.innerHTML = '<strong style="color:#b794f4;">' + s.label + '.</strong> ' + s.note;
+}
+
+function hoistingStep(dir) {
+  hoistingIndex = Math.max(0, Math.min(hoistingSteps.length - 1, hoistingIndex + dir));
+  hoistingRender();
+}
+
+function hoistingPlay() {
+  const btn = document.getElementById('hoistingPlayBtn');
+  if (hoistingTimer) { clearInterval(hoistingTimer); hoistingTimer = null; if (btn) btn.textContent = '> Play'; return; }
+  if (btn) btn.textContent = '|| Pause';
+  hoistingTimer = setInterval(() => {
+    if (hoistingIndex >= hoistingSteps.length - 1) { clearInterval(hoistingTimer); hoistingTimer = null; if (btn) btn.textContent = '> Play'; return; }
+    hoistingIndex++;
+    hoistingRender();
+  }, 2000);
+}
+
+function hoistingReset() {
+  if (hoistingTimer) { clearInterval(hoistingTimer); hoistingTimer = null; }
+  const btn = document.getElementById('hoistingPlayBtn'); if (btn) btn.textContent = '> Play';
+  hoistingIndex = 0;
+  hoistingRender();
 }
 
 // ===== PHASE 2: Type Coercion Flowchart =====
@@ -4962,7 +5043,12 @@ function injectSectionButtons() {
     }
     btn.onclick = () => toggleComplete(key, btn);
     h2.insertAdjacentElement('afterend', btn);
-    h2.insertAdjacentElement('afterend', document.createElement('br'));
+    const ratingBox = document.createElement('div');
+    ratingBox.id = 'rating-' + key;
+    ratingBox.style.cssText = 'margin:2px 0 4px 0;';
+    btn.insertAdjacentElement('afterend', ratingBox);
+    btn.insertAdjacentElement('afterend', document.createElement('br'));
+    renderSelfRating(key);
   });
   refreshProgressUI();
 }
@@ -5100,43 +5186,86 @@ function rateSR(quality) {
   startSRReview();
 }
 
-// ===== Learning Path (v2: quiz engagement + prerequisites + exercise suggestions) =====
+// ===== Learning Path (v3: quiz engagement + self-rating + prerequisites) =====
+function setSelfRating(key, value) {
+  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  if (ratings[key] === value) { delete ratings[key]; } else { ratings[key] = value; }
+  localStorage.setItem('js-ratings', JSON.stringify(ratings));
+  renderSelfRating(key);
+  updateLearningPath();
+}
+
+function renderSelfRating(key) {
+  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  const box = document.getElementById('rating-' + key);
+  if (!box) return;
+  const got = ratings[key] === 'got';
+  const needs = ratings[key] === 'needs';
+  box.innerHTML =
+    '<span style="color:#a0aec0;font-size:12px;margin-right:8px;">How confident are you?</span>' +
+    '<button data-key="' + key + '" data-val="got" onclick="setSelfRating(this.dataset.key,this.dataset.val)" style="padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:12px;color:#fff;background:' + (got ? '#38a169' : '#2d3748') + ';margin-right:6px;">👍 Got it</button>' +
+    '<button data-key="' + key + '" data-val="needs" onclick="setSelfRating(this.dataset.key,this.dataset.val)" style="padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:12px;color:#fff;background:' + (needs ? '#e53e3e' : '#2d3748') + ';">👎 Needs review</button>';
+}
+
 function updateLearningPath() {
   const progress = JSON.parse(localStorage.getItem('js-progress') || '{}');
   const completed = Object.keys(progress).filter(k => k !== 'updated').length;
   const content = document.getElementById('learningPathContent');
   if (!content) return;
 
-  // Quiz engagement from persisted quiz state
+  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  const ratedKeys = Object.keys(ratings);
+  const needsKeys = ratedKeys.filter(k => ratings[k] === 'needs');
+  const needsPct = ratedKeys.length ? Math.round(needsKeys.length / ratedKeys.length * 100) : 0;
+
   let quizEngaged = 0;
   for (let i = 0; i < localStorage.length; i++) {
     if (localStorage.key(i).startsWith('quiz-') && localStorage.getItem(localStorage.key(i)) === 'open') quizEngaged++;
   }
 
-  if (completed === 0 && quizEngaged === 0) {
+  if (completed === 0 && quizEngaged === 0 && ratedKeys.length === 0) {
     content.innerHTML = '<p>📚 Start with <strong>Section 1: Variables</strong> — the foundation of everything! <em>(Prerequisites: none)</em></p>';
     return;
   }
+  const needsReview = (key) => ratings[key] === 'needs';
 
-  // Each rec: topic + prerequisites + recommended practice
+  // All 16 sections with prerequisites & recommended practice
   const recs = [
-    { done: () => progress['section-1'], gate: 0,  text: '📌 <strong>Section 1: Variables</strong> — Master const/let and scoping basics.', pre: 'Prerequisites: none', ex: 'Try: Ex 1 (Split once)' },
-    { done: () => progress['section-2'], gate: 1,  text: '📌 <strong>Section 2: Conditions</strong> — Learn if/else and switch statements.', pre: 'Prerequisites: Section 1', ex: 'Try: the switch pitfalls in Section 13' },
-    { done: () => progress['section-5'], gate: 3,  text: '📌 <strong>Section 5: Data Types</strong> — Understand primitives vs objects.', pre: 'Prerequisites: Sections 1–4', ex: 'Try: the Truthy/Falsy checker above' },
-    { done: () => progress['section-8'], gate: 6,  text: '📌 <strong>Section 8: Functions</strong> — Closures and arrow functions are crucial!', pre: 'Prerequisites: Sections 1–5', ex: 'Try: the Closures worked example + Sandbox' },
-    { done: () => progress['section-11'], gate: 9, text: '📌 <strong>Section 11: Objects</strong> — Destructuring, spread & this.', pre: 'Prerequisites: Sections 5–8', ex: 'Try: the Destructuring worked example' },
-    { done: () => progress['section-13'], gate: 10, text: '🐞 <strong>Section 13: Common Pitfalls</strong> — Learn from common mistakes.', pre: 'Prerequisites: Sections 1–9', ex: 'Try: all 12 Spot-the-Bug challenges' },
-    { done: () => progress['section-14'], gate: 12, text: '✍️ <strong>Section 14: Practice Exercises</strong> — Time to apply what you learned!', pre: 'Prerequisites: Sections 1–13', ex: 'Filter by 🟢 Warm-up first, then level up' }
-  ].filter(r => !r.done() && completed >= r.gate);
+    { key: 'section-1', done: () => progress['section-1'], gate: 0,  text: '📌 <strong>Section 1: Variables</strong> — Master const/let and scoping basics.', pre: 'Prerequisites: none', ex: 'Try: Ex 1 (Split once)' },
+    { key: 'section-2',  done: () => progress['section-2'],  gate: 1,  text: '📌 <strong>Section 2: Conditions</strong> — if/else and switch.', pre: 'Prerequisites: Section 1', ex: 'Try: the switch pitfalls in Section 13' },
+    { key: 'section-3',  done: () => progress['section-3'],  gate: 2,  text: '📌 <strong>Section 3: Loops</strong> — for / while / for...of.', pre: 'Prerequisites: Section 1', ex: 'Try: "Which loop should I use?" table' },
+    { key: 'section-4',  done: () => progress['section-4'],  gate: 3,  text: '📌 <strong>Section 4: Logical Operators</strong> — && || ! ?? ?.', pre: 'Prerequisites: Sections 1–3', ex: 'Try: the permission-checking examples' },
+    { key: 'section-5',  done: () => progress['section-5'],  gate: 4,  text: '📌 <strong>Section 5: Data Types</strong> — primitives vs objects.', pre: 'Prerequisites: Sections 1–4', ex: 'Try: the Truthy/Falsy checker above' },
+    { key: 'section-6',  done: () => progress['section-6'],  gate: 5,  text: '📌 <strong>Section 6: Mutable vs Immutable</strong> — copy vs edit in place.', pre: 'Prerequisites: Section 5', ex: 'Try: mutating arrays in the Sandbox' },
+    { key: 'section-7',  done: () => progress['section-7'],  gate: 6,  text: '📌 <strong>Section 7: Operators</strong> — coercion gotchas.', pre: 'Prerequisites: Sections 4–5', ex: 'Try: the Type Coercion Flowchart' },
+    { key: 'section-8',  done: () => progress['section-8'],  gate: 7,  text: '📌 <strong>Section 8: Functions</strong> — Closures and arrow functions are crucial!', pre: 'Prerequisites: Sections 1–5', ex: 'Try: the Closures worked example + Sandbox' },
+{ key: 'section-9',  done: () => progress['section-9'],  gate: 8,  text: '📌 <strong>Section 9: Arrays and Methods</strong> — map / filter / reduce.', pre: 'Prerequisites: Section 8', ex: 'Try: the reduce() worked example' },
+    { key: 'section-10', done: () => progress['section-10'], gate: 9,  text: '📌 <strong>Section 10: Strings</strong> — immutable string methods.', pre: 'Prerequisites: Section 5', ex: 'Try: slicing examples in the Sandbox' },
+    { key: 'section-11', done: () => progress['section-11'], gate: 10, text: '📌 <strong>Section 11: Objects</strong> — Destructuring, spread & this.', pre: 'Prerequisites: Sections 5–8', ex: 'Try: the Destructuring worked example' },
+    { key: 'section-12', done: () => progress['section-12'], gate: 11, text: '📌 <strong>Section 12: Symbols</strong> — the hidden property keys.', pre: 'Prerequisites: Section 11', ex: 'Try: the Symbol keys examples' },
+    { key: 'section-13', done: () => progress['section-13'], gate: 12, text: '🐛 <strong>Section 13: Common Pitfalls</strong> — learn from mistakes.', pre: 'Prerequisites: Sections 1–9', ex: 'Try: all 12 Spot-the-Bug challenges' },
+    { key: 'section-14', done: () => progress['section-14'], gate: 13, text: '✍️ <strong>Section 14: Practice Exercises</strong> — apply it all!', pre: 'Prerequisites: Sections 1–13', ex: 'Filter by 🟡 Warm-up first, then level up' },
+    { key: 'section-15', done: () => progress['section-15'], gate: 14, text: '🎯 <strong>Section 15: Challenges</strong> — level up with C1–C6.', pre: 'Prerequisites: Sections 1–13', ex: 'Try: C1 split-once & C3 de-dupe' },
+    { key: 'section-16', done: () => progress['section-16'], gate: 15, text: '🔑 <strong>Section 16: Answer Key</strong> — check your solutions.', pre: 'Prerequisites: Section 15', ex: 'Try: re-attempt exercises after reviewing' }
+  ];
 
-  if (recs.length === 0) {
-    content.innerHTML = '🎉 <strong>All sections complete!</strong> Great job! Move on to Part 2 — Promises, async/await, and classes.';
-  } else {
-    content.innerHTML = recs.slice(0, 3).map(r =>
-      `<p>${r.text}<br><small style="color:#a0aec0;">${r.pre} · ${r.ex}</small></p>`
-    ).join('') +
-    `<p style="margin-top:10px;color:#a0aec0;font-size:13px;">📊 Progress: ${completed}/16 sections · 🧪 Quizzes engaged: ${quizEngaged}</p>`;
+  const eligible = recs.filter(r => needsReview(r.key) || (!r.done() && completed >= r.gate));
+  eligible.sort((a, b) => (needsReview(b.key) ? 1 : 0) - (needsReview(a.key) ? 1 : 0));
+
+  let html = '';
+  if (ratedKeys.length) {
+    html += '<p style="color:#fc8181;font-weight:600;margin:0 0 8px 0;">🔁 Needs review: ' + needsPct + '% (' + needsKeys.length + ' of ' + ratedKeys.length + ' rated sections)</p>';
   }
+  if (eligible.length === 0) {
+    html += '<p>🎉 <strong>All sections complete!</strong> Nothing needs review. Move on to Part 2 — Promises, async/await, and classes.</p>';
+  } else {
+    html += eligible.slice(0, 3).map(r => {
+      const badge = needsReview(r.key) ? '<span style="color:#fc8181;">🔁 Needs review</span> · ' : '';
+      return '<p>' + badge + r.text + '<br><small style="color:#a0aec0;">' + r.pre + ' · ' + r.ex + '</small></p>';
+    }).join('');
+  }
+  html += '<p style="margin-top:10px;color:#a0aec0;font-size:13px;">📊 Progress: ' + completed + '/16 sections · 🧪 Quizzes engaged: ' + quizEngaged + '</p>';
+  content.innerHTML = html;
 }
 
 // ===== Theme Toggle (light/dark with saved preference) =====
@@ -5191,9 +5320,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Initialize hoisting visualizer
-  if (document.getElementById('hoistingPhase1')) {
-    showHoistingPhase(1);
+  // Initialize hoisting visualizer (step-through)
+  if (document.getElementById('hoistingCode')) {
+    hoistingReset();
   }
 
   // Initialize scope visualizer
