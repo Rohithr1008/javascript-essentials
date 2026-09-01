@@ -4907,6 +4907,8 @@ const queue = [10, 20, 30, 40];
 
 <div class="warn">🔥 <strong>Level up:</strong> each challenge mixes 2–4 concepts from earlier sections. Try them before opening the <a href="#16-answer-key">Answer Key</a>.</div>
 
+> 💡 **New in the HTML study app:** The <code>Javascript_essentials_part1_study_app.html</code> edition adds an <strong>auto-graded code editor</strong> for C1 — write your solution, click "Run Tests", and get instant pass/fail feedback with hints. Open the HTML app to try it.
+
 ### C1 — Cart total (map + reduce + operators) <span class="badge b-red">🔴 Boss</span> <span class="badge b-time">⏱ 10 min</span>
 
 ```javascript
