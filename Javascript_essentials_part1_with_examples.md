@@ -644,6 +644,19 @@ console.log("Locked!");   // runs after loop ends
 
 ---
 
+### 🎯 Which loop should I use?
+
+| Situation | Use | Example |
+|---|---|---|
+| Fixed steps, or you need the index | `for` | `for (let i = 0; i < 10; i++)` |
+| Loop an array/string of **values** | `for...of` | `for (const item of cart)` |
+| Loop an object's **keys** | `for...in` | `for (const key in settings)` |
+| Run while a condition holds (check first) | `while` | password retries |
+| Run at least once, check later | `do...while` | menus, prompt loops |
+| Transform without a loop keyword | array methods | `.forEach / .map / .filter` |
+
+> 💡 Rule of thumb: **arrays → `for...of`**, **objects → `for...in`**, everything else → `for`/`while`.
+
 ## 4. Logical Operators
 
 | Operator | Meaning                                    |
@@ -925,6 +938,18 @@ console.log(parseFloat("3.5rem")); // 3.5 (keeps decimals, unlike parseInt)
 ```
 
 ---
+
+### 🧪 Self-Test — Data Types
+
+**Q1. `NaN === NaN` — what does it return, and what's the right check?**
+
+- ✅ `false` — and the right check is `Number.isNaN(x)`.
+- ❌ `true` — that's exactly the trap: NaN is never equal to itself.
+
+**Q2. What do `parseInt("42px")` and `parseInt("px42")` return?**
+
+- ✅ `42` and `NaN` — parseInt reads digits from the START only.
+- ❌ `42` and `42` — parsing doesn't skip leading junk.
 
 ## 6. Mutable vs Immutable
 
@@ -1232,6 +1257,25 @@ console.log(total >= 200 && total < 300); // true (comparison + logical)
 
 ---
 
+### ⚖️ Operator precedence — who wins when they mix?
+
+> Rule of thumb: **arithmetic → comparison → logical**. When unsure, add parentheses — they always win.
+
+| Priority | Operators | Example | Result |
+|---|---|---|---|
+| 1st | `( )` parentheses | `(2 + 3) * 4` | `20` |
+| 2nd | `**` power | `2 ** 3 * 2` | `16` (power first) |
+| 3rd | `* / %` | `2 + 4 / 2` | `4` (division first) |
+| 4th | `+ -` | `1 + 2 * 3` | `7` |
+| 5th | `> < >= <=` | `1 + 1 > 1` | `true` (math first) |
+| 6th | `=== !== == !=` | `1 + 1 === 2` | `true` |
+| 7th | `&&` | `true || false && false` | `true` (`&&` tighter) |
+| 8th | `||` | `true || false` | `true` |
+
+> ⚠️ **`??` can't be mixed** with `&&` or `||` without parentheses — SyntaxError. Wrap it: `(a || b) ?? c`.
+
+> Assignment (`=`, `+=`…) and ternary sit at the very bottom.
+
 ## 8. Functions and Arrow Functions
 
 ### Function Declaration - Basic
@@ -1503,6 +1547,18 @@ console.log(next());  // 4 (next still remembers its own count)
 - ❌ A `const` arrow function — it sits in the temporal dead zone until its line.
 
 ---
+
+### 🧰 `Set` — instant de-duplication
+
+> A `Set` holds **unique** values. Spread it back into an array and duplicates vanish — the fastest de-dup (this is what Challenge C3 needs).
+
+```javascript
+const mixed = [1, 2, 2, 3, 3, 3];
+const unique = [...new Set(mixed)];
+console.log(unique);              // [1, 2, 3]
+console.log(new Set(mixed).size); // 3
+console.log(new Set(mixed).has(2)); // true
+```
 
 ## 9. Arrays and Methods
 
@@ -2721,6 +2777,20 @@ Object.entries(student);
 // [["name", "Rohit"], ["age", 26], ["city", "Delhi"]]
 ```
 
+#### 🔁 Loop over entries the modern way
+
+`Object.entries` + `for...of` + destructuring:
+
+```javascript
+const student = { name: "Rohit", age: 26, city: "Delhi" };
+for (const [key, value] of Object.entries(student)) {
+  console.log(key + ": " + value);
+}
+// name: Rohit
+// age: 26
+// city: Delhi
+```
+
 ### Methods and `this`
 
 > A method is a function stored in an object. Inside a shorthand method, `this` means **"the object before the dot"** at call time.
@@ -3065,6 +3135,7 @@ if ("price" in product) {
 | `=` `+=` `-=` ... | Assignment operators                     |
 | `===` `!==`      | Strict equality / inequality             |
 | `typeof`         | Check datatype                           |
+| `**`          | Power (exponent): `2 ** 10`             | number           |
 | `delete`         | Remove an object property                |
 
 ### Symbols in action - combined example
