@@ -1798,6 +1798,22 @@ greet(); <c>// <s>"</s></c></code></pre>
 
 <h3 id="closures-a-function-remembers-where-it-w">Closures — a function remembers where it was born</h3>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #38a169;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#68d391;margin-top:0;">🔍 Interactive Scope Visualizer</h3>
+  <p style="color:#e2e8f0;">Step through the code and watch how JavaScript resolves variables through the scope chain.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;">
+    <div><h4 style="color:#a0aec0;margin:0 0 8px 0;font-size:13px;">CODE</h4><pre id="scopeCode" style="background:#0f1622;color:#e2e8f0;padding:12px;border-radius:8px;font-size:12px;line-height:1.6;margin:0;overflow-x:auto;"><code id="scopeCodeLines"></code></pre></div>
+    <div><h4 style="color:#a0aec0;margin:0 0 8px 0;font-size:13px;">SCOPE CHAIN</h4><div style="background:#0f1622;border-radius:8px;padding:12px;min-height:180px;"><div style="border:2px solid #63b3ed;border-radius:8px;padding:8px;margin-bottom:8px;"><div style="color:#63b3ed;font-weight:700;font-size:12px;margin-bottom:4px;">🌍 Global Scope</div><div id="scopeGlobalVars" style="color:#e2e8f0;font-size:12px;font-family:monospace;"></div></div><div id="scopeFunction" style="border:2px solid #f6e05e;border-radius:8px;padding:8px;margin-bottom:8px;display:none;"><div style="color:#f6e05e;font-weight:700;font-size:12px;margin-bottom:4px;">📦 Function Scope</div><div id="scopeFunctionVars" style="color:#e2e8f0;font-size:12px;font-family:monospace;"></div></div><div id="scopeBlock" style="border:2px solid #fc8181;border-radius:8px;padding:8px;display:none;"><div style="color:#fc8181;font-weight:700;font-size:12px;margin-bottom:4px;">🧱 Block Scope</div><div id="scopeBlockVars" style="color:#e2e8f0;font-size:12px;font-family:monospace;"></div></div></div><div id="scopeResolution" style="margin-top:8px;padding:8px;background:#1a202c;border-radius:6px;color:#a0aec0;font-size:12px;min-height:32px;"></div></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+    <button onclick="scopeStep(-1)" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">◀ Prev</button>
+    <button onclick="scopeStep(1)" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Next ▶</button>
+    <button onclick="scopePlay()" id="scopePlayBtn" style="padding:8px 16px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Play</button>
+    <button onclick="scopeReset()" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">↺ Reset</button>
+    <span id="scopeStepLabel" style="color:#a0aec0;font-size:13px;margin-left:8px;">Step 0 / 7</span>
+  </div>
+</div>
+
 <blockquote>A closure is a function that keeps access to the variables of the place where it was created — even after the outer function has returned. You already used one: `makeDiscounter` remembered `percent`.</blockquote>
 
 <pre><code>const makeCounter = () =&gt; {
@@ -4333,6 +4349,79 @@ function clearSandboxCode() {
   }
 }
 
+// ===== PHASE 3: Interactive Scope Visualizer =====
+const scopeExample = [
+  { line: "const greeting = \"Hello\";", global: { greeting: "\"Hello\"" }, func: null, block: null, note: "'greeting' declared in Global scope" },
+  { line: "function greet(name) {", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "undefined" }, block: null, note: "'greet' is now a function in Global; entering Function scope" },
+  { line: "  const punctuation = \"!\";", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "\"World\"", punctuation: "\"!\"" }, block: null, note: "'name' = \"World\" (argument); 'punctuation' declared in Function scope" },
+  { line: "  if (name) {", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "\"World\"", punctuation: "\"!\"" }, block: {}, note: "Entering Block scope; 'name' resolved from Function scope (chain lookup)" },
+  { line: "    const message = greeting + \" \" + name + punctuation;", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "\"World\"", punctuation: "\"!\"" }, block: { message: "\"Hello World!\"" }, note: "'message' declared in Block; 'greeting' from Global, 'name'+'punctuation' from Function (scope chain!)" },
+  { line: "    console.log(message);", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "\"World\"", punctuation: "\"!\"" }, block: { message: "\"Hello World!\"" }, note: "'message' found in Block scope (innermost wins!)" },
+  { line: "  }", global: { greeting: "\"Hello\"", greet: "function" }, func: { name: "\"World\"", punctuation: "\"!\"" }, block: null, note: "Block scope ends — 'message' is no longer accessible" },
+  { line: "}", global: { greeting: "\"Hello\"", greet: "function" }, func: null, block: null, note: "Function scope ends — 'name' and 'punctuation' are gone" }
+];
+let scopeCurrentStep = 0;
+let scopePlayTimer = null;
+
+function scopeRender() {
+  const step = scopeExample[scopeCurrentStep];
+  const codeEl = document.getElementById('scopeCodeLines');
+  let html = '';
+  scopeExample.forEach((s, i) => {
+    const highlight = i === scopeCurrentStep ? 'background:#2b6cb0;border-radius:3px;' : '';
+    html += `<div style="padding:1px 4px;${highlight}">${s.line}</div>`;
+  });
+  codeEl.innerHTML = html;
+
+  document.getElementById('scopeGlobalVars').innerHTML = Object.entries(step.global).map(([k,v]) => `${k} = ${v}`).join('<br>') || '<span style="color:#718096;">(empty)</span>';
+
+  const funcEl = document.getElementById('scopeFunction');
+  if (step.func) {
+    funcEl.style.display = 'block';
+    document.getElementById('scopeFunctionVars').innerHTML = Object.entries(step.func).map(([k,v]) => `${k} = ${v}`).join('<br>');
+  } else { funcEl.style.display = 'none'; }
+
+  const blockEl = document.getElementById('scopeBlock');
+  if (step.block) {
+    blockEl.style.display = 'block';
+    document.getElementById('scopeBlockVars').innerHTML = Object.entries(step.block).map(([k,v]) => `${k} = ${v}`).join('<br>');
+  } else { blockEl.style.display = 'none'; }
+
+  document.getElementById('scopeResolution').innerHTML = '<strong style="color:#68d391;">' + (scopeCurrentStep + 1) + '.</strong> ' + step.note;
+  document.getElementById('scopeStepLabel').textContent = 'Step ' + (scopeCurrentStep + 1) + ' / ' + scopeExample.length;
+}
+
+function scopeStep(dir) {
+  scopeCurrentStep = Math.max(0, Math.min(scopeExample.length - 1, scopeCurrentStep + dir));
+  scopeRender();
+}
+
+function scopePlay() {
+  if (scopePlayTimer) {
+    clearInterval(scopePlayTimer);
+    scopePlayTimer = null;
+    document.getElementById('scopePlayBtn').textContent = '▶ Play';
+    return;
+  }
+  document.getElementById('scopePlayBtn').textContent = '⏸ Pause';
+  scopePlayTimer = setInterval(() => {
+    if (scopeCurrentStep >= scopeExample.length - 1) {
+      clearInterval(scopePlayTimer);
+      scopePlayTimer = null;
+      document.getElementById('scopePlayBtn').textContent = '▶ Play';
+      return;
+    }
+    scopeStep(1);
+  }, 1800);
+}
+
+function scopeReset() {
+  if (scopePlayTimer) { clearInterval(scopePlayTimer); scopePlayTimer = null; }
+  document.getElementById('scopePlayBtn').textContent = '▶ Play';
+  scopeCurrentStep = 0;
+  scopeRender();
+}
+
 // ===== PHASE 2: Hoisting Visualizer =====
 function showHoistingPhase(phase) {
   const phase1 = document.getElementById('hoistingPhase1');
@@ -4766,6 +4855,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize hoisting visualizer
   if (document.getElementById('hoistingPhase1')) {
     showHoistingPhase(1);
+  }
+
+  // Initialize scope visualizer
+  if (document.getElementById('scopeCodeLines')) {
+    scopeRender();
   }
 });
 
