@@ -1025,6 +1025,28 @@ console.log(user.id && process(user.id));  // undefined (no id, short-circuits)
 
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
+### 🎯 Which loop when?
+
+| Situation | Best loop | Why |
+|---|---|---|
+| You know the exact count of iterations | `for` | Counter built in |
+| You iterate over array values | `for...of` | Clean, no index needed |
+| You iterate over object keys | `for...in` | Enumerates keys |
+| You need the index AND value | `for` or `for...of` + `.entries()` | Index access |
+| You loop until a condition is met (unknown count) | `while` | Condition-checked first |
+| You must run at least once | `do...while` | Condition-checked after |
+
+```javascript
+// for...of with entries — get both index and value
+const colors = ["red", "green", "blue"];
+for (const [i, color] of colors.entries()) {
+  console.log(`${i}: ${color}`);
+}
+// 0: red
+// 1: green
+// 2: blue
+```
+
 ## 5. Data Types
 
 ### Primitives (immutable)
@@ -3419,6 +3441,36 @@ if ("price" in product) {
 </div>
 
 ---
+---
+
+### 🔁 Looping over an object with `Object.entries`
+
+`Object.entries(obj)` returns `[key, value]` pairs — perfect for `for...of` when you need both.
+
+```javascript
+const user = { name: "Rohit", role: "admin", active: true };
+
+// Old way: for...in (keys only)
+for (const key in user) {
+  console.log(key + ": " + user[key]);
+}
+// name: Rohit
+// role: admin
+// active: true
+
+// Modern way: for...of + entries (key + value together)
+for (const [key, value] of Object.entries(user)) {
+  console.log(`${key}: ${value}`);
+}
+// name: Rohit
+// role: admin
+// active: true
+
+// Bonus: Object.keys (just keys), Object.values (just values)
+console.log(Object.keys(user));   // ["name", "role", "active"]
+console.log(Object.values(user)); // ["Rohit", "admin", true]
+```
+
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 ## 12. Symbols Cheat Sheet
@@ -3431,6 +3483,7 @@ if ("price" in product) {
 | `=>`             | Defines an arrow function                |
 | `...`            | Spread or rest operator                  |
 | `? :`            | Ternary: short `if...else`               |
+| `**`             | Power: `2 ** 3` = 8                      |
 | `??`             | Nullish coalescing                       |
 | `?.`             | Optional chaining                        |
 | `&&` `\|\|` `!`  | Logical AND, OR, NOT                     |
