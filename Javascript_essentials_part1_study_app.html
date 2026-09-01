@@ -1343,6 +1343,22 @@ console.log(frozen.score); <c>// <n>10</n></c></code></pre>
 
 </div>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #f6ad55;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#f6ad55;margin-top:0;">💾 Memory Model Visualizer</h3>
+  <p style="color:#e2e8f0;">Watch how JavaScript stores values: primitives live on the Stack, objects live on the Heap.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;">
+    <div><h4 style="color:#a0aec0;margin:0 0 8px 0;font-size:13px;">CODE</h4><pre style="background:#0f1622;color:#e2e8f0;padding:12px;border-radius:8px;font-size:12px;margin:0;"><code id="memCodeLines"></code></pre></div>
+    <div><h4 style="color:#a0aec0;margin:0 0 8px 0;font-size:13px;">MEMORY</h4><div style="margin-bottom:8px;"><div style="color:#63b3ed;font-weight:700;font-size:12px;margin-bottom:4px;">📚 STACK</div><div id="memStack" style="background:#0f1622;border:1px solid #2d3748;border-radius:6px;padding:8px;min-height:60px;color:#e2e8f0;font-size:12px;font-family:monospace;"></div></div><div><div style="color:#fc8181;font-weight:700;font-size:12px;margin-bottom:4px;">🗄️ HEAP</div><div id="memHeap" style="background:#0f1622;border:1px solid #2d3748;border-radius:6px;padding:8px;min-height:60px;color:#e2e8f0;font-size:12px;font-family:monospace;"></div></div><div id="memNote" style="margin-top:8px;padding:8px;background:#1a202c;border-radius:6px;color:#a0aec0;font-size:12px;min-height:32px;"></div></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+    <button onclick="memStep(-1)" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">◀ Prev</button>
+    <button onclick="memStep(1)" style="padding:8px 16px;background:#f6ad55;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Next ▶</button>
+    <button onclick="memPlay()" id="memPlayBtn" style="padding:8px 16px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">▶ Play</button>
+    <button onclick="memReset()" style="padding:8px 14px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">↺ Reset</button>
+    <span id="memStepLabel" style="color:#a0aec0;font-size:13px;margin-left:8px;">Step 0 / 6</span>
+  </div>
+</div>
+
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="7-operators">7. Operators</h2>
@@ -4349,6 +4365,55 @@ function clearSandboxCode() {
   }
 }
 
+// ===== PHASE 3: Memory Model Visualizer =====
+const memExample = [
+  { line: "let a = 10;", stack: [{ name: "a", val: "10" }], heap: [], note: "'a' is a primitive number → stored directly on the Stack" },
+  { line: "let b = a;", stack: [{ name: "a", val: "10" }, { name: "b", val: "10" }], heap: [], note: "'b' copies the VALUE of 'a' (10). Two independent stack slots." },
+  { line: "let obj = { x: 1, y: 2 };", stack: [{ name: "a", val: "10" }, { name: "b", val: "10" }, { name: "obj", val: "ref#1" }], heap: [{ id: "ref#1", val: "{ x: 1, y: 2 }" }], note: "'obj' is an object → stored on the Heap. Stack holds a REFERENCE (ref#1)." },
+  { line: "let copy = obj;", stack: [{ name: "a", val: "10" }, { name: "b", val: "10" }, { name: "obj", val: "ref#1" }, { name: "copy", val: "ref#1" }], heap: [{ id: "ref#1", val: "{ x: 1, y: 2 }" }], note: "'copy' gets the SAME reference. Both point to the SAME heap object!" },
+  { line: "copy.x = 99;", stack: [{ name: "a", val: "10" }, { name: "b", val: "10" }, { name: "obj", val: "ref#1" }, { name: "copy", val: "ref#1" }], heap: [{ id: "ref#1", val: "{ x: 99, y: 2 }" }], note: "Mutating copy.x ALSO changes obj.x — they share the same heap object!" },
+  { line: "let deep = structuredClone(obj);", stack: [{ name: "a", val: "10" }, { name: "b", val: "10" }, { name: "obj", val: "ref#1" }, { name: "copy", val: "ref#1" }, { name: "deep", val: "ref#2" }], heap: [{ id: "ref#1", val: "{ x: 99, y: 2 }" }, { id: "ref#2", val: "{ x: 99, y: 2 }" }], note: "structuredClone() creates a NEW independent heap object (ref#2). deep !== obj now." }
+];
+let memCurrentStep = 0;
+let memPlayTimer = null;
+
+function memRender() {
+  const step = memExample[memCurrentStep];
+  const codeEl = document.getElementById('memCodeLines');
+  let html = '';
+  memExample.forEach((s, i) => {
+    const highlight = i === memCurrentStep ? 'background:#2b6cb0;border-radius:3px;' : '';
+    html += `<div style="padding:1px 4px;${highlight}">${s.line}</div>`;
+  });
+  codeEl.innerHTML = html;
+
+  document.getElementById('memStack').innerHTML = step.stack.map(s => `${s.name} = ${s.val}`).join('<br>') || '<span style="color:#718096;">(empty)</span>';
+  document.getElementById('memHeap').innerHTML = step.heap.map(h => `${h.id}: ${h.val}`).join('<br>') || '<span style="color:#718096;">(empty)</span>';
+  document.getElementById('memNote').innerHTML = '<strong style="color:#f6ad55;">' + (memCurrentStep + 1) + '.</strong> ' + step.note;
+  document.getElementById('memStepLabel').textContent = 'Step ' + (memCurrentStep + 1) + ' / ' + memExample.length;
+}
+
+function memStep(dir) {
+  memCurrentStep = Math.max(0, Math.min(memExample.length - 1, memCurrentStep + dir));
+  memRender();
+}
+
+function memPlay() {
+  if (memPlayTimer) { clearInterval(memPlayTimer); memPlayTimer = null; document.getElementById('memPlayBtn').textContent = '▶ Play'; return; }
+  document.getElementById('memPlayBtn').textContent = '⏸ Pause';
+  memPlayTimer = setInterval(() => {
+    if (memCurrentStep >= memExample.length - 1) { clearInterval(memPlayTimer); memPlayTimer = null; document.getElementById('memPlayBtn').textContent = '▶ Play'; return; }
+    memStep(1);
+  }, 1800);
+}
+
+function memReset() {
+  if (memPlayTimer) { clearInterval(memPlayTimer); memPlayTimer = null; }
+  document.getElementById('memPlayBtn').textContent = '▶ Play';
+  memCurrentStep = 0;
+  memRender();
+}
+
 // ===== PHASE 3: Interactive Scope Visualizer =====
 const scopeExample = [
   { line: "const greeting = \"Hello\";", global: { greeting: "\"Hello\"" }, func: null, block: null, note: "'greeting' declared in Global scope" },
@@ -4860,6 +4925,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize scope visualizer
   if (document.getElementById('scopeCodeLines')) {
     scopeRender();
+  }
+
+  // Initialize memory model visualizer
+  if (document.getElementById('memCodeLines')) {
+    memRender();
   }
 });
 
