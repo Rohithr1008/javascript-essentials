@@ -2,7 +2,7 @@
 
 A quick reference covering the JavaScript fundamentals you have learned so far.
 
-<div class="interactive-note">💡 <strong>Interactive guide v2 — every section has something to DO:</strong> quizzes, 🤔 predict-the-output cards, 🃏 flashcards, 💡 hint buttons and 😅 mood checks. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or Typora; an optional standalone <strong>.html edition</strong> (dark-mode button + saved progress) can be generated from this file on request. In plain viewers everything stays readable — just not styled.</div>
+<div class="interactive-note">💡 <strong>Interactive guide v3 — enhanced with Phase 1 & 2 features:</strong> Truthy/Falsy checker, JavaScript Sandbox, Hoisting Visualizer, Type Coercion Flowchart, Worked Examples (Closures, reduce, Destructuring), 12 Spot-the-Bug challenges, Difficulty Filters, Predict-Output cards, Learning Path, and more! Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds a live progress bar, spaced-repetition flashcards, quiz persistence and personalized recommendations.</div>
 
 <style>
 /* ===== JavaScript Essentials — Interactive Styles v2 ===== */
@@ -194,6 +194,25 @@ h2 { border-bottom-color: #63b3ed; }
 <details class="flashcard"><summary>🃏 What is a closure?</summary><div class="back">A function that remembers the variables of the place where it was created — even after the outer function has returned.</div></details>
 
 <details class="flashcard"><summary>🃏 How do you test for <code>NaN</code>?</summary><div class="back"><code>Number.isNaN(x)</code>. Never <code>x === NaN</code> — that is always <code>false</code>!</div></details>
+
+<div class="tip">🔁 <strong>Spaced repetition schedule:</strong> review these cards today, then re-test yourself after <strong>1 day</strong>, again after <strong>3 days</strong>, then <strong>1 week</strong>, and finally after <strong>2 weeks</strong>. If you get one wrong, reset that card's schedule back to 1 day. (The HTML study app automates this — see its Spaced Repetition panel.)</div>
+
+### 🧭 Learning Path — suggested reading order
+
+Follow this path based on where you are. Each step lists its prerequisites and practice:
+
+1. **Variables (S1)** — *Prerequisites: none* → practice with the Truthy/Falsy checker above
+2. **Conditions (S2)** — *Prerequisites: S1* → watch for `switch` `break` pitfalls (S13)
+3. **Loops (S3)** → **Logical Operators (S4)** → **Data Types (S5)** — *Prerequisites: S1–S2*
+4. **Mutability (S6)** → **Operators (S7)** — *Prerequisites: S5* → try the Type Coercion flowchart (S7)
+5. **Functions (S8)** — *Prerequisites: S1–S5* → crucial! Use the Hoisting Visualizer + Closures worked example
+6. **Arrays (S9)** → **Strings (S10)** — *Prerequisites: S8* → use the `reduce()` worked example + Sandbox
+7. **Objects (S11)** — *Prerequisites: S5–S8* → use the Destructuring worked example
+8. **Symbols (S12)** → **Common Pitfalls (S13)** — *Prerequisites: S1–S9* → attempt all 12 Spot-the-Bug challenges
+9. **Exercises (S14)** → **Challenges (S15)** — *Prerequisites: S1–S13* → filter by 🟢 Warm-up first, then level up
+10. **Answer Key (S16)** — check yourself only after attempting!
+
+<div class="interactive-note">📊 <strong>Tracking your progress?</strong> The HTML study app (<code>Javascript_essentials_part1_study_app.html</code>) adds a live progress bar, "Mark complete" buttons per section, quiz-answer persistence, and personalized next-topic recommendations.</div>
 
 ### 🗂️ Mini tabs — pick a cheat list
 
@@ -4119,6 +4138,87 @@ if ("price" in product) {
   console.log("price key missing"); // runs
 }
 ```
+
+<div class="interactive-tool" style="background:#f7f9fc;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+
+### 📖 Worked Example: Object Destructuring (Step-by-Step)
+
+Let's extract values from a profile object — one step at a time:
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>Step 1: Understand the Problem</strong></summary>
+
+We have a profile object and need several values — the old way needs one line per property:
+
+```javascript
+const profile = {
+  name: "Rohit",
+  role: "Developer",
+  city: "Bengaluru",
+  skills: ["JS", "HTML", "CSS"]
+};
+
+// Old way (repetitive):
+const name = profile.name;
+const role = profile.role;
+```
+
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>Step 2: Destructuring Anatomy</strong></summary>
+
+List the property names you want inside `{}` — they must match the object's keys:
+
+```javascript
+const { propertyA, propertyB } = object;
+//  ↑ new constants  ↑ keys to pull out
+```
+
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>Step 3: Complete Solution (defaults & renaming)</strong></summary>
+
+```javascript
+const { name, role, city, country = "India" } = profile;
+
+console.log(name);    // "Rohit"
+console.log(country); // "India" (default — key doesn't exist)
+
+// Rename while destructuring:
+const { name: fullName } = profile;
+console.log(fullName); // "Rohit"
+```
+
+</details>
+
+<details style="background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:600;color:#2b6cb0;"><strong>Step 4: Try Variations</strong></summary>
+
+```javascript
+// Variation 1: Destructure in function parameters
+function introduce({ name, role }) {
+  return `${name} works as a ${role}`;
+}
+console.log(introduce(profile)); // "Rohit works as a Developer"
+
+// Variation 2: Destructure arrays
+const [first, second] = profile.skills;
+console.log(first, second); // "JS" "HTML"
+
+// Variation 3: Skip items with holes
+const [, , third] = profile.skills;
+console.log(third); // "CSS"
+
+// Variation 4: Nested destructuring
+const { skills: { 0: firstSkill } } = profile;
+console.log(firstSkill); // "JS"
+```
+
+</details>
+
+</div>
 
 <div class="quiz-box">
 

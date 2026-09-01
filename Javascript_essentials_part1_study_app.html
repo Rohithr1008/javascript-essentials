@@ -3305,6 +3305,63 @@ if (<s>"</s> in product) {
   </div>
 </div>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#63b3ed;margin-top:0;">📖 Worked Example: Object Destructuring (Step-by-Step)</h3>
+  <p style="color:#e2e8f0;">Let's extract values from an API response object — one step at a time:</p>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 1: Understand the Problem</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">We have a user profile object and need to pull out several values — the old way needs one line per property.</p>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const profile = {
+  name: "Rohit",
+  role: "Developer",
+  city: "Bengaluru",
+  skills: ["JS", "HTML", "CSS"]
+};
+
+// Old way (repetitive):
+const name = profile.name;
+const role = profile.role;</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 2: Destructuring Anatomy</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">On the left, list the property names you want inside <code>{}</code> — they must match the object's keys.</p>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const { propertyA, propertyB } = object;
+//  ↑ new constants  ↑ keys to pull out</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution (with defaults & renaming)</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const { name, role, city, country = "India" } = profile;
+
+console.log(name);    // "Rohit"
+console.log(country); // "India" (default — key doesn't exist)
+
+// Rename while destructuring:
+const { name: fullName } = profile;
+console.log(fullName); // "Rohit"</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation 1: Nested destructuring
+const { skills, address } = profile;
+const { 0: firstSkill } = skills; // "JS"
+
+// Variation 2: Function parameters
+function introduce({ name, role }) {
+  return `${name} works as a ${role}`;
+}
+console.log(introduce(profile));
+// "Rohit works as a Developer"
+
+// Variation 3: Destructure arrays
+const [first, second] = skills;
+console.log(first, second); // "JS" "HTML"
+
+// Variation 4: Skip items with holes
+const [, , third] = skills;
+console.log(third); // "CSS"</code></pre>
+  </details>
+</div>
+
 <div class="quiz-box">
 
 <h3>🧪 Self-Test — Objects</h3>
@@ -4308,15 +4365,30 @@ function showOptionalExample(type) {
   if (result) result.style.display = 'block';
 }
 
-// ===== Difficulty Filters =====
+// ===== Difficulty Filters (v2: hides whole exercise blocks incl. challenges) =====
 function filterExercises(difficulty) {
-  const headings = document.querySelectorAll('h3[id^="ex-"]');
+  const headings = document.querySelectorAll('h3[id]');
   headings.forEach(h3 => {
-    if (difficulty === 'all') { h3.style.display = 'block'; return; }
-    const badges = h3.querySelectorAll('.badge');
-    let match = false;
-    badges.forEach(b => { if (b.textContent.toLowerCase().includes(difficulty)) match = true; });
-    h3.style.display = match ? 'block' : 'none';
+    const isExercise = /^ex-/.test(h3.id);
+    const isChallenge = /^c\d/.test(h3.id);
+    if (!isExercise && !isChallenge) return;
+
+    let match = difficulty === 'all';
+    if (!match && isChallenge && difficulty === 'challenging') match = true;
+    if (!match) {
+      h3.querySelectorAll('.badge').forEach(b => {
+        const norm = b.textContent.toLowerCase().replace(/[^a-z]/g, '');
+        if (norm.includes(difficulty)) match = true;
+      });
+    }
+
+    // Hide/show the heading AND everything after it until the next h2/h3
+    h3.style.display = match ? '' : 'none';
+    let el = h3.nextElementSibling;
+    while (el && !['H2', 'H3'].includes(el.tagName)) {
+      el.style.display = match ? '' : 'none';
+      el = el.nextElementSibling;
+    }
   });
 }
 
@@ -4341,17 +4413,104 @@ function copyCode(btn) {
   }
 }
 
-// ===== Progress Tracking =====
-function saveProgress(id) {
-  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  p[id] = true; p.updated = new Date().toISOString();
-  localStorage.setItem('js-progress', JSON.stringify(p));
-}
-function loadProgress() {
+// ===== Progress Tracking (v2: wired UI + mark-complete buttons) =====
+function refreshProgressUI() {
   const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
   const done = Object.keys(p).filter(k => k !== 'updated').length;
   const el = document.getElementById('progressBar');
   if (el) el.textContent = `📊 Progress: ${done}/16 sections (${Math.round(done/16*100)}%)`;
+  updateLearningPath();
+}
+
+function saveProgress(id) {
+  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  p[id] = true; p.updated = new Date().toISOString();
+  localStorage.setItem('js-progress', JSON.stringify(p));
+  refreshProgressUI();
+}
+
+function toggleComplete(id, btn) {
+  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  if (p[id]) {
+    delete p[id];
+    btn.textContent = '✅ Mark complete';
+    btn.style.background = '#38a169';
+  } else {
+    p[id] = true;
+    btn.textContent = '✔ Completed';
+    btn.style.background = '#4a5568';
+  }
+  p.updated = new Date().toISOString();
+  localStorage.setItem('js-progress', JSON.stringify(p));
+  refreshProgressUI();
+}
+
+// Inject a "Mark complete" button after every numbered section heading (1-16)
+function injectSectionButtons() {
+  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  document.querySelectorAll('h2[id]').forEach(h2 => {
+    const m = h2.id.match(/^(\d+)-/);
+    if (!m) return;
+    const key = 'section-' + m[1];
+    if (h2.nextElementSibling && h2.nextElementSibling.classList?.contains('section-complete-btn')) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'section-complete-btn';
+    btn.style.cssText = 'margin:4px 0 14px 0;padding:6px 14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;';
+    if (p[key]) {
+      btn.textContent = '✔ Completed';
+      btn.style.background = '#4a5568';
+      btn.style.color = '#e2e8f0';
+    } else {
+      btn.textContent = '✅ Mark complete';
+      btn.style.background = '#38a169';
+      btn.style.color = '#fff';
+    }
+    btn.onclick = () => toggleComplete(key, btn);
+    h2.insertAdjacentElement('afterend', btn);
+    h2.insertAdjacentElement('afterend', document.createElement('br'));
+  });
+  refreshProgressUI();
+}
+
+// ===== Copy Code (v2: auto-inject buttons on all code blocks) =====
+function copyCode(btn) {
+  const code = btn.closest('pre')?.querySelector('code');
+  if (code) {
+    navigator.clipboard.writeText(code.textContent).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+    });
+  }
+}
+
+function injectCopyButtons() {
+  document.querySelectorAll('pre > code').forEach(code => {
+    const pre = code.parentElement;
+    if (pre.querySelector('.copy-btn')) return;
+    pre.style.position = 'relative';
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = '📋 Copy';
+    btn.style.cssText = 'position:absolute;top:6px;right:6px;padding:3px 10px;font-size:11px;background:#4a5568;color:#e2e8f0;border:none;border-radius:6px;cursor:pointer;opacity:0.75;';
+    btn.onmouseenter = () => btn.style.opacity = '1';
+    btn.onmouseleave = () => btn.style.opacity = '0.75';
+    btn.onclick = () => copyCode(btn);
+    pre.appendChild(btn);
+  });
+}
+
+// ===== Quiz State Persistence (v2: saves/ restores open quiz answers) =====
+function setupQuizPersistence() {
+  const quizzes = document.querySelectorAll('.quiz-box details, .solution details, .answer-key details');
+  quizzes.forEach((d, i) => {
+    const key = 'quiz-' + i;
+    if (localStorage.getItem(key) === 'open') d.open = true;
+    d.addEventListener('toggle', () => {
+      localStorage.setItem(key, d.open ? 'open' : 'closed');
+    });
+  });
 }
 
 // ===== Spaced Repetition System =====
@@ -4372,26 +4531,57 @@ const srCards = [
 let srState = JSON.parse(localStorage.getItem('sr-state') || '{}');
 let srCurrent = null;
 
+let srShuffle = false;
+
+function srMastery(state) {
+  if (!state || state.repetitions === undefined || state.repetitions === 0) return 'new';
+  if (state.repetitions >= 3 && state.interval >= 7) return 'mastered';
+  return 'learning';
+}
+
 function startSRReview() {
   const now = Date.now();
   const dueCards = srCards.filter((card, idx) => {
     const state = srState[idx] || { interval: 0, nextReview: 0 };
     return state.nextReview <= now;
   });
-  if (dueCards.length === 0) {
+
+  // Mastery statistics: new → learning → mastered
+  const stats = { new: 0, learning: 0, mastered: 0 };
+  srCards.forEach((card, idx) => stats[srMastery(srState[idx])]++);
+  const statLine = `🆕 ${stats.new} new | 📖 ${stats.learning} learning | 🏆 ${stats.mastered} mastered`;
+
+  let pool, poolLabel;
+  if (srShuffle) {
+    pool = srCards.map((_, i) => i);
+    poolLabel = 'shuffle mode';
+  } else {
+    pool = dueCards.map(c => srCards.indexOf(c));
+    poolLabel = 'due for review';
+  }
+
+  if (pool.length === 0) {
     document.getElementById('srQuestion').textContent = '✅ All caught up! No cards due for review.';
     document.getElementById('srAnswer').style.display = 'none';
     document.getElementById('srButtons').innerHTML = '<button onclick="startSRReview()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Check Again</button>';
+    document.getElementById('srStats').textContent = statLine + ' | All caught up!';
     return;
   }
-  const idx = srCards.indexOf(dueCards[Math.floor(Math.random() * dueCards.length)]);
+
+  const idx = pool[Math.floor(Math.random() * pool.length)];
   srCurrent = idx;
   document.getElementById('srQuestion').textContent = srCards[idx].q;
   document.getElementById('srAnswer').textContent = srCards[idx].a;
   document.getElementById('srAnswer').style.display = 'none';
-  document.getElementById('srButtons').innerHTML = '<button onclick="showSRAnswer()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Show Answer</button>';
-  const reviewed = Object.keys(srState).length;
-  document.getElementById('srStats').textContent = `Reviewed: ${reviewed}/${srCards.length} cards | Due: ${dueCards.length}`;
+  document.getElementById('srButtons').innerHTML =
+    '<button onclick="showSRAnswer()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Show Answer</button>' +
+    '<button onclick="toggleSRShuffle()" style="padding:8px 14px;background:' + (srShuffle ? '#805ad5' : '#4a5568') + ';color:#fff;border:none;border-radius:8px;cursor:pointer;margin-left:6px;">🔀 Shuffle: ' + (srShuffle ? 'ON' : 'OFF') + '</button>';
+  document.getElementById('srStats').textContent = statLine + ` | Pool: ${pool.length} ${poolLabel}`;
+}
+
+function toggleSRShuffle() {
+  srShuffle = !srShuffle;
+  startSRReview();
 }
 
 function showSRAnswer() {
@@ -4416,28 +4606,55 @@ function rateSR(quality) {
   startSRReview();
 }
 
-// ===== Learning Path =====
+// ===== Learning Path (v2: quiz engagement + prerequisites + exercise suggestions) =====
 function updateLearningPath() {
   const progress = JSON.parse(localStorage.getItem('js-progress') || '{}');
   const completed = Object.keys(progress).filter(k => k !== 'updated').length;
   const content = document.getElementById('learningPathContent');
   if (!content) return;
-  if (completed === 0) { content.innerHTML = '<p>📚 Start with <strong>Section 1: Variables</strong> — the foundation of everything!</p>'; return; }
-  let recs = [];
-  if (!progress['section-1']) recs.push('📌 <strong>Section 1: Variables</strong> — Master const/let and scoping basics.');
-  if (!progress['section-2'] && completed >= 1) recs.push('📌 <strong>Section 2: Conditions</strong> — Learn if/else and switch statements.');
-  if (!progress['section-5'] && completed >= 3) recs.push('📌 <strong>Section 5: Data Types</strong> — Understand primitives vs objects.');
-  if (!progress['section-8'] && completed >= 6) recs.push('📌 <strong>Section 8: Functions</strong> — Closures and arrow functions are crucial!');
-  if (!progress['section-13'] && completed >= 10) recs.push('🐞 <strong>Section 13: Common Pitfalls</strong> — Learn from common mistakes.');
-  if (!progress['section-14'] && completed >= 12) recs.push('✍️ <strong>Section 14: Practice Exercises</strong> — Time to apply what you learned!');
-  if (recs.length === 0) { content.innerHTML = '🎉 <strong>All sections complete!</strong> Great job! Move on to Part 2 — Promises, async/await, and classes.'; }
-  else { content.innerHTML = recs.slice(0, 3).map(r => `<p>${r}</p>`).join('') + `<p style="margin-top:10px;color:#a0aec0;font-size:13px;">📊 Progress: ${completed}/16 sections</p>`; }
+
+  // Quiz engagement from persisted quiz state
+  let quizEngaged = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    if (localStorage.key(i).startsWith('quiz-') && localStorage.getItem(localStorage.key(i)) === 'open') quizEngaged++;
+  }
+
+  if (completed === 0 && quizEngaged === 0) {
+    content.innerHTML = '<p>📚 Start with <strong>Section 1: Variables</strong> — the foundation of everything! <em>(Prerequisites: none)</em></p>';
+    return;
+  }
+
+  // Each rec: topic + prerequisites + recommended practice
+  const recs = [
+    { done: () => progress['section-1'], gate: 0,  text: '📌 <strong>Section 1: Variables</strong> — Master const/let and scoping basics.', pre: 'Prerequisites: none', ex: 'Try: Ex 1 (Split once)' },
+    { done: () => progress['section-2'], gate: 1,  text: '📌 <strong>Section 2: Conditions</strong> — Learn if/else and switch statements.', pre: 'Prerequisites: Section 1', ex: 'Try: the switch pitfalls in Section 13' },
+    { done: () => progress['section-5'], gate: 3,  text: '📌 <strong>Section 5: Data Types</strong> — Understand primitives vs objects.', pre: 'Prerequisites: Sections 1–4', ex: 'Try: the Truthy/Falsy checker above' },
+    { done: () => progress['section-8'], gate: 6,  text: '📌 <strong>Section 8: Functions</strong> — Closures and arrow functions are crucial!', pre: 'Prerequisites: Sections 1–5', ex: 'Try: the Closures worked example + Sandbox' },
+    { done: () => progress['section-11'], gate: 9, text: '📌 <strong>Section 11: Objects</strong> — Destructuring, spread & this.', pre: 'Prerequisites: Sections 5–8', ex: 'Try: the Destructuring worked example' },
+    { done: () => progress['section-13'], gate: 10, text: '🐞 <strong>Section 13: Common Pitfalls</strong> — Learn from common mistakes.', pre: 'Prerequisites: Sections 1–9', ex: 'Try: all 12 Spot-the-Bug challenges' },
+    { done: () => progress['section-14'], gate: 12, text: '✍️ <strong>Section 14: Practice Exercises</strong> — Time to apply what you learned!', pre: 'Prerequisites: Sections 1–13', ex: 'Filter by 🟢 Warm-up first, then level up' }
+  ].filter(r => !r.done() && completed >= r.gate);
+
+  if (recs.length === 0) {
+    content.innerHTML = '🎉 <strong>All sections complete!</strong> Great job! Move on to Part 2 — Promises, async/await, and classes.';
+  } else {
+    content.innerHTML = recs.slice(0, 3).map(r =>
+      `<p>${r.text}<br><small style="color:#a0aec0;">${r.pre} · ${r.ex}</small></p>`
+    ).join('') +
+    `<p style="margin-top:10px;color:#a0aec0;font-size:13px;">📊 Progress: ${completed}/16 sections · 🧪 Quizzes engaged: ${quizEngaged}</p>`;
+  }
 }
 
 // Add event listener for Truthy/Falsy input
 document.addEventListener('DOMContentLoaded', function() {
-  loadProgress();
+  injectSectionButtons();
+  injectCopyButtons();
+  setupQuizPersistence();
+  refreshProgressUI();
   updateLearningPath();
+  
+  // Show SRS stats on load
+  if (document.getElementById('srStats')) startSRReview();
   
   const truthyInput = document.getElementById('truthyInput');
   if (truthyInput) {
