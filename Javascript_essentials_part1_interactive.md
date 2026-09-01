@@ -3914,6 +3914,8 @@ console.log(merged2); // Same result as above
 
 This is a condensed summary of all 12 sections for quick lookup and printing.
 
+> 💡 **New in the HTML study app:** Spaced-repetition flashcards, personalized learning path, progress tracking with "Mark complete" buttons, quiz-answer persistence, and a dark/light theme toggle. Open `Javascript_essentials_part1_study_app.html` in a browser to use them.
+
 <div class="cheat-sheet-preview" style="margin: 20px 0; background: #ebf8ff; border: 2px solid #4299e1; border-radius: 10px; padding: 16px;">
 
 ### Part 1: Variables, Conditions, Loops

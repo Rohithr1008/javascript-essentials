@@ -4206,6 +4206,28 @@ console.log({ username, tag, domain });
     <tr><td style="padding:8px;border:1px solid #4a5568;"><code>sort()</code></td><td style="padding:8px;border:1px solid #4a5568;">Same array</td><td style="padding:8px;border:1px solid #4a5568;">Yes</td></tr>
   </table>
 
+  <h3 style="color:#f6ad55;">Conditions, Loops & Logic</h3>
+  <table style="width:100%;border-collapse:collapse;margin:10px 0;color:#e2e8f0;">
+    <tr style="background:#2d3748;"><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Topic</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Key Points</th></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>if / else</strong></td><td style="padding:8px;border:1px solid #4a5568;">Use for range checks; chain with <code>else if</code></td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>switch</strong></td><td style="padding:8px;border:1px solid #4a5568;">Use for fixed options; every case needs <code>break</code></td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>for</strong></td><td style="padding:8px;border:1px solid #4a5568;">Known iteration count; <code>for...of</code> values, <code>for...in</code> keys</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>while</strong></td><td style="padding:8px;border:1px solid #4a5568;">Unknown count; <code>do...while</code> runs at least once</td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>Logic</strong></td><td style="padding:8px;border:1px solid #4a5568;"><code>&amp;&amp;</code> (AND) <code>||</code> (OR) <code>!</code> (NOT); 6 falsy values</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>Ternary</strong></td><td style="padding:8px;border:1px solid #4a5568;"><code>cond ? a : b</code> for inline conditional</td></tr>
+  </table>
+
+  <h3 style="color:#9f7aea;">Functions, Objects & this</h3>
+  <table style="width:100%;border-collapse:collapse;margin:10px 0;color:#e2e8f0;">
+    <tr style="background:#2d3748;"><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Topic</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Key Points</th></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>Functions</strong></td><td style="padding:8px;border:1px solid #4a5568;">Declaration hoisted; arrow = no own <code>this</code>; closures remember outer scope</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>Objects</strong></td><td style="padding:8px;border:1px solid #4a5568;">Dot <code>obj.key</code> &amp; bracket <code>obj["key"]</code>; destructuring <code>{x, y} = obj</code></td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>Spread</strong></td><td style="padding:8px;border:1px solid #4a5568;"><code>{...obj}</code> / <code>[...arr]</code> = shallow copy; <code>structuredClone()</code> for deep</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>this</strong></td><td style="padding:8px;border:1px solid #4a5568;">Object before the dot at call time; arrows inherit outer <code>this</code></td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><strong>Strings</strong></td><td style="padding:8px;border:1px solid #4a5568;">Immutable; <code>.slice()</code> <code>.split()</code> <code>.join()</code> template literals</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><strong>Symbols</strong></td><td style="padding:8px;border:1px solid #4a5568;"><code>Symbol()</code> unique IDs; <code>Symbol.iterator</code> for iteration protocol</td></tr>
+  </table>
+
   <div style="text-align:center;margin-top:16px;">
     <button onclick="window.print()" style="padding:10px 24px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🖨️ Print / Save as PDF</button>
   </div>
