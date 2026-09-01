@@ -165,6 +165,27 @@ h2 { border-bottom-color: #63b3ed; }
 
 <p>**Falsy (only 6):** `false`, `0`, `""` (empty string), `null`, `undefined`, `NaN` — everything else is truthy (including `"0"`, `[]`, `{}`).</p>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#63b3ed;margin-top:0;">🔍 Truthy/Falsy Interactive Checker</h3>
+  <p style="color:#e2e8f0;">Type any JavaScript value to see if it's truthy or falsy. Try: <code>0</code>, <code>""</code>, <code>[]</code>, <code>null</code>, <code>"hello"</code>, <code>undefined</code></p>
+  <input type="text" id="truthyInput" placeholder="Enter a value (e.g., 0, [], '', null, 'hello')" style="width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:14px;box-sizing:border-box;" />
+  <button onclick="checkTruthiness()" style="margin-top:10px;padding:8px 20px;background:#4299e1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Check Truthiness</button>
+  <button onclick="document.getElementById('truthyInput').value='';document.getElementById('truthyResult').innerHTML='';document.getElementById('truthyResult').style.display='none';" style="margin-top:10px;margin-left:6px;padding:8px 16px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;">Clear</button>
+  <div id="truthyResult" style="display:none;margin-top:14px;padding:12px;border-radius:8px;font-size:15px;"></div>
+</div>
+
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #38a169;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#68d391;margin-top:0;">🔧 JavaScript Interactive Sandbox</h3>
+  <p style="color:#e2e8f0;">Write and run JavaScript code directly here. Try modifying examples from any section!</p>
+  <textarea id="sandboxCode" placeholder="// Try: const arr = [1,2,3]; console.log(arr.push(4));" style="width:100%;height:120px;padding:10px;font-family:'Courier New',monospace;font-size:13px;border:1px solid #4a5568;border-radius:8px;background:#0f1622;color:#e2e8f0;box-sizing:border-box;"></textarea>
+  <div style="display:flex;gap:8px;margin-top:10px;">
+    <button onclick="runSandboxCode()" style="padding:8px 20px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;flex:1;">▶️ Run Code</button>
+    <button onclick="clearSandboxCode()" style="padding:8px 16px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Clear</button>
+  </div>
+  <pre id="sandboxOutput" style="background:#0f1622;color:#e2e8f0;padding:12px;border-radius:8px;border:1px solid #2d3748;min-height:60px;max-height:300px;overflow-y:auto;font-family:'Courier New',monospace;font-size:13px;margin-top:12px;">// Output will appear here</pre>
+  <p style="color:#a0aec0;font-size:12px;margin-top:6px;">💡 Tip: Press Ctrl+Enter to run code quickly</p>
+</div>
+
 <h3 id="golden-rules">Golden rules</h3>
 
 <p>1. Use `const` by default — `let` only when the value must change.</p>
@@ -1252,6 +1273,21 @@ console.log(score); <c>// <n>6</n></c></code></pre>
 <tr><td>`<`, `>`</td><td>Less/Greater than</td><td>`3 < 5` → true</td></tr>
 <tr><td>`<=`, `>=`</td><td>Less/Greater or equal</td><td>`5 <= 5` → true</td></tr>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #ed8936;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#f6ad55;margin-top:0;">🔀 Type Coercion Flowchart</h3>
+  <p style="color:#e2e8f0;">Click each scenario to see how JavaScript coerces types:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;">
+    <button onclick="showCoercionExample('concat')" style="padding:8px 16px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">String +</button>
+    <button onclick="showCoercionExample('subtract')" style="padding:8px 16px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Numeric - * /</button>
+    <button onclick="showCoercionExample('comparison')" style="padding:8px 16px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Loose ==</button>
+    <button onclick="showCoercionExample('strict')" style="padding:8px 16px:#38a169;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Strict ===</button>
+  </div>
+  <div id="coercionResult" style="display:none;">
+    <div id="coercionText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:10px;"></div>
+    <pre id="coercionCode" style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:0;font-size:13px;"></pre>
+  </div>
+</div>
+
 <h3 id="ternary-operator">Ternary Operator</h3>
 
 <blockquote>Syntax: `condition ? valueIfTrue : valueIfFalse`</blockquote>
@@ -1598,6 +1634,53 @@ console.log(deepFlatten([<n>1</n>, [<n>2</n>, [<n>3</n>, [<n>4</n>]]]])); <c>// 
 
 <blockquote>Function **declarations** are hoisted — usable earlier in the file. `let`/`const` are not: using them before their line throws (the *temporal dead zone*).</blockquote>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #9f7aea;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#b794f4;margin-top:0;">📊 Hoisting Visualizer</h3>
+  <p style="color:#e2e8f0;">Click each phase to see how JavaScript hoists variables and functions:</p>
+  <div style="display:flex;gap:8px;margin:12px 0;">
+    <button id="btn-phase1" onclick="showHoistingPhase(1)" style="padding:10px 20px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Phase 1: Creation</button>
+    <button id="btn-phase2" onclick="showHoistingPhase(2)" style="padding:10px 20px;background:#718096;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Phase 2: Execution</button>
+  </div>
+  <div id="hoistingText" style="color:#e2e8f0;padding:10px;background:#2d3748;border-radius:8px;margin-bottom:12px;"></div>
+  <div id="hoistingPhase1" style="display:block;">
+    <pre style="background:#2d3748;color:#68d391;padding:14px;border-radius:8px;overflow-x:auto;margin:0;"><code>// Creation Phase — JavaScript scans your code:
+// ✅ Function declarations → fully hoisted (ready to use!)
+// ⚠️ var variables → hoisted as undefined
+// 🚫 let/const → exist but in TDZ (can't access yet)
+
+sayHi();  // ✅ Works! Function is fully hoisted
+
+function sayHi() {
+  console.log("Hello!");
+}
+
+console.log(x); // undefined (var hoisted but not assigned)
+var x = 5;
+
+console.log(y); // ❌ ReferenceError (y is in TDZ)
+let y = 10;</code></pre>
+  </div>
+  <div id="hoistingPhase2" style="display:none;">
+    <pre style="background:#2d3748;color:#63b3ed;padding:14px;border-radius:8px;overflow-x:auto;margin:0;"><code>// Execution Phase — code runs line by line:
+// Assignments happen NOW
+// Variables accessible after their line
+
+sayHi();  // ✅ "Hello!" — function already hoisted
+
+function sayHi() {
+  console.log("Hello!");
+}
+
+console.log(x); // undefined (hoisted, not yet assigned)
+var x = 5;      // ← Assignment happens HERE
+console.log(x); // 5 (now assigned)
+
+// console.log(y); // Would throw — TDZ ends after this line:
+let y = 10;     // ← y is now accessible
+console.log(y); // 10</code></pre>
+  </div>
+</div>
+
 <pre><code>sayHi(); <c>// <s>"</s> ✅ works — the whole declaration is hoisted to the top</c>
 
 function sayHi() {
@@ -1627,6 +1710,65 @@ console.log(next()); <c>// <n>3</n></c>
 const other = makeCounter();
 console.log(other()); <c>// <n>1</n></c>
 console.log(next());  <c>// <n>4</n> (next still remembers its own count)</c></code></pre>
+
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#63b3ed;margin-top:0;">📖 Worked Example: Closures (Step-by-Step)</h3>
+  <p style="color:#e2e8f0;">Let's build a counter factory using closures — one step at a time:</p>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 1: Understand the Problem</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">We want to create counters that remember their own count. Each counter should be independent — calling one doesn't affect another.</p>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// We want this behavior:
+const counter = makeCounter();
+counter(); // 1
+counter(); // 2
+counter(); // 3</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 2: Closures Capture Variables</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">A closure "remembers" the variables from where it was created. The inner function keeps access to <code>count</code> even after the outer function returns!</p>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>function makeCounter() {
+  let count = 0;  // This variable is "captured" by the closure
+  return () => ++count;  // Inner function remembers count
+}</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>function makeCounter() {
+  let count = 0;
+  return () => ++count;
+}
+
+const counter = makeCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
+
+const other = makeCounter(); // Fresh closure!
+console.log(other()); // 1 (independent)
+console.log(counter()); // 4 (still remembers)</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation: Counter with step size
+function makeCounterWithStep(step) {
+  let count = 0;
+  return () => count += step;
+}
+
+const addTen = makeCounterWithStep(10);
+console.log(addTen()); // 10
+console.log(addTen()); // 20
+
+// Variation: Counter with reset
+function makeCounterWithReset() {
+  let count = 0;
+  return {
+    increment: () => ++count,
+    reset: () => { count = 0; }
+  };
+}</code></pre>
+  </details>
+</div>
 
 <div class="quiz-box">
 
@@ -2191,6 +2333,53 @@ console.log(productCounts);
 const mostOrdered = Object.entries(productCounts).sort((a, b) =&gt; b[<n>1</n>] - a[<n>1</n>])[<n>0</n>];
 console.log(<s>`</s>);
 <c>// Most ordered: Mouse (<n>4</n> units)</c></code></pre>
+
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#63b3ed;margin-top:0;">📖 Worked Example: Array reduce() (Step-by-Step)</h3>
+  <p style="color:#e2e8f0;">Let's use <code>reduce()</code> to sum an array — one step at a time:</p>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 1: Understand the Problem</summary>
+    <p style="color:#e2e8f0;margin-top:8px;">We have an array of test scores and want to calculate the total sum.</p>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const scores = [85, 90, 78, 92];
+// We want: 85 + 90 + 78 + 92 = 345</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 2: reduce() Anatomy</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>array.reduce((accumulator, item) => {
+  // accumulator = running total
+  // item = current element
+  // return the new total
+}, initialValue);</code></pre>
+    <pre style="background:#0f1622;color:#f6e05e;padding:10px;border-radius:6px;margin:8px 0;"><code>// Breakdown:
+// Iteration 1: acc=0,    score=85  → 0 + 85 = 85
+// Iteration 2: acc=85,   score=90  → 85 + 90 = 175
+// Iteration 3: acc=175,  score=78  → 175 + 78 = 253
+// Iteration 4: acc=253,  score=92  → 253 + 92 = 345
+// Result: 345</code></pre>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 3: Complete Solution</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>const scores = [85, 90, 78, 92];
+const total = scores.reduce((sum, score) => sum + score, 0);
+console.log(total);  // 345</code></pre>
+    <p style="color:#e2e8f0;margin-top:8px;">The <code>0</code> at the end is the starting value for the accumulator.</p>
+  </details>
+  <details style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 14px;margin:10px 0;">
+    <summary style="cursor:pointer;font-weight:600;color:#63b3ed;">Step 4: Try Variations</summary>
+    <pre style="background:#0f1622;color:#68d391;padding:10px;border-radius:6px;margin:8px 0;"><code>// Variation 1: Find average
+const average = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+// 345 / 4 = 86.25
+
+// Variation 2: Find highest score
+const highest = scores.reduce((max, score) => score > max ? score : max, 0);
+// Result: 92
+
+// Variation 3: Sum only passing scores (>= 80)
+const passingTotal = scores.reduce((sum, score) =>
+  score >= 80 ? sum + score : sum, 0);
+// Result: 85 + 90 + 92 = 267</code></pre>
+  </details>
+</div>
 
 <div class="quiz-box">
 
@@ -3293,26 +3482,67 @@ console.log(original); <c>// [<n>3</n>, <n>1</n>, <n>2</n>] ✅ untouched</c>
 console.log(original.toSorted((a, b) =&gt; a - b)); <c>// [<n>1</n>, <n>2</n>, <n>3</n>]</c></code></pre>
 <div class="quiz-box">
 
-<h3>🐞 Spot the bug — pitfalls final boss</h3>
+<h3>🐞 Spot the Bug — Pitfalls Final Boss (12 Bugs!)</h3>
+<p><span class="badge b-green">🟢 Easy</span> <span class="badge b-yellow">🟡 Medium</span> <span class="badge b-red">🔴 Hard</span></p>
 
-<details><summary>Q1. <code>if (user = "admin") { grantAccess(); }</code></summary>
+<details><summary>Q1. <code>if (user = "admin") { grantAccess(); }</code> <span class="badge b-green">🟢 Easy</span></summary>
 <p><span class="quiz-wrong">🐞 Bug:</span> <code>=</code> <strong>assigns</strong> instead of comparing — the condition is always the truthy string <code>"admin"</code>.</p>
 <p><span class="quiz-correct">✅ Fix:</span> <code>if (user === "admin")</code>.</p>
 </details>
 
-<details><summary>Q2. <code>[10, 9, 1].sort()</code> gives <code>[1, 10, 9]</code></summary>
+<details><summary>Q2. <code>[10, 9, 1].sort()</code> gives <code>[1, 10, 9]</code> <span class="badge b-green">🟢 Easy</span></summary>
 <p><span class="quiz-wrong">🐞 Bug:</span> default sort compares as <strong>strings</strong>, so <code>"10" &lt; "9"</code>.</p>
 <p><span class="quiz-correct">✅ Fix:</span> <code>.sort((a, b) =&gt; a - b)</code> → <code>[1, 9, 10]</code>.</p>
 </details>
 
-<details><summary>Q3. <code>let name = "hi"; name[0] = "H";</code> — name stays "hi"</summary>
+<details><summary>Q3. <code>let name = "hi"; name[0] = "H";</code> — name stays "hi" <span class="badge b-green">🟢 Easy</span></summary>
 <p><span class="quiz-wrong">🐞 Bug:</span> strings are <strong>immutable</strong> — index assignment is silently ignored.</p>
 <p><span class="quiz-correct">✅ Fix:</span> <code>name = "H" + name.slice(1)</code>.</p>
 </details>
 
-<details><summary>Q4. <code>nums.map(n =&gt; { n * 2 })</code> returns <code>[undefined, ...]</code></summary>
+<details><summary>Q4. <code>nums.map(n =&gt; { n * 2 })</code> returns <code>[undefined, ...]</code> <span class="badge b-yellow">🟡 Medium</span></summary>
 <p><span class="quiz-wrong">🐞 Bug:</span> an arrow with <code>{}</code> braces needs an explicit <code>return</code>.</p>
 <p><span class="quiz-correct">✅ Fix:</span> <code>nums.map(n =&gt; n * 2)</code> — or add <code>return</code> inside the braces.</p>
+</details>
+
+<details><summary>Q5. <code>const arr = [1, 2, 3]; const copy = arr; copy.push(4);</code> — arr also has 4! <span class="badge b-yellow">🟡 Medium</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> <code>copy = arr</code> doesn't copy — both variables point to the <strong>same array</strong> in memory.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>const copy = [...arr]</code> or <code>arr.slice()</code>.</p>
+</details>
+
+<details><summary>Q6. <code>let x = 5; { let x = 10; } console.log(x);</code> prints 10? <span class="badge b-yellow">🟡 Medium</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> Actually prints <strong>5</strong>! The inner <code>let x</code> is block-scoped — it doesn't affect the outer <code>x</code>.</p>
+<p><span class="quiz-correct">✅ Note:</span> This is expected behavior — block scope protects outer variables.</p>
+</details>
+
+<details><summary>Q7. <code>"5" + 3</code> gives <code>8</code>? <span class="badge b-yellow">🟡 Medium</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> Gives <code>"53"</code> (string)! <code>+</code> with a string does concatenation.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>Number("5") + 3</code> or <code>+"5" + 3</code>.</p>
+</details>
+
+<details><summary>Q8. <code>"5" - 3</code> gives <code>"2"</code>? <span class="badge b-yellow">🟡 Medium</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> Gives <code>2</code> (number)! <code>-</code> always coerces to numbers.</p>
+<p><span class="quiz-correct">✅ Note:</span> Only <code>+</code> does string concatenation — other math operators coerce to numbers.</p>
+</details>
+
+<details><summary>Q9. <code>null == undefined</code> is <code>false</code>? <span class="badge b-red">🔴 Hard</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> It's <code>true</code>! <code>==</code> treats <code>null</code> and <code>undefined</code> as equal.</p>
+<p><span class="quiz-correct">✅ Note:</span> But <code>null === undefined</code> is <code>false</code> (different types).</p>
+</details>
+
+<details><summary>Q10. <code>[] == []</code> is <code>true</code>? <span class="badge b-red">🔴 Hard</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> It's <code>false</code>! Each array is a different object reference.</p>
+<p><span class="quiz-correct">✅ Note:</span> Objects/arrays are compared by reference, not by value.</p>
+</details>
+
+<details><summary>Q11. <code>const f = () => { name: "Alice" };</code> returns an object? <span class="badge b-red">🔴 Hard</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> Returns <code>undefined</code>! The <code>{}</code> are treated as a function body, not an object.</p>
+<p><span class="quiz-correct">✅ Fix:</span> <code>const f = () => ({ name: "Alice" });</code> — wrap in parentheses.</p>
+</details>
+
+<details><summary>Q12. <code>for (var i = 0; i &lt; 3; i++) { setTimeout(() =&gt; console.log(i), 100); }</code> <span class="badge b-red">🔴 Hard</span></summary>
+<p><span class="quiz-wrong">🐞 Bug:</span> Prints <code>3, 3, 3</code> — not <code>0, 1, 2</code>! <code>var</code> is function-scoped, so all callbacks share the same <code>i</code>.</p>
+<p><span class="quiz-correct">✅ Fix:</span> Use <code>let i</code> instead of <code>var i</code> — <code>let</code> is block-scoped.</p>
 </details>
 
 </div>
@@ -3702,6 +3932,51 @@ console.log({ username, tag, domain });
 
 </div>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #2b6cb0;border-radius:12px;padding:20px 24px;margin:24px 0;">
+  <h2 style="color:#63b3ed;margin-top:0;text-align:center;">📋 Quick Reference Cheat Sheet</h2>
+  <p style="color:#e2e8f0;text-align:center;">Print this page or save as PDF for quick reference!</p>
+
+  <h3 style="color:#68d391;">Variables & Scope</h3>
+  <table style="width:100%;border-collapse:collapse;margin:10px 0;color:#e2e8f0;">
+    <tr style="background:#2d3748;"><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Keyword</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Scope</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Reassign?</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Use when</th></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><code>let</code></td><td style="padding:8px;border:1px solid #4a5568;">Block</td><td style="padding:8px;border:1px solid #4a5568;">Yes</td><td style="padding:8px;border:1px solid #4a5568;">value will change</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><code>const</code></td><td style="padding:8px;border:1px solid #4a5568;">Block</td><td style="padding:8px;border:1px solid #4a5568;">No</td><td style="padding:8px;border:1px solid #4a5568;">default choice</td></tr>
+  </table>
+
+  <h3 style="color:#f6e05e;">Golden Rules</h3>
+  <ol style="color:#e2e8f0;padding-left:20px;">
+    <li>Use <code>const</code> by default — <code>let</code> only when value must change</li>
+    <li>Always compare with <code>===</code> / <code>!==</code> — never <code>==</code> / <code>!=</code></li>
+    <li>Strings are immutable; arrays and objects are mutable</li>
+    <li><code>sort()</code> on numbers needs compare: <code>.sort((a, b) => a - b)</code></li>
+    <li>Every <code>switch</code> case needs a <code>break</code></li>
+  </ol>
+
+  <h3 style="color:#fc8181;">Common Pitfalls</h3>
+  <ul style="color:#e2e8f0;padding-left:20px;">
+    <li><code>=</code> vs <code>===</code> in conditions</li>
+    <li>Sorting numbers without compare function</li>
+    <li><code>push()</code> returns length, not array</li>
+    <li>Missing <code>break</code> in <code>switch</code></li>
+    <li>Modifying objects referenced by multiple variables</li>
+    <li><code>var</code> hoisting surprises</li>
+  </ul>
+
+  <h3 style="color:#b794f4;">Array Methods Quick Ref</h3>
+  <table style="width:100%;border-collapse:collapse;margin:10px 0;color:#e2e8f0;">
+    <tr style="background:#2d3748;"><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Method</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Returns</th><th style="padding:8px;border:1px solid #4a5568;text-align:left;">Mutates?</th></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><code>map()</code></td><td style="padding:8px;border:1px solid #4a5568;">New array</td><td style="padding:8px;border:1px solid #4a5568;">No</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><code>filter()</code></td><td style="padding:8px;border:1px solid #4a5568;">New array</td><td style="padding:8px;border:1px solid #4a5568;">No</td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><code>reduce()</code></td><td style="padding:8px;border:1px solid #4a5568;">Single value</td><td style="padding:8px;border:1px solid #4a5568;">No</td></tr>
+    <tr style="background:#2d3748;"><td style="padding:8px;border:1px solid #4a5568;"><code>push()</code></td><td style="padding:8px;border:1px solid #4a5568;">New length</td><td style="padding:8px;border:1px solid #4a5568;">Yes</td></tr>
+    <tr><td style="padding:8px;border:1px solid #4a5568;"><code>sort()</code></td><td style="padding:8px;border:1px solid #4a5568;">Same array</td><td style="padding:8px;border:1px solid #4a5568;">Yes</td></tr>
+  </table>
+
+  <div style="text-align:center;margin-top:16px;">
+    <button onclick="window.print()" style="padding:10px 24px;background:#2b6cb0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🖨️ Print / Save as PDF</button>
+  </div>
+</div>
+
 <div class="cert">
 <h2>🏆 Certificate of Completion</h2>
 <p>This certifies that <strong>Rohit</strong> has completed</p>
@@ -3718,4 +3993,168 @@ console.log({ username, tag, domain });
 <p>Made for hands-on learning — quizzes, flashcards, exercises & challenges.</p>
 
 </footer>
+
+<!-- ============ PHASE 1 & 2 INTERACTIVE FUNCTIONS ============ -->
+<script>
+
+// ===== PHASE 1: Truthy/Falsy Checker =====
+function checkTruthiness() {
+  const input = document.getElementById('truthyInput')?.value || '';
+  const result = document.getElementById('truthyResult');
+  
+  if (input === '') {
+    if (result) result.style.display = 'none';
+    return;
+  }
+  
+  let value;
+  try {
+    value = eval(input);
+  } catch(e) {
+    value = input;
+  }
+  
+  const isTruthy = Boolean(value);
+  const type = typeof value;
+  
+  if (result) {
+    result.style.display = 'block';
+    result.style.background = isTruthy ? '#c6f6d5' : '#fed7d7';
+    result.style.color = isTruthy ? '#22543d' : '#742a2a';
+    result.style.borderLeft = `4px solid ${isTruthy ? '#38a169' : '#e53e3e'}`;
+    
+    result.innerHTML = `
+      <strong>${isTruthy ? '✅ TRUTHY' : '❌ FALSY'}</strong><br>
+      <small>Value: <code>${JSON.stringify(value)}</code> | Type: <code>${type}</code></small>
+    `;
+  }
+}
+
+// ===== PHASE 2: JavaScript Sandbox =====
+let originalLog = console.log;
+let outputBuffer = [];
+
+function runSandboxCode() {
+  const code = document.getElementById('sandboxCode')?.value || '';
+  const output = document.getElementById('sandboxOutput');
+  
+  outputBuffer = [];
+  
+  console.log = function(...args) {
+    const formatted = args.map(arg => {
+      if (typeof arg === 'object') return JSON.stringify(arg, null, 2);
+      return String(arg);
+    }).join(' ');
+    outputBuffer.push(formatted);
+  };
+  
+  try {
+    eval(code);
+    if (output) {
+      output.innerHTML = outputBuffer.length > 0 
+        ? outputBuffer.join('\n') 
+        : '(no output)';
+      output.style.color = '#68d391';
+    }
+  } catch(error) {
+    if (output) {
+      output.innerHTML = `❌ Error: ${error.message}`;
+      output.style.color = '#fc8181';
+    }
+  }
+  
+  console.log = originalLog;
+}
+
+function clearSandboxCode() {
+  const code = document.getElementById('sandboxCode');
+  const output = document.getElementById('sandboxOutput');
+  
+  if (code) code.value = '';
+  if (output) {
+    output.innerHTML = '// Output will appear here';
+    output.style.color = '#e2e8f0';
+  }
+}
+
+// ===== PHASE 2: Hoisting Visualizer =====
+function showHoistingPhase(phase) {
+  const phase1 = document.getElementById('hoistingPhase1');
+  const phase2 = document.getElementById('hoistingPhase2');
+  const btn1 = document.getElementById('btn-phase1');
+  const btn2 = document.getElementById('btn-phase2');
+  const text = document.getElementById('hoistingText');
+  
+  if (phase1) phase1.style.display = phase === 1 ? 'block' : 'none';
+  if (phase2) phase2.style.display = phase === 2 ? 'block' : 'none';
+  
+  if (btn1) btn1.style.background = phase === 1 ? '#2b6cb0' : '#718096';
+  if (btn2) btn2.style.background = phase === 2 ? '#2b6cb0' : '#718096';
+  
+  const explanations = {
+    1: '<strong>Phase 1 - Creation:</strong> JavaScript scans your code and creates variables. Functions are fully hoisted (ready to use). <code>var</code> variables get <code>undefined</code>. <code>let</code> and <code>const</code> go into the Temporal Dead Zone (TDZ) — they exist but you can\'t access them yet.',
+    2: '<strong>Phase 2 - Execution:</strong> Your code runs line by line. Assignments happen now. Variables and functions are now accessible. This is why you can call a function BEFORE it\'s declared (if it was hoisted), but not a <code>var</code> before assignment.'
+  };
+  
+  if (text) text.innerHTML = explanations[phase];
+}
+
+// ===== PHASE 2: Type Coercion Flowchart =====
+function showCoercionExample(type) {
+  const result = document.getElementById('coercionResult');
+  const text = document.getElementById('coercionText');
+  const code = document.getElementById('coercionCode');
+  
+  const examples = {
+    concat: {
+      title: '🔗 String Concatenation with +',
+      explanation: 'When ONE operand is a string, the + operator converts the other to a string and concatenates.',
+      code: '"5" + 3      // Result: "53" (string)\n5 + "3"      // Result: "53" (string)\n"Hello" + 1  // Result: "Hello1" (string)'
+    },
+    subtract: {
+      title: '🔢 Numeric Operations',
+      explanation: 'The -, *, /, % operators coerce both operands to numbers. Strings that look like numbers become numbers!',
+      code: '"5" - 3      // Result: 2 (number)\n"10" * "2"   // Result: 20 (number)\n"5" / "5"    // Result: 1 (number)\n"abc" - 3    // Result: NaN (can\'t convert "abc")'
+    },
+    comparison: {
+      title: '⚖️ Loose Comparison (==)',
+      explanation: 'The == operator coerces types when comparing different types. This can lead to unexpected results!',
+      code: '"5" == 5     // Result: true (coerced to same type)\n0 == false   // Result: true (false coerced to 0)\n"" == false  // Result: true (both coerce to falsy)\nnull == undefined // Result: true (special case)'
+    },
+    strict: {
+      title: '✅ Strict Comparison (===)',
+      explanation: 'The === operator never coerces. If types differ, it\'s false. This is what you should ALWAYS use!',
+      code: '"5" === 5    // Result: false (different types)\n0 === false  // Result: false (different types)\n5 === 5      // Result: true (same type & value)\nnull === undefined // Result: false (different types)'
+    }
+  };
+  
+  const example = examples[type];
+  if (text) text.innerHTML = `<strong>${example.title}</strong><br>${example.explanation}`;
+  if (code) code.textContent = example.code;
+  if (result) result.style.display = 'block';
+}
+
+// Add event listener for Truthy/Falsy input
+document.addEventListener('DOMContentLoaded', function() {
+  const truthyInput = document.getElementById('truthyInput');
+  if (truthyInput) {
+    truthyInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkTruthiness();
+    });
+  }
+  
+  const sandboxCode = document.getElementById('sandboxCode');
+  if (sandboxCode) {
+    sandboxCode.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'Enter') runSandboxCode();
+    });
+  }
+  
+  // Initialize hoisting visualizer
+  if (document.getElementById('hoistingPhase1')) {
+    showHoistingPhase(1);
+  }
+});
+
+</script>
 
