@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Essentials — Part 4</title>
+<style>
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.partnav { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#2d3748; color:#e2e8f0; padding:8px 12px; border-radius:8px; margin:6px 0 12px 0; font-size:0.95rem; }
+.partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
+.partnav a:hover { text-decoration:underline; }
+.partnav strong { color:#fff; }
+h2[id], h3[id] { scroll-margin-top: 16px; }
+.theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+h1 { color:#2b6cb0; margin-bottom: 4px; }
+h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; color:#2b6cb0; }
+.tip   { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.warn  { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.chall { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.why   { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
+.layer-legend { display:flex; gap:8px; flex-wrap:wrap; background:#edf2f7; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:10px 0; font-size:0.9rem; }
+.layer-legend .l { padding:3px 10px; border-radius:999px; color:#fff; font-weight:600; }
+.l-react { background:#6d28d9; } .l-express { background:#047857; } .l-mongo { background:#b45309; } .l-node { background:#374151; }
+</style>
+</head>
+<body>
+
+<h1>JavaScript Essentials - Part 4</h1>
+
+<div class="partnav" aria-label="Part navigation">
+  <a href="Javascript_essentials_part1_study_app.html">← 1 Core</a>
+  <a href="Javascript_essentials_part2_study_app.html">← 2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_study_app.html">← 3 MERN Bridge</a>
+  <strong>4 MERN Foundations</strong>
+</div>
+</body>
+</html>
+
+<style>
+.sandbox { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px; color:#e2e8f0; margin:12px 0; }
+.sandbox textarea, .sandbox input, .sandbox select { width:100%; box-sizing:border-box; background:#0b1220; color:#a5f3fc; border:1px solid #334155; border-radius:6px; font-family:Consolas,monospace; padding:9px; }
+.sandbox .out { background:#020617; color:#86efac; border-radius:6px; padding:10px; margin-top:8px; min-height:42px; white-space:pre-wrap; font-family:Consolas,monospace; }
+.sandbox .err { color:#fca5a5; }
+.sandbox button { background:#2563eb; color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer; margin:6px 6px 0 0; font-weight:600; }
+.quiz-box { background:#f7f9fc; border:2px solid #4299e1; border-radius:10px; padding:14px 18px; margin:18px 0; }
+.quiz-box h3 { margin-top:0; color:#2b6cb0; }
+.quiz-box details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:8px 0; }
+.quiz-box summary { cursor:pointer; font-weight:600; }
+.quiz-correct { color:#276749; font-weight:700; }
+pre { background:#1a202c; color:#e2e8f0; padding:12px 14px; border-radius:8px; overflow-x:auto; }
+pre code { background:transparent; color:inherit; font-family:Consolas,monospace; }
+code { background:#e2e8f0; padding:1px 5px; border-radius:4px; font-family:Consolas,monospace; color:#2d3748; }
+.challenge { border:1px solid #4a5568; border-radius:10px; padding:12px 16px; margin:14px 0; background:#fafbfc; }
+.challenge textarea { width:100%; box-sizing:border-box; background:#0b1220; color:#a5f3fc; border:1px solid #334155; border-radius:6px; font-family:Consolas,monospace; padding:10px; }
+.challenge .result { margin-top:8px; padding:8px 10px; border-radius:6px; font-weight:600; white-space:pre-wrap; }
+.pass { background:#c6f6d5; color:#22543d; } .fail { background:#fed7d7; color:#742a2a; }
+.mark-btn { margin:8px 0 4px 0; padding:5px 12px; background:#38a169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; }
+.mark-btn.done { background:#718096; }
+.toast { background:#1a202c; color:#e2e8f0; border-left:4px solid #dd6b20; padding:10px 14px; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.3); font-weight:600; max-width:280px; animation:slidein .3s ease; }
+.toast.celebrate { border-left-color:#38a169; }
+.toast.badge { border-left-color:#805ad5; }
+@keyframes slidein { from{opacity:0;transform:translateX(20px);} to{opacity:1;transform:none;} }
+.mock-api { background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px; color:#e2e8f0; margin:12px 0; }
+.mock-api .log { background:#020617; color:#a5f3fc; border-radius:8px; padding:12px; font-family:Consolas,monospace; font-size:13px; min-height:120px; max-height:240px; overflow:auto; }
+.mock-api .log .req { color:#fbbf24; } .mock-api .log .ok { color:#86efac; } .mock-api .log .err { color:#f87171; }
+.totop { text-align:right; margin:6px 0; }
+body.focus-mode #progressBar, body.focus-mode #mockPanel, body.focus-mode #spacedRepetitionPanel, body.focus-mode #learningPathPanel { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+html.font-sm{font-size:15px;} html.font-md{font-size:17px;} html.font-lg{font-size:18px;}
+@media (prefers-color-scheme: dark){
+  body{background:#0d1117;color:#e6edf3;}
+  h1,h2{color:#5b9bf0;} h2{border-bottom-color:#63b3ed;}
+  code{background:#1f2937;color:#e2e8f0;}
+  .quiz-box{background:#141c28;border-color:#2b6cb0;color:#e2e8f0;}
+  .quiz-box h3{color:#90cdf4;} .quiz-box details{background:#0f1622;border-color:#2d3748;}
+  .challenge{background:#141c28;border-color:#2d3748;}
+  .why{background:#1c2333;border-left-color:#6366f1;color:#dbe4ef;}
+  .layer-legend{background:#1a202c;border-color:#2d3748;}
+}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+@media print { .theme-btn,#mockPanel,.mark-btn,.challenge,.totop,.layer-legend,button{display:none!important;} body{background:#fff!important;color:#000!important;} }
+</style>
+
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
+  <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
+  <button onclick="fontZoom4(-1)">A−</button>
+  <button onclick="fontZoom4(0)">A</button>
+  <button onclick="fontZoom4(1)">A+</button>
+  <span style="width:14px;"></span>
+  <button onclick="collapseAll4(true)">📖 Expand all</button>
+  <button onclick="collapseAll4(false)">📕 Collapse all</button>
+  <span style="width:14px;"></span>
+  <button id="focusBtn4" onclick="focusMode4(this)" aria-pressed="false">🧘 Focus Mode</button>
+</div>
+<div id="focusHint4" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — panels hidden, quizzes closed for calm reading. Click it again to restore.</div>
+
+<p>A beginner-friendly guide that turns your JS (Parts 1–3) into a working <strong>MERN</strong> app: <span class="l l-react">🟣 React (screen)</span> → <span class="l l-express">🟢 Express (server)</span> → <span class="l l-mongo">🟡 MongoDB (database)</span>, on <span class="l l-node">Node</span>. Two full projects: a <strong>Notes app</strong> and a <strong>Product Store with Reviews</strong>.</p>
+
+<div class="layer-legend" aria-label="Layer colour legend">
+  <span class="l l-react">🟣 React — client / screen</span>
+  <span class="l l-express">🟢 Express — server</span>
+  <span class="l l-mongo">🟡 MongoDB — database</span>
+  <span class="l l-node">Node — runtime</span>
+</div>
+
+<div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/16 sections (0%)</div>
+
+<div id="boostBar" style="background:#1a202c;border:2px solid #dd6b20;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+  <div style="font-weight:700;">⚡ <span id="streakCount4" style="color:#fbbf24;">0-day streak</span></div>
+  <div style="font-weight:700;">⭐ <span id="pointCount4" style="color:#fbbf24;">0 XP</span></div>
+  <div><button onclick="boostSurprise4()" aria-label="Surprise me" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer4()" aria-label="Focus sprint" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><span id="focusTimer4" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
+</div>
+
+<div id="toastZone4" style="position:fixed;top:16px;right:16px;z-index:999;display:flex;flex-direction:column;gap:8px;"></div>
+<canvas id="confettiCanvas4" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none;"></canvas>
+
+<div id="learningPathPanel" style="background:#2d3748;border:2px solid #805ad5;border-radius:12px;padding:16px 20px;margin:16px 0;"><h3 style="color:#b794f4;margin-top:0;">🧭 Learning Path</h3><div id="learningPathContent4" style="color:#e2e8f0;"><p>⏳ Complete sections to get personalized recommendations…</p></div></div>
+
+<div id="spacedRepetitionPanel" style="background:#2d3748;border:2px solid #319795;border-radius:12px;padding:16px 20px;margin:16px 0;">
+  <h3 style="color:#4fd1c5;margin-top:0;">🃏 Spaced Repetition Flashcards</h3>
+  <div id="srCard4" style="background:#1a202c;border:1px solid #4a5568;border-radius:8px;padding:16px;margin:10px 0;text-align:center;">
+    <p id="srQuestion4" style="color:#e2e8f0;font-size:16px;margin:0 0 12px 0;">Click "Start Review" to begin!</p>
+    <p id="srAnswer4" style="color:#68d391;font-size:14px;margin:0 0 12px 0;display:none;"></p>
+    <div id="srButtons4" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="startSRReview4()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Start Review</button>
+      <button onclick="srToggleShuffle4()" id="srShuffleBtn4" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔀 Shuffle: Off</button>
+    </div>
+    <div id="srStats4" style="color:#a0aec0;font-size:12px;margin-top:10px;"></div>
+  </div>
+</div>
+
+<div class="interactive-note" style="background:#eef6ff;border-left:4px solid #2b6cb0;padding:10px 14px;border-radius:6px;margin:12px 0;">💡 <strong>How this guide is different:</strong> no install needed. Every MERN idea has a <strong>colour-coded layer</strong>, a <strong>why-it-matters</strong> line, a tiny <strong>predict-then-reveal</strong>, and a <strong>clickable mock server</strong> so you build the mental model before you open a terminal.</div>
+<!-- ===== Mock API panel ===== -->
+<div id="mockPanel" class="mock-api" aria-label="Live mock MERN server demo">
+  <h3 style="margin-top:0;color:#93c5fd;">🚦 Live Mock MERN Server <small style="color:#a0aec0;">(no install — click to see the React→Express→MongoDB loop)</small></h3>
+  <p style="color:#cbd5e0;font-size:14px;margin:4px 0 10px 0;">This runs a tiny in-page "server + database" so you can <strong>watch</strong> the request/response cycle (Section 3) without installing Node or MongoDB.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+    <button onclick="mockRun('GET','/api/notes',null)">GET /api/notes</button>
+    <button onclick="mockRun('POST','/api/notes',{text:'Buy milk',done:false})">➕ POST note</button>
+    <button onclick="mockRun('PUT','/api/notes/'+mockFirstId('notes'),{text:'Done ✓',done:true})">✏️ PUT note</button>
+    <button onclick="mockRun('DELETE','/api/notes/'+mockFirstId('notes'),null)">🗑 DELETE note</button>
+    <button onclick="mockRun('GET','/api/products/1',null)">GET product 1</button>
+    <button onclick="mockRun('POST','/api/products/1/reviews',{rating:5,comment:'Awesome!'})">⭐ POST review</button>
+    <button onclick="mockRun('GET','/api/products/1/reviews',null)">GET reviews</button>
+    <button onclick="mockReset()">↺ Reset DB</button>
+  </div>
+  <div class="log" id="mockLog4">Log appears here. Each click shows the <span class="req">request</span> React sends and the <span class="ok">response</span> Express returns after touching MongoDB.<br><span style="color:#64748b;">Try: "POST note" then "GET /api/notes" → see it in the database.</span></div>
+</div>
+
+<nav id="table-of-contents"><h2>📑 Table of Contents</h2>
+<p>🔗 <a href="#1-layers">1. Hello MERN</a> · <a href="#2-setup">2. Setup</a> · <a href="#3-loop">3. The Loop</a> · <a href="#4-express">4. Express</a> · <a href="#5-rest">5. REST</a> · <a href="#6-mongo">6. MongoDB</a> · <a href="#7-notes-backend">7. Notes backend</a> · <a href="#8-react">8. React</a> · <a href="#9-fetch">9. fetch</a> · <a href="#10-notes-full">10. Notes full</a> · <a href="#11-cors">11. CORS</a> · <a href="#12-node">12. Node</a> · <a href="#13-ts">13. TypeScript</a> · <a href="#14-products">14. Product Store</a> · <a href="#15-pitfalls">15. Pitfalls</a> · <a href="#16-challenges">16. Challenges</a> · <a href="#17-answers">17. Answers</a></p>
+</nav>
+<hr>
+<h2 id="1-layers">1. Hello MERN — the 3-layer sandwich</h2><button class="mark-btn" onclick="toggleSection(1)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> one picture in your head — three layers talking to each other.</div>
+<pre><code>┌───────────────────────────────┐
+│ 🟣 React  "the screen"          │  what the user sees
+│      │  fetch("/api/notes")     │  JS run in the browser
+│      ▼                          │
+│ 🟢 Express "the receptionist"   │  decides the route + rule
+│      │ "give me all notes"      │  JS run on the server
+│      ▼                          │
+│ 🟡 MongoDB "the filing cabinet" │  stores documents
+└───────────────────────────────┘</code></pre>
+<p><strong>The one sentence:</strong> the screen (React) phones the server (Express); the server saves/finds it in MongoDB, sends the answer back, and React redraws the screen.</p>
+<div class="quiz-box"><h3>🎯 Section 1 quiz</h3><details><summary>Which layer does the user see?</summary><p class="quiz-correct">🟣 React (client/screen)</p></details><details><summary>Which layer decides URL rules?</summary><p class="quiz-correct">🟢 Express</p></details><details><summary>Which layer remembers data between visits?</summary><p class="quiz-correct">🟡 MongoDB</p></details><details><summary>True/False: React talks to MongoDB directly.</summary><p class="quiz-correct">False — React talks to Express; Express talks to MongoDB</p></details></div>
+<hr>
+
+<h2 id="2-setup">2. Setting up a project</h2><button class="mark-btn" onclick="toggleSection(2)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> every project starts with a folder + a <code>package.json</code> "recipe card".</div>
+<pre><code>my-app/
+├─ package.json      ← recipe: name, scripts, dependencies
+├─ server/server.js  ← Express + Mongoose (backend starts here)
+└─ client/src/App.jsx← React (the screen)</code></pre>
+<pre><code>npm install express mongoose cors   # download packages (reads package.json)
+npm start                            # runs the "start" script → node server/server.js</code></pre>
+<div class="tip">🧠 <strong>ADHD-friendly:</strong> you only need to remember <code>npm install</code>, <code>npm start</code>, <code>npm run dev</code>. That's 90% of daily setup.</div>
+<div class="quiz-box"><h3>🎯 Section 2 quiz</h3><details><summary>What does npm install do?</summary><p class="quiz-correct">Reads package.json &amp; downloads dependencies into node_modules</p></details><details><summary>Where does the server start?</summary><p class="quiz-correct">server/server.js (via the start script)</p></details></div>
+<hr>
+<h2 id="3-loop">3. The full request/response cycle</h2><button class="mark-btn" onclick="toggleSection(3)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the single most important mental model — every MERN feature repeats this 5-step loop.</div>
+<div class="tip">🖱 <strong>Watch it live:</strong> scroll up and press a button in the 🚦 <strong>Live Mock MERN Server</strong>. You'll SEE this exact loop run.</div>
+<pre><code>React ──POST /api/notes──▶ Express ──create()──▶ MongoDB
+  ▲                            │                    │
+  └──────201 + JSON◀───────────┘◀────── saved ◀────┘</code></pre>
+<p><strong>The 5 steps:</strong> 1️⃣ React sends <code>fetch</code> · 2️⃣ Express matches the route · 3️⃣ MongoDB saves · 4️⃣ Express replies (<code>201</code> + JSON) · 5️⃣ React re-renders.</p>
+<div class="quiz-box"><h3>🎯 Section 3 quiz</h3><details><summary>Who sends the request FIRST?</summary><p class="quiz-correct">🟣 React (client)</p></details><details><summary>What verb did "add a note" use?</summary><p class="quiz-correct">POST</p></details><details><summary>What did the server reply on success?</summary><p class="quiz-correct">201 + the saved note as JSON</p></details><details><summary>Where is the note permanently stored?</summary><p class="quiz-correct">🟡 MongoDB</p></details></div>
+<hr>
+
+<h2 id="4-express">4. Express server — routing &amp; middleware</h2><button class="mark-btn" onclick="toggleSection(4)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> Express is the "receptionist" that picks which function runs for each URL + method.</div>
+<pre><code>app.&lt;VERB&gt;(&lt;path&gt;, (req, res) => { /* respond */ });
+
+app.get("/", (req, res) => res.send("Hello!"));
+app.get("/api/notes/:id", (req, res) => res.json({ id: req.params.id }));
+app.use(express.json());   // middleware: turn JSON body into req.body</code></pre>
+<ul><li><code>req</code> = what the client sent · <code>res</code> = what we send back</li><li>middleware = a step that runs before the route handler</li></ul>
+<div class="quiz-box"><h3>🎯 Section 4 quiz</h3><details><summary>Which object holds what the client sent?</summary><p class="quiz-correct">req</p></details><details><summary>Which object sends data back?</summary><p class="quiz-correct">res</p></details><details><summary>For /api/notes/7, what is req.params.id?</summary><p class="quiz-correct">"7"</p></details></div>
+<hr>
+
+<h2 id="5-rest">5. REST API design</h2><button class="mark-btn" onclick="toggleSection(5)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> one predictable pattern for CRUD — learn it once, use it everywhere.</div>
+<pre><code>CREATE  POST     /api/notes          → 201
+READ    GET      /api/notes          → 200
+READ 1  GET      /api/notes/:id      → 200 / 404
+UPDATE  PUT      /api/notes/:id      → 200
+DELETE  DELETE   /api/notes/:id      → 204</code></pre>
+<p><strong>Memory aid:</strong> POST=create · GET=read · PUT=update · DELETE=delete. Status: <code>200</code> ok · <code>201</code> created · <code>404</code> not found · <code>500</code> crashed.</p>
+<div class="quiz-box"><h3>🎯 Section 5 quiz</h3><details><summary>Which verb ADDS a new resource?</summary><p class="quiz-correct">POST</p></details><details><summary>Which verb REMOVES one?</summary><p class="quiz-correct">DELETE</p></details><details><summary>Status for "created"?</summary><p class="quiz-correct">201</p></details><details><summary>Status for a missing id?</summary><p class="quiz-correct">404</p></details></div>
+<hr>
+<h2 id="6-mongo">6. MongoDB + Mongoose</h2><button class="mark-btn" onclick="toggleSection(6)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> MongoDB stores your data; Mongoose ties it to Express with a <strong>schema</strong> (shape-checker).</div>
+<pre><code>const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/notesdb");
+
+const noteSchema = new mongoose.Schema({
+  text: { type: String, required: true },
+  done: { type: Boolean, default: false },
+}, { timestamps: true });
+
+const Note = mongoose.model("Note", noteSchema);
+
+await Note.create({ text: "hi" });      // create
+await Note.find();                       // read all
+await Note.findById(id);                 // read one
+await Note.findByIdAndUpdate(id, upd, { new: true }); // update
+await Note.findByIdAndDelete(id);        // delete</code></pre>
+<div class="tip">🧠 Mongoose queries are async — that's why <code>await</code> (you know it from Part 2).</div>
+<div class="quiz-box"><h3>🎯 Section 6 quiz</h3><details><summary>What is a schema?</summary><p class="quiz-correct">The required shape of a document</p></details><details><summary>Which method creates a doc?</summary><p class="quiz-correct">Note.create(...)</p></details><details><summary>Which reads ALL?</summary><p class="quiz-correct">Note.find()</p></details><details><summary>Which auto-added id does MongoDB add?</summary><p class="quiz-correct">_id</p></details></div>
+<hr>
+
+<h2 id="7-notes-backend">7. Project A — Notes backend</h2><button class="mark-btn" onclick="toggleSection(7)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> your first real full-stack build — the request/response loop with all 5 REST routes.</div>
+<pre><code>app.use(cors());             // let the React frontend call us
+app.use(express.json());     // read JSON bodies
+
+app.get("/api/notes", async (req,res) => {
+  res.json(await Note.find().sort({ createdAt: -1 }));
+});
+app.post("/api/notes", async (req,res) => {
+  res.status(201).json(await Note.create(req.body));
+});
+app.get("/api/notes/:id", async (req,res) => {
+  const n = await Note.findById(req.params.id);
+  if (!n) return res.status(404).json({ error: "Not found" });
+  res.json(n);
+});
+app.put("/api/notes/:id", async (req,res) =>
+  res.json(await Note.findByIdAndUpdate(req.params.id, req.body, { new: true })));
+app.delete("/api/notes/:id", async (req,res) => {
+  await Note.findByIdAndDelete(req.params.id); res.status(204).end();
+});
+app.listen(3000, () => console.log("Notes API on :3000"));</code></pre>
+<div class="tip">🧠 <strong>No MongoDB yet?</strong> No problem — the 🚦 mock server above runs this same cycle in-page today.</div>
+<div class="quiz-box"><h3>🎯 Section 7 quiz</h3><details><summary>What does .sort({createdAt:-1}) do?</summary><p class="quiz-correct">Newest notes first</p></details><details><summary>Why 201 on POST?</summary><p class="quiz-correct">Signals "created"</p></details><details><summary>What does :id return if missing?</summary><p class="quiz-correct">404 + error message</p></details></div>
+<hr>
+<h2 id="8-react">8. React fundamentals</h2><button class="mark-btn" onclick="toggleSection(8)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> React is how you turn data into a screen. Core idea: <strong>UI = f(state)</strong> — change state, React re-draws.</div>
+<pre><code>import { useState, useEffect } from "react";
+
+function NoteItem({ note }) {           // component = function → JSX
+  return &lt;li&gt;{note.text}&lt;/li&gt;;
+}
+
+function App() {
+  const [notes, setNotes] = useState([]);   // state + setter
+  return &lt;ul&gt;{notes.map(n =&gt; &lt;NoteItem key={n._id} note={n} /&gt;)}&lt;/ul&gt;;
+}</code></pre>
+<div class="tip">🧠 When you call <code>setNotes(...)</code>, React <strong>re-renders</strong> — the screen updates automatically. No manual DOM.</div>
+<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>A React component is basically…</summary><p class="quiz-correct">a function that returns JSX</p></details><details><summary>What does useState do?</summary><p class="quiz-correct">Creates state + a setter; changing it re-renders</p></details><details><summary>What is a prop?</summary><p class="quiz-correct">Data passed into a component</p></details><details><summary>Which hook runs once on load?</summary><p class="quiz-correct">useEffect(..., [])</p></details></div>
+<hr>
+
+<h2 id="9-fetch">9. Client → server — fetch in React</h2><button class="mark-btn" onclick="toggleSection(9)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the moment the 🟣 screen talks to the 🟢 server — it's the <code>fetch</code> from Part 3, wired into state.</div>
+<pre><code>async function loadNotes() {
+  const res  = await fetch("http://localhost:3000/api/notes");
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  setNotes(await res.json());
+}
+async function addNote(text) {
+  const res = await fetch(".../api/notes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
+  });
+  setNotes([await res.json(), ...notes]);
+}</code></pre>
+<p><strong>The 4-step pattern:</strong> fetch → check <code>res.ok</code> → <code>.json()</code> → <code>setState</code> (re-render).</p>
+<div class="quiz-box"><h3>🎯 Section 9 quiz</h3><details><summary>What does POST return to you?</summary><p class="quiz-correct">The created note</p></details><details><summary>Why call setNotes after?</summary><p class="quiz-correct">To trigger a re-render with new data</p></details><details><summary>What's the 4-step pattern?</summary><p class="quiz-correct">fetch → res.ok → .json() → setState</p></details></div>
+<hr>
+<h2 id="10-notes-full">10. Project A — full stack (frontend + backend)</h2><button class="mark-btn" onclick="toggleSection(10)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the complete Notes app — backend + React + fetch, all wired into one working loop.</div>
+<div class="chall">
+<h3 style="margin-top:0;">🧪 Try it NOW — a real-working mini Notes app (uses the in-page mock server)</h3>
+<p>Type a note and click Add. Watch it travel: it's POSTed to the mock Express, saved in the mock MongoDB, then the screen re-renders — exactly like the real app from the lesson.</p>
+<div><input id="p4-note-input" placeholder="Type a note…" style="width:70%;padding:8px;border-radius:6px;border:1px solid #cbd5e0;"></div>
+<button onclick="p4AddNote()" style="margin-top:6px;background:#38a169;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;">➕ Add note</button>
+<button onclick="p4LoadNotes()" style="margin-top:6px;background:#3182ce;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;">🔁 Refresh from DB</button>
+<button onclick="p4ResetNotes()" style="margin-top:6px;background:#718096;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;">↺ Reset DB</button>
+<div id="p4-notes-list" style="margin-top:12px;color:#e2e8f0;">(Click "Refresh from DB" or add a note to start)</div>
+<div id="p4-notes-log" style="margin-top:10px;font-family:Consolas,monospace;font-size:12px;color:#86efac;min-height:30px;"></div>
+</div>
+<pre><code>// The REAL App.jsx that this demo mirrors
+function App() {
+  const [notes, setNotes] = useState([]);
+  async function loadNotes(){ setNotes(await (await fetch("/api/notes")).json()); }
+  useEffect(() => { loadNotes(); }, []);
+  async function add(){
+    const res = await fetch("/api/notes", { method:"POST",
+      headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ text }) });
+    setNotes([await res.json(), ...notes]);
+  }
+  // ... render it
+}</code></pre>
+<div class="quiz-box"><h3>🎯 Section 10 quiz</h3><details><summary>Why call loadNotes inside useEffect(...,[])?</summary><p class="quiz-correct">To load once when the app opens</p></details><details><summary>What does notes.filter(n => n._id !== id) do?</summary><p class="quiz-correct">Returns all notes except the removed one (for DELETE)</p></details><details><summary>Trace "add a note" through the loop.</summary><p class="quiz-correct">fetch POST → Express creates in MongoDB → 201 + saved → setNotes → re-render</p></details></div>
+<hr>
+<h2 id="11-cors">11. CORS &amp; the sandwich</h2><button class="mark-btn" onclick="toggleSection(11)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the browser blocks the frontend calling a different port/domain — CORS is the server's permission slip.</div>
+<pre><code>const cors = require("cors");
+app.use(cors());                             // allow all (fine for learning)
+// OR restrict to one frontend:
+app.use(cors({ origin: "http://localhost:5173" }));</code></pre>
+<div class="quiz-box"><h3>🎯 Section 11 quiz</h3><details><summary>Why does the browser block React→Express on different ports?</summary><p class="quiz-correct">Different origins (Same-Origin Policy)</p></details><details><summary>What's the one-line server fix?</summary><p class="quiz-correct">app.use(cors())</p></details><details><summary>Where is CORS enabled — frontend or server?</summary><p class="quiz-correct">Server</p></details></div>
+<hr>
+
+<h2 id="12-node">12. Node core for servers</h2><button class="mark-btn" onclick="toggleSection(12)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> Express runs on Node; a few Node built-ins appear in every real server.</div>
+<pre><code>const PORT = process.env.PORT || 3000;        // config from env
+const path = require("node:path");
+const p = path.join(__dirname, "data.json");
+const fs = require("node:fs/promises");
+const data = await fs.readFile(p, "utf8");
+const http = require("node:http");
+http.createServer((req,res)=>{ res.end("Hi"); }).listen(4000);</code></pre>
+<div class="quiz-box"><h3>🎯 Section 12 quiz</h3><details><summary>Where should you store a database password?</summary><p class="quiz-correct">process.env (environment variables)</p></details><details><summary>Why use path.join?</summary><p class="quiz-correct">Builds correct cross-platform paths</p></details><details><summary>What does Express wrap under the hood?</summary><p class="quiz-correct">Node's http module</p></details></div>
+<hr>
+
+<h2 id="13-ts">13. TypeScript in 30 minutes</h2><button class="mark-btn" onclick="toggleSection(13)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> most MERN projects are TypeScript — JS + types that catch mistakes BEFORE the app runs.</div>
+<pre><code>interface Product { id: number; name: string; price: number; }
+function total(items: Product[]): number {
+  return items.reduce((sum, p) => sum + p.price, 0);
+}
+interface Note { _id: string; text: string; done: boolean; }
+async function load(): Promise&lt;Note[]&gt; {
+  const res = await fetch("/api/notes");
+  return await res.json();        // TS knows it's Note[] — typos flagged
+}</code></pre>
+<p><code>.ts</code> = TypeScript · <code>.tsx</code> = TS + JSX (React) · the <code>tsc</code> compiler turns it into plain JS.</p>
+<div class="quiz-box"><h3>🎯 Section 13 quiz</h3><details><summary>What is TypeScript?</summary><p class="quiz-correct">JavaScript + type annotations</p></details><details><summary>What does an interface describe?</summary><p class="quiz-correct">The shape of an object</p></details><details><summary>Why does TS help with fetch?</summary><p class="quiz-correct">It checks the expected data shape, catching typos early</p></details></div>
+<hr>
+<h2 id="14-products">14. Project B — Product Store with Reviews</h2><button class="mark-btn" onclick="toggleSection(14)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> real apps have related data (a product has many reviews) — this unlocks <code>ref</code> + <code>populate</code> + nested routes.</div>
+<div class="chall">
+<h3 style="margin-top:0;">🧪 Try it NOW — Product + Reviews demo (mock)</h3>
+<p>Pick a product, add a review. Notice the review is linked (<code>ref</code>) to its product, and the nested route shows the relationship.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+  <button onclick="p4ShowProduct(1)" style="background:#6d28d9;">📦 Product 1</button>
+  <button onclick="p4ShowProduct(2)" style="background:#6d28d9;">📦 Product 2</button>
+</div>
+<div id="p4-product-view" style="color:#e2e8f0;margin-bottom:8px;">Select a product to see its reviews (via nested route /api/products/:id/reviews).</div>
+<div><input id="p4-review-input" placeholder="Review comment…" style="width:60%;padding:8px;border-radius:6px;border:1px solid #cbd5e0;"></div>
+<button onclick="p4AddReview()" style="margin-top:6px;background:#b45309;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;">⭐ Add review</button>
+<button onclick="p4LoadReviews()" style="margin-top:6px;background:#3182ce;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;">🔁 Load reviews</button>
+<div id="p4-reviews-list" style="margin-top:10px;color:#e2e8f0;"></div>
+</div>
+<pre><code>const reviewSchema = new mongoose.Schema({
+  product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+  rating:  { type: Number, min: 1, max: 5, required: true },
+  comment: String,
+});
+const Review = mongoose.model("Review", reviewSchema);
+
+app.post("/api/products/:id/reviews", async (req,res) =&gt;
+  res.status(201).json(await Review.create({ ...req.body, product: req.params.id })));
+app.get("/api/products/:id/reviews", async (req,res) =&gt;
+  res.json(await Review.find({ product: req.params.id })));</code></pre>
+<div class="quiz-box"><h3>🎯 Section 14 quiz</h3><details><summary>How does a review know its product?</summary><p class="quiz-correct">It stores the product's _id via ref:"Product"</p></details><details><summary>What does populate do?</summary><p class="quiz-correct">Fills in linked documents (Mongoose's join)</p></details><details><summary>URL to add a review to product abc?</summary><p class="quiz-correct">POST /api/products/abc/reviews</p></details><details><summary>What limits rating to 1–5?</summary><p class="quiz-correct">min:1, max:5 in the schema</p></details></div>
+<hr>
+<h2 id="15-pitfalls">15. Common pitfalls in MERN</h2><button class="mark-btn" onclick="toggleSection(15)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the exact bugs that waste beginners' hours — recognize once, skip the pain.</div>
+<pre><code>// 1. Forgot await on Mongoose
+const notes = Note.find();          // ❌ promise, not data
+const notes = await Note.find();    // ✅
+<h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> these mirror real MERN coding tasks — a safe place to make and fix mistakes. No install needed; write a function, click Run.</div>
+
+<div class="challenge"><h3>C1 — makeProduct</h3><p>Return a product <code>{ name, price, reviews: [] }</code>.</p>
+<textarea id="chal1" rows="3">function makeProduct(name, price) {
+  // return { name, price, reviews: [] }
+}</textarea>
+<button class="mark-btn" onclick="runTest(1)">▶️ Run tests</button><div class="result" id="res1"></div></div>
+
+<div class="challenge"><h3>C2 — addReview</h3><p>Return a NEW product with the review appended (immutable).</p>
+<textarea id="chal2" rows="4">function addReview(product, review) {
+  // return { ...product, reviews: [...product.reviews, review] }
+}</textarea>
+<button class="mark-btn" onclick="runTest(2)">▶️ Run tests</button><div class="result" id="res2"></div></div>
+
+<div class="challenge"><h3>C3 — routePath</h3><p>Replace <code>:id</code> in a route template with a given id.</p>
+<textarea id="chal3" rows="3">function routePath(template, id) {
+  // return template.replace(":id", id)
+}</textarea>
+<button class="mark-btn" onclick="runTest(3)">▶️ Run tests</button><div class="result" id="res3"></div></div>
+
+<div class="challenge"><h3>C4 — pickStatus</h3><p>Return the right status: POST→201, GET→200, DELETE→204, else→500.</p>
+<textarea id="chal4" rows="5">function pickStatus(verb) {
+  // ...
+}</textarea>
+<button class="mark-btn" onclick="runTest(4)">▶️ Run tests</button><div class="result" id="res4"></div></div>
+
+<div class="challenge"><h3>C5 — avgRating</h3><p>Average of an array of ratings.</p>
+<textarea id="chal5" rows="3">function avgRating(items) {
+  // ...
+}</textarea>
+<button class="mark-btn" onclick="runTest(5)">▶️ Run tests</button><div class="result" id="res5"></div></div>
+
+<div class="challenge"><h3>C6 — validateNote</h3><p>Return <code>{ valid:false, error:"text is required" }</code> if text blank, else <code>{ valid:true }</code>.</p>
+<textarea id="chal6" rows="4">function validateNote(note) {
+  // ...
+}</textarea>
+<button class="mark-btn" onclick="runTest(6)">▶️ Run tests</button><div class="result" id="res6"></div></div>
+<hr>
+
+<h2 id="17-answers">17. Answer key</h2><button class="mark-btn" onclick="toggleSection(17)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> compare your work — noticing differences is where learning happens.</div>
+<div class="quiz-box"><h3>🔑 Challenge solutions</h3>
+<details><summary>C1 — makeProduct</summary><pre><code>function makeProduct(name, price) {
+  return { name, price, reviews: [] };
+}</code></pre></details>
+<details><summary>C2 — addReview</summary><pre><code>function addReview(product, review) {
+  return { ...product, reviews: [...product.reviews, review] };
+}</code></pre></details>
+<details><summary>C3 — routePath</summary><pre><code>function routePath(template, id) {
+  return template.replace(":id", id);
+}</code></pre></details>
+<details><summary>C4 — pickStatus</summary><pre><code>function pickStatus(verb) {
+  if (verb === "POST") return 201;
+  if (verb === "GET") return 200;
+  if (verb === "DELETE") return 204;
+  return 500;
+}</code></pre></details>
+<details><summary>C5 — avgRating</summary><pre><code>function avgRating(items) {
+  if (!items || items.length === 0) return 0;
+  return items.reduce((s, r) =&gt; s + r, 0) / items.length;
+}</code></pre></details>
+<details><summary>C6 — validateNote</summary><pre><code>function validateNote(note) {
+  if (!note.text || note.text.trim() === "") return { valid:false, error:"text is required" };
+  return { valid:true };
+}</code></pre></details>
+</div>
+
+<div class="quiz-box"><h3>🎯 All section answers</h3><details><summary>Quick recap</summary><p>S1: React(screen) → Express(routes) → MongoDB(db) · S2: npm install reads package.json · S3: 5-step loop · S4: req=in, res=out · S5: POST create, GET read, PUT update, DELETE delete; 201 created, 404 missing · S6: schema=shape; create/find/findById/update/delete · S7: Notes API = cors + json + model + 5 routes · S8: component=function→JSX; useState re-renders · S9: fetch→res.ok→json→setState · S10: load on mount, POST add, DELETE filter · S11: cors() on server · S12: process.env, path.join, fs, http · S13: TS = JS + types, interface, .ts/.tsx · S14: ref + populate + nested routes · S15: await, res.ok, immutable, {new:true}</p></details></div>
+
+<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 4 (MERN Foundations). You built a Notes app and a Product Store with Reviews, end-to-end.<br><span style="color:#a0aec0;font-size:13px;">Next: open a real terminal, npm install, and run the exact code from this guide against a real MongoDB.</span></div>
+
+<div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
+
+// 2. Forgot res.ok check
+const d = await res.json();         // ❌ confusing on 404/500
+if (!res.ok) throw new Error(...);  // ✅ check first
+
+// 3. Mutating state
+notes.push(x); setNotes(notes);     // ❌ no re-render
+setNotes([...notes, x]);            // ✅ new array
+
+// 4. findByIdAndUpdate returns OLD doc without { new: true }
+Note.findByIdAndUpdate(id, upd);                   // ❌ old
+Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ new
+
+// 5. CORS: add app.use(cors()) on the SERVER
+// 6. Empty req.body: add app.use(express.json())</code></pre>
+<div class="quiz-box"><h3>🎯 Section 15 quiz</h3><details><summary>const n = Note.create({...}); — what's wrong?</summary><p class="quiz-correct">Missing await</p></details><details><summary>notes.push(x); setNotes(notes); — why no update?</summary><p class="quiz-correct">Mutating state instead of a new array</p></details><details><summary>Where do you fix a CORS error?</summary><p class="quiz-correct">On the server, app.use(cors())</p></details></div>
+<hr>
+<script>
+// ===== Part 4 Study App — Script =====
+
+// ===== Theme =====
+function toggleTheme(){
+  var cur=document.documentElement.className;
+  var next=cur==="force-dark"?"force-light":"force-dark";
+  document.documentElement.className=next;
+  localStorage.setItem("p4-theme",next);
+  document.getElementById("themeBtn").textContent=next==="force-dark"?"☀️ Light mode":"🌙 Dark mode";
+}
+function applySysDark(){
+  if(!localStorage.getItem("p4-theme") && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
+    document.documentElement.className="force-dark";
+    document.getElementById("themeBtn").textContent="☀️ Light mode";
+  }
+}
+applySysDark();
+
+// ===== Font zoom =====
+var fontLevels4=["font-sm","","font-md","font-lg"];
+function fontZoom4(dir){
+  var html=document.documentElement, cur="";
+  ["font-sm","font-md","font-lg"].forEach(function(c){ if(html.classList.contains(c)) cur=c; });
+  html.className=html.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ").trim();
+  if(dir!==0){
+    var idx=cur==="font-md"?2:cur==="font-lg"?3:cur==="font-sm"?0:1;
+    var nxt=Math.max(0,Math.min(3,idx+dir)), add=fontLevels4[nxt];
+    if(add) html.className=(html.className+" "+add).trim();
+    localStorage.setItem("p4-font",add||"normal");
+  } else { localStorage.setItem("p4-font","normal"); }
+}
+function applyFontZoom4(){ var s=localStorage.getItem("p4-font"); if(s && s!=="normal") document.documentElement.className=(document.documentElement.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ")+" "+s).trim(); }
+
+// ===== Progress =====
+var P4_TOTAL=17;
+function toggleSection(n){
+  var key="p4-sec-"+n, done=localStorage.getItem(key)==="1";
+  localStorage.setItem(key, done?"0":"1");
+  var b=document.querySelector('button[onclick="toggleSection('+n+')"]');
+  if(b){ b.textContent=done?"✅ Mark Complete":"✅ Completed"; b.classList.toggle("done",!done); }
+  if(!done && localStorage.getItem(key)==="1"){ addXP4(20); trackStreak4(); celebrate4(); toast4("✅ Section complete +20 XP","celebrate"); }
+  updateProgress();
+}
+function updateProgress(){
+  var done=0; for(var i=1;i<=P4_TOTAL;i++) if(localStorage.getItem("p4-sec-"+i)==="1") done++;
+  var bar=document.getElementById("progressBar");
+  if(bar) bar.textContent="📊 Progress: "+done+"/"+P4_TOTAL+" sections ("+Math.round(done/P4_TOTAL*100)+"%)";
+  updateLearningPath4(done);
+}
+function markButtons(){ for(var i=1;i<=P4_TOTAL;i++){ var b=document.querySelector('button[onclick="toggleSection('+i+')"]'); if(b && localStorage.getItem("p4-sec-"+i)==="1"){ b.textContent="✅ Completed"; b.classList.add("done"); } } }
+function updateLearningPath4(done){
+  var el=document.getElementById("learningPathContent4"); if(!el) return;
+  if(done===0){ el.innerHTML="<p>⏳ Start with <strong>Section 1 (Hello MERN)</strong> — get the layer picture first.</p>"; return; }
+  var names={1:"Hello MERN",2:"Setup",3:"The Loop",4:"Express",5:"REST",6:"MongoDB",7:"Notes backend",8:"React",9:"fetch",10:"Notes full stack",11:"CORS",12:"Node",13:"TypeScript",14:"Product Store",15:"Pitfalls",16:"Challenges",17:"Answers"};
+  var next=""; for(var i=1;i<=P4_TOTAL;i++) if(localStorage.getItem("p4-sec-"+i)!=="1"){ next=i; break; }
+  el.innerHTML=next?"<p>⏳ Next: <strong>Section "+next+" ("+names[next]+")</strong></p>":"<p>🎉 All sections complete!</p>";
+}
+
+// ===== XP / streak / confetti / toast =====
+var boost4=JSON.parse(localStorage.getItem("p4-boost")||"{}");
+var boostX4=boost4.xp||0, boostStreak4=boost4.streak||0, boostDate4=boost4.streakDate||"";
+var enc4=["You've got this! 🎯","One more! ✨","Tiny steps count 🐾","Future-you says thanks 🙌","Progress > perfection 💪"];
+function saveBoost4(){ localStorage.setItem("p4-boost",JSON.stringify({xp:boostX4,streak:boostStreak4,streakDate:boostDate4}));
+  var s=document.getElementById("streakCount4"), p=document.getElementById("pointCount4");
+  if(s) s.textContent=boostStreak4+"-day streak"; if(p) p.textContent=boostX4+" XP"; }
+function trackStreak4(){ var today=new Date().toDateString(); boostStreak4=(boostDate4===today)?boostStreak4:(boostDate4===new Date(Date.now()-864e5).toDateString()?boostStreak4+1:1); boostDate4=today; saveBoost4(); }
+function addXP4(n){ boostX4+=n; saveBoost4(); }
+function toast4(msg,cls){ var z=document.getElementById("toastZone4"); if(!z) return; var t=document.createElement("div"); t.className="toast"+(cls?" "+cls:""); t.textContent=msg; t.setAttribute("role","status"); z.appendChild(t); setTimeout(function(){ t.style.opacity="0"; setTimeout(function(){ z.removeChild(t); },300); },2600); }
+function celebrate4(){
+  var cv=document.getElementById("confettiCanvas4"); if(!cv) return;
+  cv.style.display="block"; var ctx=cv.getContext("2d"); cv.width=window.innerWidth; cv.height=window.innerHeight;
+  var parts=[]; for(var i=0;i<80;i++) parts.push({x:Math.random()*cv.width,y:-10,vy:2+Math.random()*3,c:"hsl("+(Math.random()*360)+",80%,60%)",r:3+Math.random()*4});
+  var n=0; var iv=setInterval(function(){ n++; ctx.clearRect(0,0,cv.width,cv.height); parts.forEach(function(p){ p.y+=p.vy; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill(); if(p.y<cv.height){ p.x+=Math.sin(n*0.1+p.r)*1.5; } }); if(n>120){ clearInterval(iv); cv.style.display="none"; } },16);
+}
+function boostSurprise4(){
+  var names={1:"Hello MERN",2:"Setup",3:"The Loop",4:"Express",5:"REST",6:"MongoDB",7:"Notes backend",8:"React",9:"fetch",10:"Notes full stack",11:"CORS",12:"Node",13:"TypeScript",14:"Product Store",15:"Pitfalls",16:"Challenges",17:"Answers"};
+  var ids={1:"1-layers",2:"2-setup",3:"3-loop",4:"4-express",5:"5-rest",6:"6-mongo",7:"7-notes-backend",8:"8-react",9:"9-fetch",10:"10-notes-full",11:"11-cors",12:"12-node",13:"13-ts",14:"14-products"};
+  var keys=Object.keys(names); var pick=keys[Math.floor(Math.random()*keys.length)];
+  toast4("🎲 Surprise! Section "+pick+" ("+names[pick]+")","badge");
+  var h=document.getElementById(ids[pick]||"table-of-contents"); if(h) h.scrollIntoView({behavior:"smooth"});
+}
+var focusLen4=25*60, focusLeft4=focusLen4, focusTimer4=null, focusRun4=false;
+function startFocusTimer4(){
+  var d=document.getElementById("focusTimer4");
+  if(focusRun4){ clearInterval(focusTimer4); focusRun4=false; focusLeft4=focusLen4; if(d)d.textContent="⏱ 25:00"; toast4("🧠 Sprint done — take a break! ☕","celebrate"); return; }
+  focusRun4=true; focusTimer4=setInterval(function(){ focusLeft4--; if(d)d.textContent="⏱ "+Math.floor(focusLeft4/60)+":"+String(focusLeft4%60).padStart(2,"0");
+    if(focusLeft4<=0){ clearInterval(focusTimer4); focusRun4=false; focusLeft4=focusLen4; if(d)d.textContent="⏱ 25:00"; celebrate4(); toast4("🎉 Focus sprint +10 XP","celebrate"); addXP4(10); trackStreak4(); } },1000);
+}
+saveBoost4();
+
+// ===== SRS Flashcards =====
+var srState4=JSON.parse(localStorage.getItem("p4-sr")||"{}");
+var srCards4=[
+  {q:"Which layer does the user see?",a:"React (client/screen)",lvl:1},
+  {q:"Which layer decides URL rules?",a:"Express (server)",lvl:1},
+  {q:"Which layer stores data?",a:"MongoDB (database)",lvl:1},
+  {q:"Which HTTP verb CREATES a resource?",a:"POST (201 created)",lvl:1},
+  {q:"What verb reads ALL notes?",a:"GET",lvl:1},
+  {q:"Status for a missing id?",a:"404 Not found",lvl:1},
+  {q:"What does a Mongoose schema define?",a:"The shape of a document",lvl:1},
+  {q:"Which Mongoose method creates a doc?",a:"Model.create()",lvl:1},
+  {q:"What does app.use(cors()) do?",a:"Allows the frontend to call the API",lvl:1},
+  {q:"What does ref + populate do in Mongoose?",a:"Link & fill in related documents (join)",lvl:1},
+  {q:"How do you get a React component to re-render?",a:"Update state with its setter",lvl:1},
+  {q:"Fetch pattern in React?",a:"fetch → res.ok → json() → setState",lvl:1}
+];
+var srIdx4=0, srShuffle4=localStorage.getItem("p4-sr-shuffle")==="1";
+function srToggleShuffle4(){ srShuffle4=!srShuffle4; localStorage.setItem("p4-sr-shuffle",srShuffle4?"1":"0"); var b=document.getElementById("srShuffleBtn4"); if(b){ b.textContent="🔀 Shuffle: "+(srShuffle4?"On":"Off"); b.style.background=srShuffle4?"#e53e3e":"#4a5568"; } }
+function startSRReview4(){ var due=srCards4.filter(function(c){ var m=srState4[c.q]||{}; return !m.next || Date.now()>=m.next; }); if(srShuffle4 && due.length>1) for(var i=due.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=due[i]; due[i]=due[j]; due[j]=t; } srIdx4=due.length===0?-1:0; showSRCard4(); }
+function showSRCard4(){ var q=document.getElementById("srQuestion4"), a=document.getElementById("srAnswer4"), b=document.getElementById("srButtons4");
+  if(!q) return; if(srIdx4===-1){ q.textContent="🎉 All reviewed!"; a.style.display="none"; b.innerHTML='<button onclick="startSRReview4()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;">Reset</button>'; renderSRStats4(); return; }
+  if(srIdx4>=srCards4.length){ srIdx4=-1; showSRCard4(); return; }
+  var c=srCards4[srIdx4]; q.textContent=c.q; a.textContent=c.a; a.style.display="none";
+  b.innerHTML='<button onclick="srAnswer4About(true)" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;">I knew it</button><button onclick="srAnswer4About(false)" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;">Still learning</button><button onclick="srFlip4()" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;">Flip</button>';
+  renderSRStats4();
+}
+function srFlip4(){ var a=document.getElementById("srAnswer4"); if(a) a.style.display=a.style.display==="none"?"block":"none"; }
+function srAnswer4About(know){ var c=srCards4[srIdx4]; var m=srState4[c.q]||{lvl:0}; var next=know?Math.min(3,m.lvl+1):0; var hours=next===0?0.02:next===1?0.03:next===2?0.05:0.1; srState4[c.q]={lvl:next,next:Date.now()+hours*3600*1000}; localStorage.setItem("p4-sr",JSON.stringify(srState4)); srIdx4++; if(srIdx4>=srCards4.length){ srIdx4=-1; } showSRCard4(); }
+function renderSRStats4(){ var s=document.getElementById("srStats4"); if(!s) return; var n=0,l=0,ma=0; srCards4.forEach(function(c){ var lvl=(srState4[c.q]||{lvl:0}).lvl||0; if(lvl===0)n++; else if(lvl<3)l++; else ma++; }); s.textContent="🆕 "+n+" new · 📖 "+l+" learning · 🏆 "+ma+" mastered"; }
+
+// ===== Focus / collapse =====
+function focusMode4(btn){
+  var on=!document.body.classList.contains("focus-mode");
+  document.body.classList.toggle("focus-mode",on);
+  var h=document.getElementById("focusHint4"); if(h) h.style.display=on?"block":"none";
+  if(btn){ btn.textContent=on?"🧘 Focus ON":"🧘 Focus Mode"; btn.setAttribute("aria-pressed",on?"true":"false"); btn.style.background=on?"#319795":""; }
+  document.querySelectorAll("details").forEach(function(d){ try{d.open=false;}catch(e){} });
+  if(on){ try{ window.scrollTo({top:0,behavior:"smooth" });}catch(e){} }
+}
+function collapseAll4(open){ document.querySelectorAll("details").forEach(function(d){ try{ d.open=open; }catch(e){} }); }
+
+// ===== Mock API (in-page "server + database") =====
+var mockDB={ notes:[], products:[], reviews:[], seq:100 };
+function mockFirstId(coll){ return (mockDB[coll]&&mockDB[coll].length)?mockDB[coll][0]._id:""; }
+function mockReset(){ mockResetDB(); mockLog("🔄 DB reset.","ok"); }
+function mockResetDB(){
+  mockDB.notes=[];
+  mockDB.products=[
+    {_id:"p1",name:"Canvas Tote",price:12,description:"Everyday cotton tote"},
+    {_id:"p2",name:"Leather Wallet",price:29,description:"Slim RFID wallet"}
+  ];
+  mockDB.reviews=[{_id:"r1",product:"p1",rating:5,comment:"Great quality!"}];
+}
+mockResetDB();
+function mockLog(html,cls){ var el=document.getElementById("mockLog4"); if(!el) return; el.insertAdjacentHTML("beforeend",'<div class="'+(cls||"ok")+'">'+html+'</div>'); el.scrollTop=el.scrollHeight; }
+function mockRun(method,path,body){
+  var req="<span class='req'>→ "+method+" "+path+(body?" "+JSON.stringify(body):"")+"</span>";
+  mockLog(req+ "<br>");
+  // Express "route matching"
+  var m=path.match(/\/api\/notes(?:\/(\w+))?/); 
+  if(m){ return mockNotes(method,m[1],body); }
+  var pm=path.match(/\/api\/products\/(\w+)\/reviews/);
+  if(pm){ return mockReviews(method,pm[1],body); }
+  var p1=path.match(/\/api\/products\/(\w+)/);
+  if(p1){ return mockProduct(p1[1]); }
+  mockLog("<span class='err'>404 — route not found</span><br>");
+}
+function mockNotes(method,id,body){
+  if(method==="GET"){
+    if(id){ var n=mockDB.notes.find(x=>x._id===id); if(!n){ mockLog("📦 GET "+id+" → <span class='err'>404 not found</span><br>"); return; } mockLog("🟡 MongoDB: found note <b>"+n.text+"</b><br><span class='ok'>← 200 "+JSON.stringify(n)+"</span><br>"); return; }
+    mockLog("🟡 MongoDB: Note.find() → "+mockDB.notes.length+" doc(s)<br><span class='ok'>← 200 "+JSON.stringify(mockDB.notes)+"</span><br>"); return;
+  }
+  if(method==="POST"){
+    var nid="n"+ (++mockDB.seq); var n={_id:nid,text:body.text||"(empty)",done:body.done||false,createdAt:new Date().toISOString()};
+    mockDB.notes.push(n); mockLog("🟡 MongoDB: Note.create("+JSON.stringify(body)+") → saved<br><span class='ok'>← 201 created "+JSON.stringify(n)+"</span><br>"); addXP4(5); return;
+  }
+  if(method==="PUT"){
+    var idx=mockDB.notes.findIndex(x=>x._id===id); if(idx<0){ mockLog("<span class='err'>404 not found</span><br>"); return; }
+    mockDB.notes[idx]={...mockDB.notes[idx],...body}; mockLog("🟡 MongoDB: findByIdAndUpdate("+id+", {new:true})<br><span class='ok'>← 200 "+JSON.stringify(mockDB.notes[idx])+"</span><br>"); return;
+  }
+  if(method==="DELETE"){
+    var bi=mockDB.notes.findIndex(x=>x._id===id); if(bi<0){ mockLog("<span class='err'>404 not found</span><br>"); return; }
+    mockDB.notes.splice(bi,1); mockLog("🟡 MongoDB: findByIdAndDelete("+id+")<br><span class='ok'>← 204 No Content</span><br>"); return;
+  }
+}
+function mockReviews(method,pid,body){
+  if(method==="GET"){ var rs=mockDB.reviews.filter(r=>r.product===pid); mockLog("🟡 MongoDB: Review.find({product:'"+pid+"'}) → "+rs.length+" review(s)<br><span class='ok'>← 200 "+JSON.stringify(rs)+"</span><br>"); return; }
+  if(method==="POST"){ var rid="r"+(++mockDB.seq); var r={_id:rid,product:pid,rating:body.rating||5,comment:body.comment||""}; mockDB.reviews.push(r); mockLog("🟡 MongoDB: Review.create({...body, product:'"+pid+"'}) — linked via ref<br><span class='ok'>← 201 "+JSON.stringify(r)+"</span><br>"); addXP4(5); return; }
+}
+function mockProduct(pid){ var p=mockDB.products.find(x=>x._id===pid); if(!p){ mockLog("<span class='err'>404 product not found</span><br>"); return; } mockLog("🟡 MongoDB: Product.findById('"+pid+"')<br><span class='ok'>← 200 "+JSON.stringify(p)+"</span><br>"); }
+
+// ===== Project A mini demo (Notes UI using mock API) =====
+var p4CurrentProduct="p1";
+function p4Log(html,cls){ var el=document.getElementById("p4-notes-log"); if(!el) return; el.textContent=html; }
+function p4Render(){
+  var el=document.getElementById("p4-notes-list"); if(!el) return;
+  if(mockDB.notes.length===0){ el.textContent="(no notes yet — add one or POST via the mock server)"; return; }
+  el.innerHTML=mockDB.notes.map(function(n){ return "<div>☑️ <b>"+escapeHtml(n.text)+"</b> <button onclick='p4DeleteNote(\""+n._id+"\")' style='background:#c53030;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-left:8px;'>✕</button></div>"; }).join("");
+}
+function p4AddNote(){
+  var inp=document.getElementById("p4-note-input"); var text=inp?inp.value.trim():"";
+  if(!text){ p4Log("⛔ text is required (schema validation!)"); return; }
+  mockRun("POST","/api/notes",{text: text, done:false}); p4Log("React: POSTed note → saved in DB → state updated → re-render"); p4Render(); if(inp) inp.value="";
+}
+function p4DeleteNote(id){
+  mockRun("DELETE","/api/notes/"+id,null); p4Log("React: DELETE "+id+" → note removed from DB → setNotes(filter) → re-render"); p4Render();
+}
+function p4LoadNotes(){ mockRun("GET","/api/notes",null); p4Log("React: useEffect → fetch GET → res.json() → setNotes(data)"); p4Render(); }
+function p4ResetNotes(){ mockResetDB(); p4Log("DB reset"); p4Render(); }
+
+// ===== Project B demo (Product + Reviews) =====
+function p4RenderProduct(){
+  var v=document.getElementById("p4-product-view"); var p=mockDB.products.find(x=>x._id===p4CurrentProduct); if(!v||!p) return;
+  v.innerHTML="📦 <b>"+escapeHtml(p.name)+"</b> — $"+p.price+"<br><small>"+escapeHtml(p.description)+"</small>";
+  p4RenderReviews();
+}
+function p4RenderReviews(){
+  var el=document.getElementById("p4-reviews-list"); if(!el) return;
+  var rs=mockDB.reviews.filter(r=>r.product===p4CurrentProduct);
+  if(rs.length===0){ el.textContent="(no reviews for this product yet)"; return; }
+  el.innerHTML="⭐ <b>"+rs.length+"</b> review(s) (via GET /api/products/"+p4CurrentProduct+"/reviews):<br>"+ rs.map(function(r){ return "⭐".repeat(r.rating||1)+" "+escapeHtml(r.comment||"")+" <small style='color:#a0aec0'>[review _id: "+r._id+", linked to product via ref]</small><br>"; }).join("");
+}
+function p4ShowProduct(pid){ p4CurrentProduct=String(pid).replace("p","p")==="p"?pid:"p"+pid; var raw=pid; if(String(pid).indexOf("p")!==0) raw="p"+pid; p4CurrentProduct=raw; mockRun("GET","/api/products/"+raw,null); p4RenderProduct(); }
+function p4AddReview(){
+  var inp=document.getElementById("p4-review-input"); var c=inp?inp.value.trim():"";
+  var r={rating:5, comment:c||"(no comment)"};
+  mockRun("POST","/api/products/"+p4CurrentProduct+"/reviews",{rating:5,comment:c}); p4RenderProduct(); if(inp) inp.value="";
+}
+function p4LoadReviews(){ mockRun("GET","/api/products/"+p4CurrentProduct+"/reviews",null); p4RenderReviews(); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+p4RenderProduct();
+
+// ===== Auto-graded Challenges =====
+var P4_TESTS = {
+  1: 'var p=makeProduct("Shirt",19);\ncheck("has name", p.name==="Shirt");\ncheck("has price", p.price===19);\ncheck("reviews is []", JSON.stringify(p.reviews)===JSON.stringify([]));',
+  2: 'var p={name:"S",price:1,reviews:[{rating:4}]};\nvar p2=addReview(p,{rating:5,comment:"Great"});\ncheck("review added", p2.reviews.length===2);\ncheck("immutable", p.reviews.length===1);',
+  3: 'check("fills :id", routePath("/api/products/:id/reviews","abc")==="/api/products/abc/reviews");',
+  4: 'check("POST=201", pickStatus("POST")===201);\ncheck("GET=200", pickStatus("GET")===200);\ncheck("DELETE=204", pickStatus("DELETE")===204);',
+  5: 'check("avg [5,4,5]", Math.abs(avgRating([5,4,5])-(14/3))<0.001);\ncheck("avg empty=0", avgRating([])===0);',
+  6: 'check("blank invalid", validateNote({}).valid===false);\ncheck("blank error msg", validateNote({text:""}).error==="text is required");\ncheck("valid note", validateNote({text:"hi"}).valid===true);'
+};
+function runTest(n){
+  var code=document.getElementById("chal"+n).value, res=document.getElementById("res"+n);
+  res.className="result";
+  var harness="return (async () => {\n  var passed=[], failed=[];\n  function check(name, cond){ (cond?passed:failed).push(name); }\n"+code+"\n"+(P4_TESTS[n]||"")+"\n  return {passed:passed, failed:failed};\n})();";
+  var fn; try { fn=new Function(harness); } catch(e){ res.className="result fail"; res.textContent="Syntax Error: "+e.message; return; }
+  Promise.resolve(fn()).then(function(r){
+    res.className=r.failed.length?"result fail":"result pass";
+    var lines=r.passed.map(function(t){return "✅ "+t;}).concat(r.failed.map(function(t){return "❌ "+t;}));
+    if(r.passed.length && !r.failed.length){ lines.push("🎉 All tests passed!"); addXP4(30); toast4("🏅 Challenge complete! +30 XP","badge"); celebrate4(); }
+    res.textContent=lines.join("\n")||"(no tests ran)";
+  }).catch(function(e){ res.className="result fail"; res.textContent="Error: "+e.message; });
+}
+
+// ===== Init =====
+markButtons();
+updateProgress();
+renderSRStats4();
+applyFontZoom4();
+</script>
+</body>
+</html>
+<!--P4H-END-->

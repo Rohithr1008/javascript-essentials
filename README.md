@@ -2,7 +2,7 @@
 
 A hands-on study kit covering the JavaScript fundamentals: variables, control flow, functions, closures, arrays, strings, objects, and the classic pitfalls — in **three editions**, from print-friendly to fully interactive.
 
-> **Progress:** Part 1 ✅ complete · Part 2 (promises, async/await, classes, modules) ✅ complete · Part 3 (MERN Bridge: Map/Set, generators, regex, DOM & events, fetch, Node core) ✅ complete
+> **Progress:** Part 1 ✅ · Part 2 ✅ · Part 3 (MERN Bridge) ✅ · Part 4 (MERN Foundations: Express, Mongoose, React, TypeScript) ✅ complete
 
 ---
 
@@ -108,11 +108,40 @@ node -e "console.log([...new Set([1,1,2,3,3])]); const slugify=s=>s.toLowerCase(
 ### 🧩 Series at a glance
 
 ```
-Part 1  Core language  →  Part 2  Async/OOP/Modules  →  Part 3  MERN Bridge  →  (next: Express/React/Mongoose fundamentals)
+Part 1  Core  →  Part 2  Async/OOP  →  Part 3  MERN Bridge  →  Part 4  MERN Foundations
 ```
-
-See [`JAVASCRIPT_ESSENTIALS_PART3_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART3_CONTEXT.md) for the full context/transfer notes.
 
 ---
 
-*Series complete: Parts 1–3 cover the JavaScript language foundation for full-stack MERN development.* ❤️
+## ⚡ Part 4 — MERN Foundations (Express, Mongoose, React, Node, TypeScript)
+
+The payoff: build two real full-stack apps — **Notes** and **Product Store with Reviews**. Written for an absolute beginner with ADHD/autistic-friendly design (colour-coded layers, tiny chunks, Focus Mode, and a working in-page mock server — no install needed).
+
+### 📚 Choose your edition
+
+| Edition | Best for | Link |
+|---|---|---|
+| 🖥️ **Interactive Study App** | Click through a **live mock MERN server** + two mini-apps, SRS, **6 auto-graded challenges**, Focus Mode | [Open live](https://rohithr1008.github.io/javascript-essentials/Javascript_essentials_part4_study_app.html) — or open the file offline |
+| 📝 **Interactive Markdown** | VS Code / Typora — Notes + Reviews demos, quizzes, flashcards | [`Javascript_essentials_part4_interactive.md`](Javascript_essentials_part4_interactive.md) — `Ctrl+Shift+V` |
+| 📄 **Plain Markdown** | Printing / PDF / distraction-free reading | [`Javascript_essentials_part4_with_examples.md`](Javascript_essentials_part4_with_examples.md) |
+
+### 🗂️ What's covered (17 sections)
+
+1. Hello MERN (the 3-layer sandwich) · 2. Setting up a project · 3. The request/response cycle · 4. Express · 5. REST API · 6. MongoDB + Mongoose · 7. Project A — Notes backend · 8. React fundamentals · 9. fetch in React · 10. Project A — full stack · 11. CORS · 12. Node core · 13. TypeScript · 14. Project B — Product Store with Reviews · 15. Pitfalls · 16. Exercises & challenges · 17. Answer key
+
+### 🚀 Part 4 quick start (your first real MERN)
+
+```bash
+# Backend
+npm init -y && npm install express mongoose cors
+node server/server.js        # Notes API on http://localhost:3000
+
+# Frontend (React via Vite) — then copy the App.jsx from section 10
+npm create vite@latest client -- --template react
+```
+
+See [`JAVASCRIPT_ESSENTIALS_PART4_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART4_CONTEXT.md) for full context/transfer notes.
+
+---
+
+*Series complete: Parts 1–3 are the full JavaScript language foundation; Part 4 turns it into working MERN apps.* ❤️
