@@ -16,6 +16,18 @@
 
 <div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/16 sections (0%)</div>
 
+<div id="boostBar1" style="background:#1a202c;border:2px solid #dd6b20;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+  <div style="font-weight:700;">⚡ <span id="streakCount1" style="color:#fbbf24;">0-day streak</span></div>
+  <div style="font-weight:700;">⭐ <span id="pointCount1" style="color:#fbbf24;">0 XP</span></div>
+  <div><button onclick="boostSurprise1()" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer1()" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><span id="focusTimer1" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
+</div>
+
+<div id="toastZone1" style="position:fixed;top:16px;right:16px;z-index:999;display:flex;flex-direction:column;gap:8px;"></div>
+
+<canvas id="confettiCanvas1" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none;"></canvas>
+
 <div class="interactive-note">💡 <strong>Interactive guide v3 — enhanced with Phase 1 & 2 features:</strong> Truthy/Falsy checker, JavaScript Sandbox, Hoisting Visualizer, Type Coercion Flowchart, Worked Examples, 12 Spot-the-Bug challenges, Difficulty Filters, Predict-Output cards, Spaced Repetition Flashcards, Learning Path, and more! Best viewed in a browser.</div>
 
 <div id="learningPathPanel" style="background:#2d3748;border:2px solid #805ad5;border-radius:12px;padding:16px 20px;margin:16px 0;">
@@ -187,6 +199,11 @@ html.force-dark .tabs label { background: #141c28; color: #bee3f8; border-color:
 html.force-dark .tabs .tab-page { background: #0f1622; color: #e2e8f0; }
 html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
 html.force-dark body { background: #0f1216; color: #e2e8f0; }
+.toast { background: #1a202c; color: #e2e8f0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.3); font-weight: 600; max-width: 280px; }
+.toast.celebrate { border-left-color: #38a169; }
+.toast.badge { border-left-color: #805ad5; }
+@keyframes slidein1 { from { opacity:0; transform: translateX(20px);} to { opacity:1; transform:none;} }
+.toast { animation: slidein1 .3s ease; }
 </style>
 
 <hr>
@@ -5029,6 +5046,7 @@ function saveProgress(id) {
 
 function toggleComplete(id, btn) {
   const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  const wasDone = !!p[id];
   if (p[id]) {
     delete p[id];
     btn.textContent = '✅ Mark complete';
@@ -5041,6 +5059,13 @@ function toggleComplete(id, btn) {
   p.updated = new Date().toISOString();
   localStorage.setItem('js-progress', JSON.stringify(p));
   refreshProgressUI();
+  if (!wasDone && p[id]) {
+    addXP1(20); trackStreak1();
+    const enc = ["You've got this! 🎯","One more and you're golden ✨","Progress > perfection 💪","Look at you go! 🚀","Tiny steps count! 🐾"];
+    toast1(enc[Math.floor(Math.random() * enc.length)], 'celebrate');
+    celebrate1();
+    toast1('🏅 Section complete (+20 XP)', 'badge');
+  }
 }
 
 // Inject a "Mark complete" button after every numbered section heading (1-16)
@@ -5360,7 +5385,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize challenge completion badges
   updateChallengeBadges();
+
+  // Restore ADHD engagement stats
+  saveBoost1();
 });
+
+// ===== ADHD Engagement Engine (Part 1) =====
+var boost1Saved = JSON.parse(localStorage.getItem('p1-boost') || '{"xp":0,"streakDate":"","streak":0}');
+var boost1X = boost1Saved.xp || 0, boost1Streak = boost1Saved.streak || 0, boost1Date = boost1Saved.streakDate || '';
+function saveBoost1() {
+  localStorage.setItem('p1-boost', JSON.stringify({ xp: boost1X, streak: boost1Streak, streakDate: boost1Date }));
+  const s = document.getElementById('streakCount1'), p = document.getElementById('pointCount1');
+  if (s) s.textContent = boost1Streak + '-day streak';
+  if (p) p.textContent = boost1X + ' XP';
+}
+function addXP1(a) { boost1X += a; saveBoost1(); }
+function trackStreak1() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (boost1Date === today) return;
+  const y = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  boost1Streak = (boost1Date === y) ? boost1Streak + 1 : 1;
+  boost1Date = today; saveBoost1();
+  if (boost1Streak >= 3) toast1('🔥 ' + boost1Streak + '-day streak! Keep showing up.', 'badge');
+}
+function toast1(msg, cls) {
+  const zone = document.getElementById('toastZone1');
+  if (!zone) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (cls ? ' ' + cls : '');
+  t.textContent = msg;
+  zone.appendChild(t);
+  setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
+}
+function celebrate1() {
+  const c = document.getElementById('confettiCanvas1');
+  if (!c) return;
+  c.style.display = 'block';
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  const ctx = c.getContext('2d');
+  const colors = ['#fbbf24', '#38a169', '#4299e1', '#e53e3e', '#805ad5', '#dd6b20'];
+  const parts = [];
+  for (let i = 0; i < 120; i++) {
+    parts.push({ x: Math.random() * c.width, y: -20 - Math.random() * c.height, vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4, r: 3 + Math.random() * 4, col: colors[Math.floor(Math.random() * colors.length)], rot: Math.random() * Math.PI });
+  }
+  let frames = 0;
+  (function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    parts.forEach(function (p) { p.x += p.vx; p.y += p.vy; p.rot += .05; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.col; ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r); ctx.restore(); });
+    frames++;
+    if (frames < 120) requestAnimationFrame(draw);
+    else { ctx.clearRect(0, 0, c.width, c.height); c.style.display = 'none'; }
+  })();
+}
+function boostSurprise1() {
+  const ids = Array.from(document.querySelectorAll('h2[id]')).map(h => h.id).filter(id => /^[0-9]+-/.test(id));
+  const progress = JSON.parse(localStorage.getItem('js-progress') || '{}');
+  const undone = ids.filter(id => !progress[id]);
+  const pool = undone.length ? undone : ids;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  const el = document.getElementById(pick);
+  toast1('🎲 Surprise! Let\'s explore Section ' + pick[0], 'badge');
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+var focusLen1 = 25 * 60, focusLeft1 = focusLen1, focusTimer1 = null, focusRunning1 = false;
+function startFocusTimer1() {
+  const disp = document.getElementById('focusTimer1');
+  if (focusRunning1) { clearInterval(focusTimer1); focusRunning1 = false; focusLeft1 = focusLen1; if (disp) disp.textContent = '⏱ 25:00'; toast1('🧠 Sprint done — take a break! ☕', 'celebrate'); return; }
+  focusRunning1 = true;
+  focusTimer1 = setInterval(function () {
+    focusLeft1--;
+    if (disp) disp.textContent = '⏱ ' + Math.floor(focusLeft1 / 60) + ':' + String(focusLeft1 % 60).padStart(2, '0');
+    if (focusLeft1 <= 0) {
+      clearInterval(focusTimer1); focusRunning1 = false; focusLeft1 = focusLen1;
+      if (disp) disp.textContent = '⏱ 25:00';
+      celebrate1(); toast1('🎉 Focus sprint complete! +10 XP.', 'celebrate'); addXP1(10); trackStreak1();
+    }
+  }, 1000);
+}
 
 // ===== Event Loop Visualizer (async preview) =====
 var elv1Steps = [
