@@ -4,6 +4,12 @@ A quick reference covering the JavaScript **intermediate** concepts: promises, a
 
 <div class="interactive-note">💡 <strong>Interactive guide — enhanced edition:</strong> clickable quizzes, flashcards, mood checks, predict-the-output cards, a live Promise Simulator, a working code sandbox, and collapsible hints/solutions. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds a live progress bar, spaced-repetition flashcards, quiz persistence and an auto-graded challenge runner.</div>
 
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
+  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">← 1 Core</a>
+  <strong style="color:#fff;">2 Async/OOP</strong>
+  <a href="Javascript_essentials_part3_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">3 MERN Bridge →</a>
+</div>
+
 <style>
 /* ===== JavaScript Essentials Part 2 — Interactive Styles ===== */
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }

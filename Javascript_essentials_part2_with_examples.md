@@ -6,6 +6,17 @@ A quick reference covering the JavaScript **intermediate** concepts: promises, a
 
 ---
 
+### 🗺 Your path through the 3-part series
+
+```
+Part 1  Core language  →  Part 2  Async/OOP/Modules  →  Part 3  MERN Bridge
+(let, loops, functions,        (promises, async/await,          (Map/Set, generators, regex,
+ objects, arrays, closures)     classes, error handling)         DOM, fetch, Node core)
+```
+You are here: **Part 2 — Async/OOP/Modules**. You should already know [Part 1](Javascript_essentials_part1_with_examples.md) (Core); when done move to [Part 3](Javascript_essentials_part3_with_examples.md) (MERN Bridge).
+
+---
+
 ## Table of Contents
 
 1. [Promises](#1-promises)
@@ -59,6 +70,16 @@ A quick reference covering the JavaScript **intermediate** concepts: promises, a
 
 ---
 
+### 🧩 Real-world scenario (what this part builds toward)
+
+Continuing the **React shopping cart**: once the cart works locally, it must talk to a server. That is exactly where Part 2 lives:
+
+- **Promises / async-await** → fetching the product catalog, placing orders, checking out — all async.
+- **Error handling** -> so a failed order shows a friendly message instead of crashing.
+- **Classes & OOP** → Express controllers, Mongoose models, and React classes/(logic) are objects with methods.
+- **Modules** → splitting code into reusable files (routes, models, utilities) with `export`/`import`.
+
+Every concept below is what makes the "async" half of **M**ongo, **E**xpress, **R**eact, **N**ode actually work. Get comfortable with promises and error handling and the rest of MERN clicks into place.
 ## 1. Promises
 
 ### Simple: a promise lifecycle

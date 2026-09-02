@@ -6,6 +6,17 @@ A quick reference covering the JavaScript fundamentals you have learned so far.
 
 ---
 
+### 🗺 Your path through the 3-part series
+
+```
+Part 1  Core language  →  Part 2  Async/OOP/Modules  →  Part 3  MERN Bridge
+(let, loops, functions,        (promises, async/await,          (Map/Set, generators, regex,
+ objects, arrays, closures)     classes, error handling)         DOM, fetch, Node core)
+```
+You are here: **Part 1 — Core**. When you finish, move to [Part 2](Javascript_essentials_part2_with_examples.md) (Async/OOP) then [Part 3](Javascript_essentials_part3_with_examples.md) (MERN Bridge).
+
+---
+
 ## Table of Contents
 
 1. [Variables: `let`, `const`, `var`](#1-variables-let-const-var)
@@ -102,6 +113,18 @@ padStart(n)  pad from the left
 replace(a,b) replace first match
 ```
 
+### 🧩 Real-world scenario (what this part builds toward)
+
+Imagine you are building a **React shopping cart**. Before you can touch React, every line of this part shows up daily:
+
+- **`const` vs `let`** → cart items are `const` (never reassigned), but the running *total* is a `let`.
+- **Loops** -> rendering a list of items uses `for...of` or `.map()`.
+- **Functions / arrow functions** → every React component is just a function.
+- **Arrays & methods** → `.map()`, `.filter()`, `.reduce()` compute the cart total and filtered views.
+- **Objects & strings** → product data and formatting prices/lookup fields.
+- **Truthy/falsy** → `if (user)` guards empty states.
+
+Each concept below is a building block of that one real feature. Know them once, and you'll recognize them in *every* MERN app.
 ## 1. Variables: `let`, `const`, `var`
 
 | Keyword  | Scope          | Reassign? | Notes                          |

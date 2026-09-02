@@ -9,6 +9,12 @@
 
 <h1>JavaScript Essentials - Part 3</h1>
 
+<div class="partnav" aria-label="Part navigation">
+  <a href="Javascript_essentials_part1_study_app.html">← 1 Core</a>
+  <a href="Javascript_essentials_part2_study_app.html">← 2 Async/OOP</a>
+  <strong>3 MERN Bridge</strong>
+</div>
+
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
 
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
@@ -16,6 +22,9 @@
   <button onclick="fontZoom3(-1)" title="Decrease text size">A−</button>
   <button onclick="fontZoom3(0)" title="Reset text size">A</button>
   <button onclick="fontZoom3(1)" title="Increase text size">A+</button>
+  <span style="width:14px;"></span>
+  <button onclick="collapseAll3(true)" title="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAll3(false)" title="Collapse all quiz answers">📕 Collapse all</button>
 </div>
 
 <p>A quick reference covering the JavaScript for <strong>full-stack (MERN)</strong> development: Map/Set, generators, regex, DOM & events, fetch, and Node core.</p>
@@ -53,6 +62,10 @@
 
 <style>
 body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
+.partnav { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#2d3748; color:#e2e8f0; padding:8px 12px; border-radius:8px; margin:6px 0 12px 0; font-size:0.95rem; }
+.partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
+.partnav a:hover { text-decoration:underline; }
+.partnav strong { color:#fff; }
 html { scroll-behavior: smooth; font-size: 16px; }
 h2[id], h3[id] { scroll-margin-top: 16px; }
 .theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
@@ -209,6 +222,14 @@ document.querySelector("#list").appendChild(li);
 btn.addEventListener("click", (e) => console.log(e.target));
 form.addEventListener("submit", (e) => e.preventDefault());</code></pre>
 
+<div class="tip">🖱 <strong>Try it live (DOM demo):</strong> each click below calls <code>addEventListener</code> and updates <code>textContent</code> — the exact foundation React's <code>onClick</code> uses.</div>
+<div class="sandbox" id="dom-lab">
+  <button onclick="domAdd()" id="domBtn">➕ Click me</button>
+  <button onclick="domReset()">↺ Reset</button>
+  <span style="margin-left:10px;">Clicks: <strong id="domCount">0</strong></span>
+  <div class="out" id="domOut">0 clicks so far — click the button!</div>
+</div>
+
 <div class="quiz-box">
 <h3>🎯 DOM quiz</h3>
 <details><summary>Q1. Which returns the FIRST match?</summary><p class="quiz-correct">querySelector</p></details>
@@ -235,6 +256,13 @@ async function createUser(name){
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.json();
 }</code></pre>
+
+<div class="tip">🌍 <strong>Try it live (fetch demo):</strong> this calls the public JSONPlaceholder API, checks <code>res.ok</code>, then renders the result — the real pattern every MERN <code>fetch</code> follows.</div>
+<div class="sandbox" id="fetch-lab">
+  <button onclick="fetchDemo()">🚀 Run fetch demo</button>
+  <span id="fetchStatus" style="margin-left:10px;font-weight:600;">Not run yet</span>
+  <div class="out" id="fetchOut">Click the button to fetch a sample user from the internet.</div>
+</div>
 
 <div class="quiz-box">
 <h3>🎯 fetch quiz</h3>
@@ -589,6 +617,55 @@ function addCopyButtons3() {
     b.onclick=function(){ navigator.clipboard.writeText(code.textContent).then(function(){ b.textContent="✅"; setTimeout(function(){b.textContent="📋";},1500); }); };
     code.parentNode.insertBefore(b, code);
   });
+}
+
+// ===== Collapse / Expand all quiz answers =====
+function collapseAll3(open) {
+  document.querySelectorAll("details").forEach(function(d){
+    try { d.open = open; } catch(e){}
+  });
+}
+
+// ===== Live DOM demo (Section 4) =====
+var domCount3 = 0;
+function domAdd(){
+  domCount3++;
+  var c = document.getElementById("domCount"), o = document.getElementById("domOut");
+  if(c) c.textContent = domCount3;
+  if(o){
+    o.textContent = domCount3 + " click" + (domCount3===1?"":"s") + " so far — event fired by addEventListener!";
+    if(domCount3%5===0){ o.textContent += " 🎉 Nice momentum!"; }
+  }
+}
+function domReset(){
+  domCount3 = 0;
+  var c = document.getElementById("domCount"), o = document.getElementById("domOut");
+  if(c) c.textContent = "0";
+  if(o) o.textContent = "0 clicks so far — click the button!";
+}
+
+// ===== Live fetch demo (Section 5) =====
+function fetchDemo(){
+  var status = document.getElementById("fetchStatus"), out = document.getElementById("fetchOut");
+  if(status) status.textContent = "⏳ Loading…";
+  if(out) out.style.opacity = "0.4";
+  fetch("https://jsonplaceholder.typicode.com/users/1")
+    .then(function(res){
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(function(user){
+      if(out){
+        out.style.opacity = "1";
+        out.innerHTML = "✅ <strong>Fetched</strong>: " + user.name + " — " + user.email +
+          "<br><code>res.ok</code> was " + "<code>true</code>, then <code>.json()</code> decoded the payload.";
+      }
+      if(status) status.textContent = "✅ Done";
+    })
+    .catch(function(err){
+      if(out){ out.style.opacity = "1"; out.textContent = "⚠️ fetch failed: " + err.message + " (offline?)"; }
+      if(status) status.textContent = "❌ Error";
+    });
 }
 
 // ===== Init =====

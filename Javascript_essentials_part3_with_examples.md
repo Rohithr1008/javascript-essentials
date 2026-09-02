@@ -6,6 +6,17 @@ A quick reference covering the JavaScript you need for **full-stack (MERN) devel
 
 ---
 
+### 🗺 Your path through the 3-part series
+
+```
+Part 1  Core language  →  Part 2  Async/OOP/Modules  →  Part 3  MERN Bridge
+(let, loops, functions,        (promises, async/await,          (Map/Set, generators, regex,
+ objects, arrays, closures)     classes, error handling)         DOM, fetch, Node core)
+```
+You are here: **Part 3 — MERN Bridge** (the finish line for the JS foundation). This part builds directly on [Part 1](Javascript_essentials_part1_with_examples.md) (Core) and [Part 2](Javascript_essentials_part2_with_examples.md) (Async/OOP).
+
+---
+
 ## Table of Contents
 
 1. [Iterables, Map & Set](#1-iterables-map--set)
@@ -61,6 +72,18 @@ A quick reference covering the JavaScript you need for **full-stack (MERN) devel
 
 ---
 
+### 🧩 Real-world scenario (what this part builds toward)
+
+This is the **MERN Bridge** — it connects your JS knowledge to the four pillars of the stack:
+
+- **Map / Set** → Mongo returns `Map`-like structures; `Set` de-duplicates tags and categories in one line.
+- **Generators** → paginating large datasets, infinite sequences, and async streams (Mongo cursors).
+- **Regular Expressions** → slugifying URLs, validating emails, searching product text.
+- **DOM & Events** → exactly what **React** compiles to: click handlers, form input, `event.target.value`.
+- **fetch & Web APIs** → the React app calling your **Express** API over HTTP.
+- **Node core** → `fs`, `path`, `process.env`, `http` — the engine under **Express** and **Mongoose**.
+
+Finish this part and you have the complete JS language foundation to start building real MERN apps (a cart, a blog, a chat) instead of just studying fragments.
 ## 1. Iterables, Map & Set
 
 > An **iterable** is anything you can loop over with `for...of` — arrays, strings, maps, sets. `Map` and `Set` are two built-in collections with real advantages over objects/arrays.

@@ -4,6 +4,15 @@ A quick reference covering the JavaScript you need for **full-stack (MERN) devel
 
 <div class="interactive-note">💡 <strong>Interactive guide — MERN Bridge:</strong> clickable quizzes, flashcards, mood checks, a Map/Set playground, RegExp tester, and Node quick-reference. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser. The standalone <strong>.html edition</strong> adds live progress, spaced-repetition flashcards, and auto-graded challenges.</div>
 
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
+  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">← 1 Core</a>
+  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">← 2 Async/OOP</a>
+  <strong style="color:#fff;">3 MERN Bridge</strong>
+  <span style="flex:1;"></span>
+  <button onclick="p3iExpand(1)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📖 Expand all</button>
+  <button onclick="p3iExpand(0)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📕 Collapse all</button>
+</div>
+
 <style>
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 h2[id] { scroll-margin-top: 12px; }
@@ -325,6 +334,14 @@ form.addEventListener("submit", (event) => {
 
 `event.target` = the element the event happened on; `preventDefault()` blocks default (form submit). This is exactly the foundation of React's `onClick`/`onChange`/`event.target.value`.
 
+<div class="tip">🖱 <strong>Try it live:</strong> each click fires an event and updates <code>textContent</code> — the same <code>addEventListener</code> foundation React's <code>onClick</code> uses.</div>
+<div class="sandbox">
+  <button onclick="p3iDomAdd()">➕ Click me</button>
+  <button onclick="p3iDomReset()">↺ Reset</button>
+  <span style="margin-left:10px;">Clicks: <strong id="p3iDomCount">0</strong></span>
+  <div class="out" id="p3iDomOut">0 clicks so far — click the button!</div>
+</div>
+
 ### Flashcards (click to flip)
 
 <div class="flashcard"><details><summary>Which method stops a form reloading?</summary>
@@ -383,6 +400,14 @@ const controller = new AbortController();
 setTimeout(() => controller.abort(), 5000);
 await fetch(url, { signal: controller.signal });
 ```
+
+<div class="tip">🌍 <strong>Try it live (fetch demo):</strong> calls the public JSONPlaceholder API, checks <code>res.ok</code>, then renders the result — the real pattern for talking to your Express API.
+</div>
+<div class="sandbox">
+  <button onclick="p3iFetchDemo()">🚀 Run fetch demo</button>
+  <span id="p3iFetchStatus" style="margin-left:10px;font-weight:600;">Not run yet</span>
+  <div class="out" id="p3iFetchOut">Click the button to fetch a sample user from the internet.</div>
+</div>
 
 ### Quiz (click each to reveal)
 
@@ -640,6 +665,38 @@ async function fetchWithTimeout(url, ms){
 </div>
 
 ---
+
+<script>
+// ===== Interactive-part live demos (DOM & fetch) =====
+function p3iExpand(open){
+  document.querySelectorAll("details").forEach(function(d){ try{ d.open = !!open; }catch(e){} });
+}
+var p3iDomCount = 0;
+function p3iDomAdd(){
+  p3iDomCount++;
+  var c = document.getElementById("p3iDomCount"), o = document.getElementById("p3iDomOut");
+  if(c) c.textContent = p3iDomCount;
+  if(o) o.textContent = p3iDomCount + " click" + (p3iDomCount===1?"":"s") + " — event fired by addEventListener!";
+}
+function p3iDomReset(){
+  p3iDomCount = 0;
+  var c = document.getElementById("p3iDomCount"), o = document.getElementById("p3iDomOut");
+  if(c) c.textContent = "0";
+  if(o) o.textContent = "0 clicks so far — click the button!";
+}
+function p3iFetchDemo(){
+  var s = document.getElementById("p3iFetchStatus"), o = document.getElementById("p3iFetchOut");
+  if(s) s.textContent = "⏳ Loading…";
+  if(o) o.style.opacity = "0.4";
+  fetch("https://jsonplaceholder.typicode.com/users/1")
+    .then(function(res){ if(!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function(u){
+      if(o){ o.style.opacity = "1"; o.innerHTML = "✅ <strong>Fetched</strong>: " + u.name + " — " + u.email; }
+      if(s) s.textContent = "✅ Done";
+    })
+    .catch(function(e){ if(o){ o.style.opacity = "1"; o.textContent = "⚠️ fetch failed: " + e.message + " (offline?)"; } if(s) s.textContent = "❌ Error"; });
+}
+</script>
 
 ## 🎉 Congratulations!
 
