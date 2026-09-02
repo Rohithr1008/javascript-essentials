@@ -99,6 +99,52 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 **Naming rule:** every global in app N is suffixed with its part (`fontZoom3`, `boostSurprise4`, `focusMode5`, etc.) to keep the parts isolated.
 ---
 
+## 5b. Interactive-Features Inventory (per part — the "what's actually in each file")
+
+> This is the menu of interactive things a learner can *do* in each edition. Counts are from a real audit of each study app. Use it to know what a given part offers and to keep additions consistent.
+
+### 🧩 Legend
+- **App** = standalone study app (`study_app.html`) · **MD** = interactive markdown
+- `quiz-box` = click-to-reveal question boxes · `flashcard` = click-to-flip cards
+- `sandbox/playground/tester` = live editable runnable demos · `mock` = in-page simulated server
+- `predict` = "guess the output" cards · `badge` = difficulty/time/mood tags · `hint` = collapsible hints
+- SRS = spaced-repetition flashcards (engine, in every app)
+
+### Part 1 — Core (richest variety)
+- **26 quiz-boxes**, **30 flashcard slots** (+ symbol drills), **16 predict-the-output** cards
+- **Difficulty & time badges** (105 badge references) + 💡 hints (40) on exercises/challenges
+- **"Spot-the-bug" final boss quiz** · **Mood checks** · **7-day study plan** · **completion certificate**
+- *(app)* 🌙 dark mode · 📊 progress (localStorage) · 🧭 scrollspy-style nav · 📋 copy buttons
+
+### Part 2 — Async/OOP
+- **18 quiz-boxes**, **8 flashcards**, **7 predict-the-output** cards
+- **Promise Simulator** (3 refs) + **code sandbox** (10) — the signature interactive demo
+- Hints (5), challenges (13), badges (19), copy buttons
+
+### Part 3 — MERN Bridge
+- **15 quiz-boxes**, **5 flashcards**, **Map/Set Playground**, **RegExp tester** (`rx-`)
+- DOM demo + fetch demo (live buttons) · hints (5) · challenges (14) · badges (18)
+
+### Part 4 — MERN Foundations (mock-first)
+- **24 quiz-boxes** · **SRS flashcards engine** (srCards data, `startSRReview`) — NOTE: no inline `<div class="flashcard">` markup & no `<div class="hint">` per challenge (differs from Parts 1–3)
+- **Live mock MERN server** (`mockRun`, 15 refs) + **animated layer diagram** + "Watch the full loop" autoplay
+- **Two mini-app demos**: Notes app (POST/GET/DELETE) and Product Store with Reviews
+- Layer-colour legend · 6 auto-graded challenges
+
+### Part 5 — Production (mock auth)
+- **22 quiz-boxes** · **SRS flashcards engine** — again no inline `<div class="flashcard">` / `<div class="hint">` (matches Part 4 pattern)
+- **Live mock auth server** (`authDemo`): Register / Login / Get /api/me / Logout / Watch-the-flow
+- **JWT viewer** (3 colour chips: header·payload·signature) · **hash demo**
+- Auth/deploy jargon glossary (4) · 5 auto-graded challenges
+
+### 📋 Interaction consistency rules
+- **Every app** must have: quiz-boxes, SRS flashcards engine, progress+Mark Complete, learning path, Focus Mode, collapse/expand, theme, font zoom, XP/streak/confetti, skip link.
+- **Not every app** has every *visual* widget (e.g. 4/5 skip inline flashcard/hint markup). That's fine — but **before adding a feature to one part, mirror it to the others** or the set drifts.
+- When you extend a part, update this inventory **and** the context doc so the handoff stays truthful.
+
+---
+---
+
 ## 6. Key Implementation Rules / Gotchas
 
 1. **Never store plain-text passwords** — always `bcrypt.hash`. `findByIdAndUpdate(id, upd, { new: true })` returns the NEW doc; omitting `{new}` returns the old.
@@ -142,6 +188,7 @@ node --check _v.js
 - Full smoke test: all scripts compile; core systems load/run; 11/11 challenge solutions pass
 
 ### 🔜 Natural next steps (not started — only continue if asked)
+- **Consistency polish (known gap):** Parts 4–5 study apps have the SRS engine but no inline `<div class="flashcard">` cards in the body and no `<div class="hint">` on challenges, unlike Parts 1–3. If visual parity is wanted, add those to Part 4 & 5 (mirror Part 3's markup).
 - **Scaling / reliability**: CI/CD (auto-deploy on push), monitoring & logging, performance tuning
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
