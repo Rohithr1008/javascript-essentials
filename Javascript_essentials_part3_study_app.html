@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Essentials — Part 3</title>
+</head>
+<body>
+
+<h1>JavaScript Essentials - Part 3</h1>
+
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
+
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
+  <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
+  <button onclick="fontZoom3(-1)" title="Decrease text size">A−</button>
+  <button onclick="fontZoom3(0)" title="Reset text size">A</button>
+  <button onclick="fontZoom3(1)" title="Increase text size">A+</button>
+</div>
+
+<p>A quick reference covering the JavaScript for <strong>full-stack (MERN)</strong> development: Map/Set, generators, regex, DOM & events, fetch, and Node core.</p>
+
+<div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/10 sections (0%)</div>
+
+<div id="boostBar" style="background:#1a202c;border:2px solid #dd6b20;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+  <div style="font-weight:700;">⚡ <span id="streakCount" style="color:#fbbf24;">0-day streak</span></div>
+  <div style="font-weight:700;">⭐ <span id="pointCount" style="color:#fbbf24;">0 XP</span></div>
+  <div><button onclick="boostSurprise3()" title="Jump to a random section" aria-label="Surprise me" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer3()" title="Start/stop a 25-minute focus sprint" aria-label="Focus sprint" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><span id="focusTimer" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
+</div>
+
+<div id="toastZone" style="position:fixed;top:16px;right:16px;z-index:999;display:flex;flex-direction:column;gap:8px;"></div>
+<canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none;"></canvas>
+
+<div id="learningPathPanel" style="background:#2d3748;border:2px solid #805ad5;border-radius:12px;padding:16px 20px;margin:16px 0;">
+  <h3 style="color:#b794f4;margin-top:0;">🧭 Learning Path Recommendations</h3>
+  <div id="learningPathContent" style="color:#e2e8f0;"><p>⏳ Complete sections to get personalized recommendations…</p></div>
+</div>
+
+<div id="spacedRepetitionPanel" style="background:#2d3748;border:2px solid #319795;border-radius:12px;padding:16px 20px;margin:16px 0;">
+  <h3 style="color:#4fd1c5;margin-top:0;">🃏 Spaced Repetition Flashcards</h3>
+  <div id="srCard" style="background:#1a202c;border:1px solid #4a5568;border-radius:8px;padding:16px;margin:10px 0;text-align:center;">
+    <p id="srQuestion" style="color:#e2e8f0;font-size:16px;margin:0 0 12px 0;">Click "Start Review" to begin!</p>
+    <p id="srAnswer" style="color:#68d391;font-size:14px;margin:0 0 12px 0;display:none;"></p>
+    <div id="srButtons" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="startSRReview()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Start Review</button>
+      <button onclick="srToggleShuffle()" id="srShuffleBtn" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔀 Shuffle: Off</button>
+    </div>
+    <div id="srStats" style="color:#a0aec0;font-size:12px;margin-top:10px;"></div>
+  </div>
+</div>
+
+<style>
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
+html { scroll-behavior: smooth; font-size: 16px; }
+h2[id], h3[id] { scroll-margin-top: 16px; }
+.theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+nav a { color: #2b6cb0; text-decoration: none; font-weight: 600; }
+h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
+.interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
+.tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
+.warn   { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; }
+.chall  { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; }
+.quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
+.quiz-box h3 { margin-top: 0; color: #2b6cb0; }
+.quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+.quiz-box summary { cursor: pointer; font-weight: 600; }
+.quiz-correct { color: #276749; font-weight: 700; }
+.flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+.flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
+.flashcard .back { margin-top: 8px; }
+.badge { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; margin-left: 6px; vertical-align: middle; font-weight: 700; }
+.b-green  { background: #c6f6d5; color: #22543d; }
+.b-yellow { background: #fefcbf; color: #744210; }
+.b-red    { background: #fed7d7; color: #742a2a; }
+.b-time   { background: #e2e8f0; color: #2d3748; font-weight: 600; }
+.hint { background: #fffbeb; border: 1px dashed #d69e2e; border-radius: 8px; padding: 8px 12px; margin: 10px 0; }
+.hint summary { cursor: pointer; font-weight: 700; color: #744210; }
+.mark-btn { margin: 8px 0 4px 0; padding: 5px 12px; background: #38a169; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
+.mark-btn.done { background: #718096; }
+.sandbox { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 14px; color: #e2e8f0; }
+.sandbox textarea { width: 100%; box-sizing: border-box; background: #0b1220; color: #a5f3fc; border: 1px solid #334155; border-radius: 6px; font-family: "Cascadia Code", Consolas, monospace; padding: 10px; }
+.sandbox .out { background: #020617; color: #86efac; border-radius: 6px; padding: 10px; margin-top: 8px; min-height: 40px; white-space: pre-wrap; font-family: "Cascadia Code", monospace; }
+.sandbox .err { color: #fca5a5; }
+.sandbox button { background: #2563eb; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; margin: 6px 6px 0 0; }
+.challenge { border: 1px solid #4a5568; border-radius: 10px; padding: 12px 16px; margin: 14px 0; background: #fafbfc; }
+.challenge textarea { width: 100%; box-sizing: border-box; background: #0b1220; color: #a5f3fc; border: 1px solid #334155; border-radius: 6px; font-family: "Cascadia Code", Consolas, monospace; padding: 10px; }
+.challenge .result { margin-top: 8px; padding: 8px 10px; border-radius: 6px; font-weight: 600; white-space: pre-wrap; }
+.pass { background: #c6f6d5; color: #22543d; }
+.fail { background: #fed7d7; color: #742a2a; }
+.toast { background: #1a202c; color: #e2e8f0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.3); font-weight: 600; max-width: 280px; animation: slidein .3s ease; }
+.toast.celebrate { border-left-color: #38a169; }
+.toast.badge { border-left-color: #805ad5; }
+@keyframes slidein { from { opacity:0; transform: translateX(20px);} to { opacity:1; transform:none;} }
+.totop { text-align: right; margin: 6px 0; }
+.totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
+.footer { text-align: center; padding: 18px; margin-top: 30px; background: #2d3748; border-radius: 10px; color: #e2e8f0; }
+html.font-sm { font-size: 15px; }
+html.font-md { font-size: 17px; }
+html.font-lg { font-size: 18px; }
+@media (prefers-color-scheme: dark) {
+  body { background: #0d1117; color: #e6edf3; }
+  h2 { border-bottom-color: #63b3ed; }
+  .interactive-note { background: #17202b; }
+  .tip { background: #132a1c; }
+  .warn { background: #2b2013; }
+  .chall { background: #221b3a; }
+  .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+  .quiz-box h3 { color: #90cdf4; }
+  .quiz-box details { background: #0f1622; border-color: #2d3748; }
+  .flashcard { background: #241d0e; border-color: #975a16; }
+  .challenge { background: #141c28; border-color: #2d3748; }
+  nav a { color: #90cdf4; }
+  pre { background: #0b1220; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+@media print { .theme-btn, #boostBar, #toastZone, #confettiCanvas, .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, button { display: none !important; } body { background:#fff!important; color:#000!important; } }
+</style>
+
+<div class="interactive-note">💡 <strong>Interactive Study App — Part 3 (MERN Bridge):</strong> Map/Set playground, RegExp tester, DOM sandbox, Node quick-ref, 5 auto-graded challenges, Spaced Repetition, Learning Path, progress, dark mode, and ADHD-engagement (XP/streak).</div>
+
+<nav>
+<h2 id="table-of-contents">📑 Table of Contents</h2>
+<p>🔗 <a href="#1-mapsets">1. Map &amp; Set</a> · <a href="#2-generators">2. Generators</a> · <a href="#3-regexp">3. RegExp</a> · <a href="#4-dom">4. DOM &amp; Events</a> · <a href="#5-fetch">5. fetch</a> · <a href="#6-node">6. Node Core</a> · <a href="#7-pitfalls">7. Pitfalls</a> · <a href="#8-exercises">8. Exercises</a> · <a href="#9-challenges">9. Challenges</a> · <a href="#10-answers">10. Answer Key</a></p>
+</nav>
+
+<hr>
+
+<h2 id="1-mapsets">1. Map &amp; Set</h2>
+<button class="mark-btn" onclick="toggleSection(1)">✅ Mark Complete</button>
+<div class="tip">💡 <strong>Map</strong> = any keys + insertion order. <strong>Set</strong> = unique values.</div>
+
+<h3>🧪 Map / Set Playground</h3>
+<div class="sandbox" id="ms-box">
+  <textarea id="ms-code" rows="2">const s = new Set([1,1,2,3,3]);
+s.size;</textarea>
+  <br>
+  <button onclick="msRun()">▶️ Run</button>
+  <button onclick="document.getElementById('ms-code').value=''">🗑 Clear</button>
+  <div class="out" id="ms-out">Output…</div>
+</div>
+
+<pre><code>const user = new Map();
+user.set("name", "Rohit");
+console.log(user.get("name"));  // "Rohit"
+console.log(user.size);         // 1
+
+const unique = [...new Set([1,1,2,3,3])]; // [1,2,3]</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 Map &amp; Set quiz</h3>
+<details><summary>Q1. `new Set([1,1,2,3,3]).size` = ?</summary><p class="quiz-correct">3</p></details>
+<details><summary>Q2. Which allows any key type &amp; keeps order?</summary><p class="quiz-correct">Map</p></details>
+<details><summary>Q3. De-dupe `[...]` using a Set?</summary><p class="quiz-correct">[...new Set(arr)]</p></details>
+</div>
+
+<hr>
+<h2 id="2-generators">2. Generators</h2>
+<button class="mark-btn" onclick="toggleSection(2)">✅ Mark Complete</button>
+<div class="tip">💡 <strong>function*</strong> + <strong>yield</strong>. <code>.next()</code> → <code>{value, done}</code>.</div>
+
+<pre><code>function* countUp(){ yield 1; yield 2; yield 3; }
+const g = countUp();
+g.next(); // {value:1, done:false}
+
+function* fib(){ let a=0,b=1; while(true){ yield a; [a,b]=[b,a+b]; } }
+const f = fib();
+f.next().value; // 0  (then 1, 1, 2...)</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 Generators quiz</h3>
+<details><summary>Q1. What does `.next()` return?</summary><p class="quiz-correct">{value, done}</p></details>
+<details><summary>Q2. What keyword marks a generator?</summary><p class="quiz-correct">function*</p></details>
+</div>
+
+<hr>
+<h2 id="3-regexp">3. Regular Expressions</h2>
+<button class="mark-btn" onclick="toggleSection(3)">✅ Mark Complete</button>
+<div class="chall">🔤 Patterns for validation / extraction, flags <code>g i m</code>.</div>
+
+<h3>🧪 RegExp Tester</h3>
+<div class="sandbox" id="rx-box">
+  <textarea id="rx-pattern" rows="1">^\d{3}-\d{3}-\d{4}$</textarea>
+  <textarea id="rx-text" rows="1">555-123-4567</textarea><br>
+  <button onclick="rxTest()">▶️ Test</button>
+  <div class="out" id="rx-out">Result…</div>
+</div>
+
+<pre><code>/^\d{3}-\d{3}-\d{4}$/.test("555-123-4567"); // true
+"a1b2".match(/\d/g);                          // ["1","2"]</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 RegExp quiz</h3>
+<details><summary>Q1. Flag to find ALL matches?</summary><p class="quiz-correct">g</p></details>
+<details><summary>Q2. `"abc123".replace(/\d/g,"#")` = ?</summary><p class="quiz-correct">abc###</p></details>
+</div>
+
+<hr>
+<h2 id="4-dom">4. DOM &amp; Events</h2>
+<button class="mark-btn" onclick="toggleSection(4)">✅ Mark Complete</button>
+<div class="warn">🌐 Browser-only — run in dev tools or a React project.</div>
+
+<pre><code>const btn = document.querySelector("#save");
+const li = document.createElement("li");
+li.textContent = "New"; li.classList.add("active");
+document.querySelector("#list").appendChild(li);
+
+btn.addEventListener("click", (e) => console.log(e.target));
+form.addEventListener("submit", (e) => e.preventDefault());</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 DOM quiz</h3>
+<details><summary>Q1. Which returns the FIRST match?</summary><p class="quiz-correct">querySelector</p></details>
+<details><summary>Q2. What stops a form reloading?</summary><p class="quiz-correct">preventDefault()</p></details>
+<details><summary>Q3. What is `event.target`?</summary><p class="quiz-correct">The element the event occurred on</p></details>
+</div>
+
+<hr>
+<h2 id="5-fetch">5. fetch</h2>
+<button class="mark-btn" onclick="toggleSection(5)">✅ Mark Complete</button>
+<div class="chall">📡 Talk to your Express API. Returns a promise; check <code>res.ok</code>.</div>
+
+<pre><code>async function getUsers(){
+  const res = await fetch("https://api.example.com/users");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+async function createUser(name){
+  const res = await fetch("/api/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 fetch quiz</h3>
+<details><summary>Q1. Does fetch reject on a 500?</summary><p class="quiz-correct">No — check res.ok</p></details>
+<details><summary>Q2. How to send JSON in POST?</summary><p class="quiz-correct">body: JSON.stringify(obj) + JSON header</p></details>
+<details><summary>Q3. Body methods you can call?</summary><p class="quiz-correct">One (json/text/formData)</p></details>
+</div>
+
+<hr>
+<h2 id="6-node">6. Node Core</h2>
+<button class="mark-btn" onclick="toggleSection(6)">✅ Mark Complete</button>
+<div class="tip">🖥 Node runs JS on the server — Express &amp; Mongoose on top.</div>
+
+<pre><code>import { promises as fs } from "node:fs";
+import path from "node:path";
+const data = await fs.readFile(path.join(".","data.json"), "utf8");
+const PORT = process.env.PORT || 3000;
+
+import { createServer } from "node:http";
+createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ ok: true }));
+}).listen(3000);</code></pre>
+
+<div class="quiz-box">
+<h3>🎯 Node quiz</h3>
+<details><summary>Q1. Sync file read?</summary><p class="quiz-correct">fs.readFileSync</p></details>
+<details><summary>Q2. `process.env.PORT`?</summary><p class="quiz-correct">An env variable</p></details>
+<details><summary>Q3. Best read in a handler?</summary><p class="quiz-correct">fs.promises.readFile (non-blocking)</p></details>
+</div>
+
+<hr>
+<h2 id="7-pitfalls">7. Common Pitfalls (MERN)</h2>
+<button class="mark-btn" onclick="toggleSection(7)">✅ Mark Complete</button>
+<div class="warn">1. <strong>await inside .forEach</strong> — use <code>for...of</code>.</div>
+<div class="warn">2. <strong>Not checking res.ok</strong> after fetch.</div>
+<div class="warn">3. <strong>Calling .json() twice</strong> — one-time stream.</div>
+<div class="warn">4. <strong>Blocking the event loop</strong> with sync fs in a handler.</div>
+<div class="warn">5. <strong>Mutating React state</strong> — copy then <code>setItems([...items, x])</code>.</div>
+<div class="warn">6. <strong>Object where Map/Set fits</strong> better.</div>
+<div class="warn">7. <strong>Forgetting the g flag</strong> for all matches.</div>
+
+<hr>
+<h2 id="8-exercises">8. Practice Exercises</h2>
+<button class="mark-btn" onclick="toggleSection(8)">✅ Mark Complete</button>
+<p><strong>Ex1</strong> <span class="badge b-green">Easy</span> Map of 3 students → scores; iterate.</p>
+<p><strong>Ex2</strong> <span class="badge b-green">Easy</span> Dedupe with a Set: <code>[...new Set(arr)]</code>.</p>
+<p><strong>Ex3</strong> <span class="badge b-yellow">Medium</span> Generator <code>take(gen, n)</code> → first 8 Fibonacci.</p>
+<p><strong>Ex4</strong> <span class="badge b-yellow">Medium</span> <code>isEmail(s)</code> true for <code>"a@b.co"</code>.</p>
+<p><strong>Ex5</strong> <span class="badge b-yellow">Medium</span> Create an <code>&lt;li&gt;</code>, set text, add class, append. (browser)</p>
+<p><strong>Ex6</strong> <span class="badge b-yellow">Medium</span> <code>getData(url)</code> fetch + check res.ok.</p>
+<p><strong>Ex7</strong> <span class="badge b-yellow">Medium</span> <code>postData(url, obj)</code> JSON POST.</p>
+<p><strong>Ex8</strong> <span class="badge b-yellow">Medium</span> Read <code>data.json</code> with fs.promises + path.join.</p>
+
+<hr>
+<h2 id="9-challenges">9. Challenges (auto-graded)</h2>
+<button class="mark-btn" onclick="toggleSection(9)">✅ Mark Complete</button>
+<p>Write each function, click <strong>Run Tests</strong>. Instant pass/fail; completion saved.</p>
+
+<div class="challenge">
+  <strong>C1 — Unique words counter</strong> <span class="badge b-red">Hard</span><br>
+  <code>countWords(text)</code> → Map of word→count. Return <code>{count: Number} or object</code>; we test <code>counts.get</code>.
+  <textarea id="chal1" rows="5">function countWords(text) {
+  // your code here — return a Map
+}</textarea>
+  <button class="mark-btn" onclick="runTest(1)">▶️ Run Tests</button>
+  <div class="result" id="res1"></div>
+</div>
+
+<div class="challenge">
+  <strong>C2 — Slugify</strong> <span class="badge b-red">Hard</span><br>
+  <code>slugify("Hello World!")</code> → <code>"hello-world"</code>.
+  <textarea id="chal2" rows="4">function slugify(s) {
+  // your code here
+}</textarea>
+  <button class="mark-btn" onclick="runTest(2)">▶️ Run Tests</button>
+  <div class="result" id="res2"></div>
+</div>
+
+<div class="challenge">
+  <strong>C3 — isEven range via generator</strong> <span class="badge b-red">Hard</span><br>
+  Write a generator <code>range(start, end)</code> that yields integers.
+  <textarea id="chal3" rows="4">function* range(start, end) {
+  // your code here
+}</textarea>
+  <button class="mark-btn" onclick="runTest(3)">▶️ Run Tests</button>
+  <div class="result" id="res3"></div>
+</div>
+
+<div class="challenge">
+  <strong>C4 — fetchWithTimeout</strong> <span class="badge b-red">Hard</span><br>
+  <code>fetchWithTimeout(url, ms)</code> using AbortController.
+  <textarea id="chal4" rows="6">async function fetchWithTimeout(url, ms) {
+  // your code here
+}</textarea>
+  <button class="mark-btn" onclick="runTest(4)">▶️ Run Tests</button>
+  <div class="result" id="res4"></div>
+</div>
+
+<div class="challenge">
+  <strong>C5 — word frequency (object)</strong> <span class="badge b-red">Hard</span><br>
+  <code>freq(text)</code> → plain object of word counts.
+  <textarea id="chal5" rows="5">function freq(text) {
+  // your code here — return an object
+}</textarea>
+  <button class="mark-btn" onclick="runTest(5)">▶️ Run Tests</button>
+  <div class="result" id="res5"></div>
+</div>
+
+<hr>
+<h2 id="10-answers">10. Answer Key</h2>
+<button class="mark-btn" onclick="toggleSection(10)">✅ Mark Complete</button>
+<div class="quiz-box">
+<h3>✅ Quiz answers</h3>
+<details><summary>Reveal</summary><p>S1: 3 · Map · Set · S2: {value,done} · function* · S3: g · abc###<br>S4: querySelector · preventDefault · target · S5: No · JSON + header · One<br>S6: readFileSync · env · fs.promises</p></details>
+</div>
+
+<div class="quiz-box">
+<h3>🧪 Challenge solutions</h3>
+<details><summary>C1 — countWords</summary>
+<pre><code>function countWords(text){
+  const m = new Map();
+  for (const w of text.split(/\s+/).filter(Boolean)) m.set(w,(m.get(w)||0)+1);
+  return m; // Map
+}</code></pre></details>
+<details><summary>C2 — slugify</summary>
+<pre><code>const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");</code></pre></details>
+<details><summary>C3 — range generator</summary>
+<pre><code>function* range(s,e){ for(let i=s;i<=e;i++) yield i; }</code></pre></details>
+<details><summary>C4 — fetchWithTimeout</summary>
+<pre><code>async function fetchWithTimeout(url,ms){
+  const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms);
+  try{ const res=await fetch(url,{signal:c.signal}); if(!res.ok) throw new Error(`HTTP ${res.status}`); return await res.json(); }
+  finally{ clearTimeout(t); }
+}</code></pre></details>
+<details><summary>C5 — freq</summary>
+<pre><code>function freq(text){
+  const o={};
+  for (const w of text.split(/\s+/).filter(Boolean)) o[w]=(o[w]||0)+1;
+  return o;
+}</code></pre></details>
+</div>
+
+<div class="footer">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 3 (MERN Bridge)!</div>
+
+<div class="totop"><a href="#table-of-contents">⬆ Back to top</a></div>
+
+<script>
+// ===== Part 3 Study App — Script =====
+
+// ===== Theme =====
+function toggleTheme() {
+  var cur = document.documentElement.className;
+  var next = cur === "force-dark" ? "force-light" : "force-dark";
+  document.documentElement.className = next;
+  localStorage.setItem("p3-theme", next);
+  document.getElementById("themeBtn").textContent = next === "force-dark" ? "☀️ Light mode" : "🌙 Dark mode";
+}
+function applySysDark() {
+  if (!localStorage.getItem("p3-theme") && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.className = "force-dark";
+    document.getElementById("themeBtn").textContent = "☀️ Light mode";
+  }
+}
+applySysDark();
+
+// ===== Font zoom =====
+var fontLevels3 = ["font-sm", "", "font-md", "font-lg"];
+function fontZoom3(dir) {
+  var html = document.documentElement;
+  var cur = ""; ["font-sm","font-md","font-lg"].forEach(function(c){ if(html.classList.contains(c)) cur=c; });
+  html.className = html.className.split(" ").filter(function(c){ return ["font-sm","font-md","font-lg"].indexOf(c)===-1; }).join(" ").trim();
+  if (dir !== 0) {
+    var idx = cur==="font-md"?2 : cur==="font-lg"?3 : cur==="font-sm"?0 : 1;
+    var nxt = Math.max(0, Math.min(3, idx + dir));
+    var addCls = fontLevels3[nxt];
+    if (addCls) html.className = (html.className + " " + addCls).trim();
+    localStorage.setItem("p3-font", addCls || "normal");
+  } else { localStorage.setItem("p3-font", "normal"); }
+}
+function applyFontZoom3() {
+  var saved = localStorage.getItem("p3-font");
+  if (saved && saved !== "normal") document.documentElement.className = (document.documentElement.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ")+" "+saved).trim();
+}
+
+// ===== Progress =====
+function toggleSection(n) {
+  var key = "p3-sec-" + n;
+  var done = localStorage.getItem(key) === "1";
+  localStorage.setItem(key, done ? "0" : "1");
+  var btn = document.querySelector('button[onclick="toggleSection(' + n + ')"]');
+  if (btn) { btn.textContent = done ? "✅ Mark Complete" : "✅ Completed"; btn.classList.toggle("done", !done); }
+  if (!done && localStorage.getItem(key) === "1") { addXP3(20); trackStreak3(); celebrate3(); toast3(enc3[Math.floor(Math.random()*enc3.length)], "celebrate"); }
+  updateProgress();
+}
+function updateProgress() {
+  var total = 10, done = 0;
+  for (var i = 1; i <= total; i++) if (localStorage.getItem("p3-sec-" + i) === "1") done++;
+  var bar = document.getElementById("progressBar");
+  if (bar) bar.textContent = "📊 Progress: " + done + "/" + total + " sections (" + Math.round((done / total) * 100) + "%)";
+  updateLearningPath3(done);
+}
+function markButtons() {
+  for (var i = 1; i <= 10; i++) {
+    var b = document.querySelector('button[onclick="toggleSection(' + i + ')"]');
+    if (b && localStorage.getItem("p3-sec-" + i) === "1") { b.textContent = "✅ Completed"; b.classList.add("done"); }
+  }
+}
+function updateLearningPath3(done) {
+  var el = document.getElementById("learningPathContent");
+  if (!el) return;
+  if (done === 0) { el.innerHTML = "<p>⏳ Start with <strong>Section 1 (Map &amp; Set)</strong> — foundation tiles first.</p>"; return; }
+  var names = {1:"Map & Set",2:"Generators",3:"RegExp",4:"DOM & Events",5:"fetch",6:"Node Core",7:"Pitfalls",8:"Exercises",9:"Challenges",10:"Answer Key"};
+  var next = "";
+  for (var i = 1; i <= 10; i++) if (localStorage.getItem("p3-sec-" + i) !== "1") { next = i; break; }
+  el.innerHTML = next ? "<p>⏳ Next: <strong>Section " + next + " (" + names[next] + ")</strong></p>" : "<p>🎉 All sections complete!</p>";
+}
+
+// ===== SRS Flashcards =====
+var srState3 = JSON.parse(localStorage.getItem("p3-sr") || "{}");
+var srCards3 = [
+  {q:"What does a Map allow that an object doesn't?", a:"Any key type (objects, numbers, functions)", lvl:1},
+  {q:"What does a Set guarantee?", a:"Unique values (size counts unique)", lvl:1},
+  {q:"What does a generator's .next() return?", a:"{value, done}", lvl:1},
+  {q:"Which flag finds ALL regex matches?", a:"g (global)", lvl:1},
+  {q:"What stops a form from reloading?", a:"event.preventDefault()", lvl:1},
+  {q:"Does fetch reject on a 500?", a:"No — check res.ok", lvl:1},
+  {q:"How do you read a file in Node?", a:"fs.readFileSync or fs.promises.readFile", lvl:1},
+  {q:"What is process.env.PORT?", a:"An environment variable", lvl:1}
+];
+var srIdx3 = 0, srShuffle3 = localStorage.getItem("p3-sr-shuffle") === "1";
+function srToggleShuffle() {
+  srShuffle3 = !srShuffle3; localStorage.setItem("p3-sr-shuffle", srShuffle3 ? "1" : "0");
+  var b = document.getElementById("srShuffleBtn"); if (b) { b.textContent = "🔀 Shuffle: " + (srShuffle3 ? "On":"Off"); b.style.background = srShuffle3 ? "#e53e3e":"#4a5568"; }
+}
+function startSRReview() {
+  var due = srCards3.filter(function(c){ var m=srState3[c.q]||{}; return !m.next || Date.now() >= m.next; });
+  if (srShuffle3 && due.length > 1) for (var i=due.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=due[i]; due[i]=due[j]; due[j]=t; }
+  srIdx3 = due.length === 0 ? -1 : 0; showSRCard3();
+}
+function showSRCard3() {
+  var q=document.getElementById("srQuestion"), a=document.getElementById("srAnswer"), btn=document.getElementById("srButtons");
+  if (!q) return;
+  if (srIdx3 === -1) { q.textContent="🎉 All reviewed!"; a.style.display="none"; btn.innerHTML='<button onclick="startSRReview()">Reset</button>'; renderSRStats3(); return; }
+  var c=srCards3[srIdx3]; q.textContent="Q: "+c.q; a.textContent="A: "+c.a; a.style.display="none";
+  btn.innerHTML='<button onclick="srFlip3()">Show Answer</button>'; renderSRStats3();
+}
+function srFlip3() {
+  document.getElementById("srAnswer").style.display="block";
+  document.getElementById("srButtons").innerHTML='<button onclick="srRate3(1)">👍 Got it</button><button onclick="srRate3(0)">👎 Again</button>';
+}
+function srRate3(good) {
+  var c=srCards3[srIdx3], m=srState3[c.q]||{lvl:0,next:0};
+  if (good) m.lvl=Math.min(4,(m.lvl||0)+1); else m.lvl=Math.max(1,(m.lvl||0)-1);
+  var days=[0,1,3,7,14]; m.next=Date.now()+days[m.lvl]*86400000;
+  srState3[c.q]=m; localStorage.setItem("p3-sr", JSON.stringify(srState3));
+  srIdx3++; if (srIdx3>=srCards3.length) srIdx3=-1; showSRCard3();
+}
+function renderSRStats3() {
+  var s=document.getElementById("srStats"); if(!s) return;
+  var n=0,l=0,ma=0; srCards3.forEach(function(c){ var lvl=(srState3[c.q]||{}).lvl||0; if(lvl===0)n++; else if(lvl<3)l++; else ma++; });
+  s.textContent="🆕 "+n+" · 📖 "+l+" · 🏆 "+ma;
+}
+
+// ===== Game Engine (ADHD engagement) =====
+var boost3 = JSON.parse(localStorage.getItem("p3-boost") || '{"xp":0,"streakDate":"","streak":0}');
+var boostX3 = boost3.xp || 0, boostStreak3 = boost3.streak || 0, boostDate3 = boost3.streakDate || "";
+var enc3 = ["You've got this! 🎯","One more! ✨","Tiny steps count 🐾","Future-you says thanks 🙌","Progress > perfection 💪"];
+function saveBoost3() {
+  localStorage.setItem("p3-boost", JSON.stringify({xp:boostX3,streak:boostStreak3,streakDate:boostDate3}));
+  var s=document.getElementById("streakCount"), p=document.getElementById("pointCount");
+  if (s) s.textContent=boostStreak3+"-day streak"; if (p) p.textContent=boostX3+" XP";
+}
+function addXP3(a){ boostX3+=a; saveBoost3(); }
+function trackStreak3() {
+  var today=new Date().toISOString().slice(0,10); if (boostDate3===today) return;
+  var y=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  boostStreak3=(boostDate3===y)?boostStreak3+1:1; boostDate3=today; saveBoost3();
+  if (boostStreak3>=3) toast3("🔥 "+boostStreak3+"-day streak!", "badge");
+}
+function toast3(msg,cls) {
+  var z=document.getElementById("toastZone"); if(!z) return;
+  var t=document.createElement("div"); t.className="toast"+(cls?" "+cls:""); t.textContent=msg;
+  z.appendChild(t); setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },4000);
+}
+function celebrate3() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var c=document.getElementById("confettiCanvas"); if(!c) return;
+  c.style.display="block"; c.width=window.innerWidth; c.height=window.innerHeight;
+  var ctx=c.getContext("2d"); var colors=["#fbbf24","#38a169","#4299e1","#e53e3e","#805ad5","#dd6b20"]; var parts=[];
+  for(var i=0;i<120;i++) parts.push({x:Math.random()*c.width,y:-20-Math.random()*c.height,vx:(Math.random()-.5)*4,vy:2+Math.random()*4,r:3+Math.random()*4,col:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*Math.PI});
+  var frames=0; (function draw(){ ctx.clearRect(0,0,c.width,c.height);
+    parts.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.rot+=.05; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.col; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r); ctx.restore(); });
+    frames++; if(frames<120) requestAnimationFrame(draw); else { ctx.clearRect(0,0,c.width,c.height); c.style.display="none"; } })();
+}
+function boostSurprise3() {
+  var names={1:"Section 1 (Map & Set)",2:"Section 2 (Generators)",3:"Section 3 (RegExp)",4:"Section 4 (DOM & Events)",5:"Section 5 (fetch)",6:"Section 6 (Node Core)"};
+  var done=[],all=[]; for(var i=1;i<=10;i++){ if(localStorage.getItem("p3-sec-"+i)==="1") done.push(i); all.push(i); }
+  var undone=all.filter(function(n){return done.indexOf(n)===-1;}); var pick=undone.length?undone[Math.floor(Math.random()*undone.length)]:all[Math.floor(Math.random()*all.length)];
+  var ids={1:"1-mapsets",2:"2-generators",3:"3-regexp",4:"4-dom",5:"5-fetch",6:"6-node"}; var h=document.getElementById(ids[pick]||"table-of-contents");
+  toast3("🎲 Surprise! "+(names[pick]||"Section "+pick),"badge"); if(h) h.scrollIntoView({behavior:"smooth"});
+}
+var focusLen3=25*60, focusLeft3=focusLen3, focusTimer3=null, focusRun3=false;
+function startFocusTimer3() {
+  var d=document.getElementById("focusTimer");
+  if(focusRun3){ clearInterval(focusTimer3); focusRun3=false; focusLeft3=focusLen3; if(d)d.textContent="⏱ 25:00"; toast3("🧠 Sprint done — take a break! ☕","celebrate"); return; }
+  focusRun3=true; focusTimer3=setInterval(function(){ focusLeft3--; if(d)d.textContent="⏱ "+Math.floor(focusLeft3/60)+":"+String(focusLeft3%60).padStart(2,"0");
+    if(focusLeft3<=0){ clearInterval(focusTimer3); focusRun3=false; focusLeft3=focusLen3; if(d)d.textContent="⏱ 25:00"; celebrate3(); toast3("🎉 Focus sprint +10 XP","celebrate"); addXP3(10); trackStreak3(); } },1000);
+}
+
+// ===== Playgrounds =====
+function msRun() {
+  var code=document.getElementById("ms-code").value, out=document.getElementById("ms-out");
+  out.className="out"; try { var r=new Function("return eval('('+code+')')")(); out.textContent="Result: "+String(r); }
+  catch(e){ out.className="out err"; out.textContent="Error: "+e.message; }
+}
+function rxTest() {
+  var pat=document.getElementById("rx-pattern").value, text=document.getElementById("rx-text").value, out=document.getElementById("rx-out");
+  out.className="out"; try { var re=new RegExp(pat); out.textContent=re.test(text)?"✅ MATCH":"❌ no match"; }
+  catch(e){ out.className="out err"; out.textContent="Invalid regex: "+e.message; }
+}
+
+// ===== Auto-Graded Challenges =====
+function runTest(n) {
+  var code=document.getElementById("chal"+n).value, res=document.getElementById("res"+n);
+  res.className="result";
+  var harness="return (async () => {\n  var passed=[], failed=[];\n  function check(name, cond){ (cond?passed:failed).push(name); }\n"+code+"\n"+(P3_TESTS[n]||"")+"\n  return {passed:passed, failed:failed};\n})();";
+  var fn; try { fn=new Function(harness); } catch(e){ res.className="result fail"; res.textContent="Syntax Error: "+e.message; return; }
+  Promise.resolve(fn()).then(function(r){
+    res.className=r.failed.length?"result fail":"result pass";
+    var lines=r.passed.map(function(t){return "✅ "+t;}).concat(r.failed.map(function(t){return "❌ "+t;}));
+    if(r.passed.length && !r.failed.length){ lines.push("🎉 All tests passed!"); addXP3(30); toast3("🏅 Challenge complete! +30 XP","badge"); celebrate3(); markChallengeComplete(n); }
+    res.textContent=lines.join("\n")||"(no tests ran)";
+  }).catch(function(e){ res.className="result fail"; res.textContent="Error: "+e.message; });
+}
+function markChallengeComplete(n) {
+  var c=JSON.parse(localStorage.getItem("p3-chal")||"{}"); c[n]=true; localStorage.setItem("p3-chal",JSON.stringify(c));
+}
+var P3_TESTS = {
+  1: 'var m=countWords("the cat and the cat");\ncheck("is Map", m instanceof Map);\ncheck("cat count=2", m.get("cat")===2);\ncheck("size=3", m.size===3);',
+  2: 'check("slug hello-world", slugify("Hello World!")==="hello-world");\ncheck("slug collapse", slugify("A  B!!")==="a-b");\ncheck("slug edges", slugify("!Hi!")==="hi");',
+  3: 'var r=[...range(1,5)];\ncheck("range 1-5", JSON.stringify(r)===JSON.stringify([1,2,3,4,5]));\ncheck("length 5", r.length===5);',
+  4: 'check("fn exists", typeof fetchWithTimeout==="function");',
+  5: 'var f=freq("the cat sat on mat");\ncheck("freq the=1", f["the"]===1);\ncheck("freq cat=1", f["cat"]===1);\ncheck("freq mat=1", f["mat"]===1);'
+};
+
+// ===== Copy buttons =====
+function addCopyButtons3() {
+  document.querySelectorAll("pre code").forEach(function(code){
+    if(code.parentNode.querySelector("button.cp3")) return;
+    var b=document.createElement("button"); b.className="mark-btn cp3"; b.textContent="📋"; b.style.float="right";
+    b.onclick=function(){ navigator.clipboard.writeText(code.textContent).then(function(){ b.textContent="✅"; setTimeout(function(){b.textContent="📋";},1500); }); };
+    code.parentNode.insertBefore(b, code);
+  });
+}
+
+// ===== Init =====
+markButtons();
+updateProgress();
+renderSRStats3();
+applyFontZoom3();
+saveBoost3();
+addCopyButtons3();
+</script>
+</body>
+</html>
+
+<!--P3H-END-->
