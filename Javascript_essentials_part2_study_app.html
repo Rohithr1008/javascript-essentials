@@ -1121,13 +1121,17 @@ function toggleSection(n) {
 var fontLevels = ["font-sm", "", "font-md", "font-lg"];
 function fontZoom(dir) {
   var html = document.documentElement;
-  var cur = "font-sm"; ["font-sm","font-md","font-lg"].forEach(function (c) { if (html.classList.contains(c)) cur = c; });
-  var idx = fontLevels.indexOf(cur || "");
-  if (cur === "font-md") idx = 2; if (cur === "font-lg") idx = 3;
-  var nxt = Math.max(0, Math.min(3, idx + dir));
-  html.className = html.className.split(" ").filter(function (c) { return ["font-sm","font-md","font-lg"].indexOf(c) === -1; }).join(" ") + " " + (!fontLevels[nxt] ? "" : fontLevels[nxt]);
-  html.className = html.className.trim();
-  localStorage.setItem("p2-font", fontLevels[nxt] || "normal");
+  var cur = ""; ["font-sm","font-md","font-lg"].forEach(function (c) { if (html.classList.contains(c)) cur = c; });
+  html.className = html.className.split(" ").filter(function (c) { return ["font-sm","font-md","font-lg"].indexOf(c) === -1; }).join(" ").trim();
+  if (dir !== 0) {
+    var idx = cur === "font-md" ? 2 : cur === "font-lg" ? 3 : cur === "font-sm" ? 0 : 1;
+    var nxt = Math.max(0, Math.min(3, idx + dir));
+    var addCls = fontLevels[nxt];
+    if (addCls) html.className = (html.className + " " + addCls).trim();
+    localStorage.setItem("p2-font", addCls || "normal");
+  } else {
+    localStorage.setItem("p2-font", "normal");
+  }
 }
 function applyFontZoom() {
   var saved = localStorage.getItem("p2-font");

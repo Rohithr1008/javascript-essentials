@@ -5500,11 +5500,16 @@ function fontZoom1(dir) {
   const levels = ['font-sm','','font-md','font-lg'];
   let cur = '';
   ['font-sm','font-md','font-lg'].forEach(c => { if (html.classList.contains(c)) cur = c; });
-  let idx = cur==='font-sm'?0 : cur==='font-lg'?3 : cur==='font-md'?2 : 1;
-  const nxt = Math.max(0, Math.min(3, idx + dir));
-  html.className = html.className.split(' ').filter(c=>['font-sm','font-md','font-lg'].indexOf(c)===-1).join(' ') + ' ' + (levels[nxt]||'');
-  html.className = html.className.trim();
-  localStorage.setItem('p1-font', levels[nxt] || 'normal');
+  html.className = html.className.split(' ').filter(c=>['font-sm','font-md','font-lg'].indexOf(c)===-1).join(' ').trim();
+  if (dir !== 0) {
+    let idx = cur==='font-sm'?0 : cur==='font-lg'?3 : cur==='font-md'?2 : 1;
+    const nxt = Math.max(0, Math.min(3, idx + dir));
+    const addCls = levels[nxt];
+    if (addCls) html.className = (html.className + ' ' + addCls).trim();
+    localStorage.setItem('p1-font', addCls || 'normal');
+  } else {
+    localStorage.setItem('p1-font', 'normal');
+  }
 }
 function applyFontZoom1() {
   const saved = localStorage.getItem('p1-font');
