@@ -823,7 +823,7 @@ function updateCertificate4() {
   var panel = document.getElementById("certPanel4"), status = document.getElementById("certStatus4");
   if (!panel) return;
   if (done === total) { panel.style.background = "linear-gradient(135deg,#c6f6d5,#68d391)"; panel.style.borderColor = "#38a169"; if (status) status.innerHTML = "🎉 <strong>Certificate earned!</strong> All 17 sections completed. Well done!"; }
-  else { panel.style.borderColor = "#d69e2e"; if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")"; }
+  else { panel.style.background = ""; panel.style.borderColor = "#d69e2e"; if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")"; }
 }
 function scrollspy4() {
   var links = document.querySelectorAll("#table-of-contents a"); var find = "";

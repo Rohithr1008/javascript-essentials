@@ -1273,6 +1273,7 @@ function updateCertificate2() {
     panel.style.borderColor = "#38a169";
     if (status) status.innerHTML = "🎉 <strong>Certificate earned!</strong> All 9 sections completed. Well done!";
   } else {
+    panel.style.background = "";
     panel.style.borderColor = "#d69e2e";
     if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")";
   }
