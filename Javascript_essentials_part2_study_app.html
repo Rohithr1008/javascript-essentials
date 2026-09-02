@@ -252,6 +252,32 @@ getGitHubUser("rohithr1008")
   .then((u) => console.log("Login:", u.login))
   .catch((err) => console.error("Failed:", err.message));</code></pre>
 
+<h3>🔄 Live Event Loop Visualizer</h3>
+<p><strong>The key Promise insight:</strong> synchronous code runs first, then <strong>microtasks</strong> (promises, <code>QueueMicrotask</code>), then <strong>macrotasks</strong> (setTimeout). Step through this classic example:</p>
+<pre><code>console.log(1);
+setTimeout(() => console.log(4), 0);
+Promise.resolve().then(() => console.log(3));
+console.log(2);
+// Output: 1, 2, 3, 4  (microtask runs before macrotask!)</code></pre>
+<div class="sandbox" id="elv-box">
+  <div><strong>Step:</strong> <span id="elv-step">0/5</span> &nbsp; <strong>Now executing:</strong> <span id="elv-now">⏸ idle</span></div>
+  <div style="margin-top:8px;">
+    <span style="display:inline-block;width:110px;font-weight:700;">Microtask queue:</span>
+    <span id="elv-micro" style="color:#fbbf24;">[]</span>
+  </div>
+  <div style="margin-top:4px;">
+    <span style="display:inline-block;width:110px;font-weight:700;">Macrotask queue:</span>
+    <span id="elv-macro" style="color:#60a5fa;">[]</span>
+  </div>
+  <div style="margin-top:8px;">
+    <button onclick="elvStep(-1)">⬅ Prev</button>
+    <button onclick="elvStep(1)">Next ➡</button>
+    <button onclick="elvPlay()">▶ Play</button>
+    <button onclick="elvReset()">↺ Reset</button>
+  </div>
+  <div class="out" id="elv-out">Press Next to begin.</div>
+</div>
+
 <div class="quiz-box">
 <h3>🎯 async / await quiz</h3>
 <details><summary>Q1. What does an `async` function always return?</summary><p class="quiz-correct">B) a promise</p><p>Even `async () => 5` returns `Promise<5>`.</p></details>
@@ -894,6 +920,42 @@ function applySrShuffleUI() {
     btn.textContent = "🔀 Shuffle: " + (srShuffle ? "On" : "Off");
     btn.style.background = srShuffle ? "#e53e3e" : "#4a5568";
   }
+}
+
+// ===== Event Loop Visualizer =====
+var elvSteps = [
+  {now:"Line 1: console.log(1)", micro:"[]", macro:"[]", out:"Output so far: 1"},
+  {now:"Line 2: setTimeout(cb, 0)", micro:"[]", macro:"[setTimeout cb]", out:"Output so far: 1"},
+  {now:"Line 3: Promise.resolve().then(cb)", micro:"[then cb]", macro:"[setTimeout cb]", out:"Output so far: 1"},
+  {now:"Line 4: console.log(2)", micro:"[then cb]", macro:"[setTimeout cb]", out:"Output so far: 1, 2"},
+  {now:"Microtask queue drains (before macrotask!)", micro:"[]", macro:"[setTimeout cb]", out:"Output so far: 1, 2, 3"},
+  {now:"Macrotask queue drains", micro:"[]", macro:"[]", out:"Output so far: 1, 2, 3, 4"}
+];
+var elvIdx = 0;
+function elvRender() {
+  var s = elvSteps[elvIdx];
+  document.getElementById("elv-step").textContent = elvIdx + "/" + (elvSteps.length - 1);
+  document.getElementById("elv-now").textContent = s.now;
+  document.getElementById("elv-micro").textContent = s.micro;
+  document.getElementById("elv-macro").textContent = s.macro;
+  document.getElementById("elv-out").textContent = s.out;
+}
+function elvStep(dir) {
+  elvIdx = Math.max(0, Math.min(elvSteps.length - 1, elvIdx + dir));
+  elvRender();
+}
+function elvReset() {
+  elvIdx = 0;
+  elvRender();
+}
+var elvTimer = null;
+function elvPlay() {
+  if (elvTimer) { clearInterval(elvTimer); elvTimer = null; return; }
+  elvTimer = setInterval(function () {
+    if (elvIdx >= elvSteps.length - 1) { clearInterval(elvTimer); elvTimer = null; elvIdx = 0; return; }
+    elvIdx++;
+    elvRender();
+  }, 1200);
 }
 
 // ===== Init =====

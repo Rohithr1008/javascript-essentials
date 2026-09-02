@@ -275,6 +275,29 @@ html.force-dark body { background: #0f1216; color: #e2e8f0; }
   <p style="color:#a0aec0;font-size:12px;margin-top:6px;">💡 Tip: Press Ctrl+Enter to run code quickly</p>
 </div>
 
+<div class="interactive-tool" style="background:#1a202c;border:2px solid #4299e1;border-radius:12px;padding:18px 22px;margin:18px 0;">
+  <h3 style="color:#63b3ed;margin-top:0;">🔄 Live Event Loop Visualizer</h3>
+  <p style="color:#e2e8f0;">A sneak peek at async: synchronous code runs first, then <strong>microtasks</strong> (promises), then <strong>macrotasks</strong> (setTimeout). Step through:</p>
+  <pre style="background:#0f1622;color:#e2e8f0;padding:10px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;">console.log(1);
+setTimeout(() => console.log(4), 0);
+Promise.resolve().then(() => console.log(3));
+console.log(2);
+// Output: 1, 2, 3, 4</pre>
+  <div style="margin-top:8px;">
+    <div><strong>Step:</strong> <span id="elv1-step">0/5</span> &nbsp; <strong>Now:</strong> <span id="elv1-now">⏸ idle</span></div>
+    <div style="margin-top:6px;"><strong>Microtasks:</strong> <span id="elv1-micro" style="color:#fbbf24;">[]</span></div>
+    <div style="margin-top:4px;"><strong>Macrotasks:</strong> <span id="elv1-macro" style="color:#60a5fa;">[]</span></div>
+    <div style="margin-top:8px;">
+      <button onclick="elvStep1(-1)" style="padding:6px 14px;background:#4299e1;color:#fff;border:none;border-radius:6px;cursor:pointer;">⬅ Prev</button>
+      <button onclick="elvStep1(1)" style="padding:6px 14px;background:#4299e1;color:#fff;border:none;border-radius:6px;cursor:pointer;">Next ➡</button>
+      <button onclick="elvPlay1()" style="padding:6px 14px;background:#4299e1;color:#fff;border:none;border-radius:6px;cursor:pointer;">▶ Play</button>
+      <button onclick="elvReset1()" style="padding:6px 14px;background:#718096;color:#fff;border:none;border-radius:6px;cursor:pointer;">↺ Reset</button>
+    </div>
+    <pre id="elv1-out" style="background:#0f1622;color:#86efac;padding:10px;border-radius:8px;min-height:40px;margin-top:10px;font-family:'Courier New',monospace;font-size:13px;">Press Next to begin.</pre>
+  </div>
+  <p style="color:#a0aec0;font-size:12px;margin-top:8px;">💡 Part 2 dives deep into promises &amp; async/await — this is a taste of how the event loop orders things.</p>
+</div>
+
 <h3 id="golden-rules">Golden rules</h3>
 
 <p>1. Use `const` by default — `let` only when the value must change.</p>
@@ -5338,6 +5361,39 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize challenge completion badges
   updateChallengeBadges();
 });
+
+// ===== Event Loop Visualizer (async preview) =====
+var elv1Steps = [
+  {now:"Line 1: console.log(1)", micro:"[]", macro:"[]", out:"Output so far: 1"},
+  {now:"Line 2: setTimeout(cb, 0)", micro:"[]", macro:"[setTimeout cb]", out:"Output so far: 1"},
+  {now:"Line 3: Promise.resolve().then(cb)", micro:"[then cb]", macro:"[setTimeout cb]", out:"Output so far: 1"},
+  {now:"Line 4: console.log(2)", micro:"[then cb]", macro:"[setTimeout cb]", out:"Output so far: 1, 2"},
+  {now:"Microtask queue drains (before macrotask!)", micro:"[]", macro:"[setTimeout cb]", out:"Output so far: 1, 2, 3"},
+  {now:"Macrotask queue drains", micro:"[]", macro:"[]", out:"Output so far: 1, 2, 3, 4"}
+];
+var elv1Idx = elv1Steps[0] ? 0 : 0;
+var elv1Timer = null;
+function elv1Render() {
+  var s = elv1Steps[elv1Idx];
+  if (document.getElementById('elv1-step')) document.getElementById('elv1-step').textContent = elv1Idx + "/" + (elv1Steps.length - 1);
+  if (document.getElementById('elv1-now')) document.getElementById('elv1-now').textContent = s.now;
+  if (document.getElementById('elv1-micro')) document.getElementById('elv1-micro').textContent = s.micro;
+  if (document.getElementById('elv1-macro')) document.getElementById('elv1-macro').textContent = s.macro;
+  if (document.getElementById('elv1-out')) document.getElementById('elv1-out').textContent = s.out;
+}
+function elvStep1(dir) {
+  if (!elv1Steps.length) return;
+  elv1Idx = Math.max(0, Math.min(elv1Steps.length - 1, elv1Idx + dir));
+  elv1Render();
+}
+function elvReset1() { elv1Idx = 0; elv1Render(); }
+function elvPlay1() {
+  if (elv1Timer) { clearInterval(elv1Timer); elv1Timer = null; return; }
+  elv1Timer = setInterval(function () {
+    if (elv1Idx >= elv1Steps.length - 1) { clearInterval(elv1Timer); elv1Timer = null; elv1Idx = 0; return; }
+    elv1Idx++; elv1Render();
+  }, 1200);
+}
 
 </script>
 
