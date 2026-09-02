@@ -31,6 +31,7 @@
     <p id="srAnswer" style="color:#68d391;font-size:14px;margin:0 0 12px 0;display:none;"></p>
     <div id="srButtons" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
       <button onclick="startSRReview()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Start Review</button>
+      <button onclick="srToggleShuffle()" id="srShuffleBtn" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔀 Shuffle: Off</button>
     </div>
     <div id="srStats" style="color:#a0aec0;font-size:12px;margin-top:10px;"></div>
   </div>
@@ -53,6 +54,9 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
 .quiz-box summary { cursor: pointer; font-weight: 600; }
 .quiz-correct { color: #276749; font-weight: 700; }
+.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin: 14px 0; }
+.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
+.predict summary { cursor: pointer; font-weight: 600; }
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
 .flashcard .back { margin-top: 8px; }
@@ -88,6 +92,7 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
   .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
   .quiz-box h3 { color: #90cdf4; }
   .quiz-box details { background: #0f1622; border-color: #2d3748; }
+  .predict details { background: #141c28; border-color: #2d3748; }
   .flashcard { background: #241d0e; border-color: #975a16; }
   .challenge { background: #141c28; border-color: #2d3748; }
   nav a { color: #90cdf4; }
@@ -108,6 +113,8 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 <a href="#6-common-pitfalls">6. Common Pitfalls</a> ·
 <a href="#7-practice-exercises">7. Practice Exercises</a> ·
 <a href="#8-challenges">8. Challenges</a> ·
+<a href="#predict">🤔 Predict</a> ·
+<a href="#cheat-sheet">📋 Cheat Sheet</a> ·
 <a href="#9-answer-key">9. Answer Key</a>
 </p>
 </nav>
@@ -436,14 +443,22 @@ async function loadTheme() {
 <h2 id="7-practice-exercises">7. Practice Exercises</h2>
 <button class="mark-btn" onclick="toggleSection(7)">✅ Mark Complete</button>
 
-<p><strong>Ex1</strong> <span class="badge b-green">Easy</span> Write `delay(ms)` returning a promise that resolves after `ms` ms.</p>
-<p><strong>Ex2</strong> <span class="badge b-green">Easy</span> Chain `.then` from `Promise.resolve(" Hello ")` to trim → uppercase → log.</p>
-<p><strong>Ex3</strong> <span class="badge b-yellow">Medium</span> async `addAfter(a,b)` that awaits `delay(100)` then returns `a + b`.</p>
-<p><strong>Ex4</strong> <span class="badge b-yellow">Medium</span> Run `fetchA()` and `fetchB()` in parallel with `Promise.all`.</p>
-<p><strong>Ex5</strong> <span class="badge b-yellow">Medium</span> Create a `ValidationError` class; throw on empty string; catch validation failures.</p>
-<p><strong>Ex6</strong> <span class="badge b-yellow">Medium</span> Build `Rectangle` class with `area()` and `scale(factor)`.</p>
-<p><strong>Ex7</strong> <span class="badge b-yellow">Medium</span> `Wallet` class with `#balance`, deposit, withdraw (throw if insufficient).</p>
-<p><strong>Ex8</strong> <span class="badge b-green">Easy</span> Export `PI` and `double` as named exports; import them.</p>
+<p><strong>Filter by difficulty:</strong>
+<button class="mark-btn" onclick="filterEx('all')" id="fex-all">🟦 All</button>
+<button class="mark-btn" onclick="filterEx('b-green')" id="fex-green" style="background:#38a169;">🟢 Easy (2)</button>
+<button class="mark-btn" onclick="filterEx('b-yellow')" id="fex-yellow" style="background:#dd6b20;">🟡 Medium (6)</button>
+</p>
+
+<div id="ex-list">
+<p data-ex="b-green"><strong>Ex1</strong> <span class="badge b-green">Easy</span> Write `delay(ms)` returning a promise that resolves after `ms` ms.</p>
+<p data-ex="b-green"><strong>Ex2</strong> <span class="badge b-green">Easy</span> Chain `.then` from `Promise.resolve(" Hello ")` to trim → uppercase → log.</p>
+<p data-ex="b-yellow"><strong>Ex3</strong> <span class="badge b-yellow">Medium</span> async `addAfter(a,b)` that awaits `delay(100)` then returns `a + b`.</p>
+<p data-ex="b-yellow"><strong>Ex4</strong> <span class="badge b-yellow">Medium</span> Run `fetchA()` and `fetchB()` in parallel with `Promise.all`.</p>
+<p data-ex="b-yellow"><strong>Ex5</strong> <span class="badge b-yellow">Medium</span> Create a `ValidationError` class; throw on empty string; catch validation failures.</p>
+<p data-ex="b-yellow"><strong>Ex6</strong> <span class="badge b-yellow">Medium</span> Build `Rectangle` class with `area()` and `scale(factor)`.</p>
+<p data-ex="b-yellow"><strong>Ex7</strong> <span class="badge b-yellow">Medium</span> `Wallet` class with `#balance`, deposit, withdraw (throw if insufficient).</p>
+<p data-ex="b-green"><strong>Ex8</strong> <span class="badge b-green">Easy</span> Export `PI` and `double` as named exports; import them.</p>
+</div>
 
 <hr>
 <h2 id="8-challenges">8. Challenges (auto-graded)</h2>
@@ -502,6 +517,28 @@ class SavingsAccount extends Account {
 }</textarea>
   <button class="mark-btn" onclick="runTest(5)">▶️ Run Tests</button>
   <div class="result" id="res5"></div>
+</div>
+
+<hr>
+<h2 id="predict">🤔 Predict the Output</h2>
+
+<div class="predict">
+<details><summary><code>await delay(10)</code> then <code>return 5</code> inside async — what's returned?</summary><p class="quiz-correct">A promise resolving to 5</p></details>
+<details><summary>What settles first in <code>Promise.race([fast, slow])</code>?</summary><p class="quiz-correct">The fastest (first to settle), here <code>fast</code></p></details>
+<details><summary>After a <code>throw</code> in <code>try</code>, what still runs?</summary><p class="quiz-correct"><code>finally</code> — always runs.</p></details>
+<details><summary><code>new Admin() instanceof User</code>?</summary><p class="quiz-correct"><code>true</code> — instanceof walks the prototype chain.</p></details>
+</div>
+
+<hr>
+<h2 id="cheat-sheet">📋 One-Page Cheat Sheet</h2>
+<button class="mark-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+<div class="quiz-box">
+<details><summary>1. Promise states</summary><p><strong>pending</strong> → <strong>fulfilled</strong> (value) | <strong>rejected</strong> (reason). Settled once, never again.</p></details>
+<details><summary>2. Combinators</summary><p>all: all succeed · allSettled: every outcome · race: first to settle · any: first to succeed</p></details>
+<details><summary>3. Error types</summary><p>TypeError (null.x) · RangeError (new Array(-1)) · ReferenceError (undeclared) · SyntaxError (parse)</p></details>
+<details><summary>4. Classes</summary><p>class · constructor · extends/super · static · #private · get/set · instanceof</p></details>
+<details><summary>5. Modules</summary><p>export/import named { x } · default no braces · re-export · dynamic import()</p></details>
 </div>
 
 <hr>
@@ -641,12 +678,28 @@ var srCards = [
   {q:"Which import form loads a module on demand?", a:"dynamic import()", lvl:1}
 ];
 var srIdx = 0;
+var srShuffle = localStorage.getItem("p2-sr-shuffle") === "1";
+function srToggleShuffle() {
+  srShuffle = !srShuffle;
+  localStorage.setItem("p2-sr-shuffle", srShuffle ? "1" : "0");
+  var btn = document.getElementById("srShuffleBtn");
+  if (btn) {
+    btn.textContent = "🔀 Shuffle: " + (srShuffle ? "On" : "Off");
+    btn.style.background = srShuffle ? "#e53e3e" : "#4a5568";
+  }
+}
 function startSRReview() {
   var due = srCards.filter(function(c) {
     var m = srState[c.q] || {};
     if (!m.next) return true;
     return Date.now() >= m.next;
   });
+  if (srShuffle && due.length > 1) {
+    for (var i = due.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = due[i]; due[i] = due[j]; due[j] = t;
+    }
+  }
   srIdx = due.length === 0 ? -1 : 0;
   showSRCard();
 }
@@ -781,10 +834,76 @@ function runTest(n) {
   });
 }
 
+// ===== Difficulty Filter =====
+function filterEx(diff) {
+  var items = document.querySelectorAll("#ex-list p[data-ex]");
+  items.forEach(function (p) {
+    p.style.display = (diff === "all" || p.getAttribute("data-ex") === diff) ? "" : "none";
+  });
+}
+
+// ===== Copy-Code Buttons =====
+function addCopyButtons() {
+  var blocks = document.querySelectorAll("pre code");
+  blocks.forEach(function (code, i) {
+    if (code.parentNode.querySelector("button.copy-btn")) return;
+    var btn = document.createElement("button");
+    btn.className = "mark-btn copy-btn";
+    btn.textContent = "📋 Copy";
+    btn.style.float = "right";
+    btn.style.margin = "0 0 4px 4px";
+    btn.onclick = function () {
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        btn.textContent = "✅ Copied!";
+        setTimeout(function () { btn.textContent = "📋 Copy"; }, 1500);
+      });
+    };
+    code.parentNode.insertBefore(btn, code);
+  });
+}
+
+// ===== Quiz Persistence =====
+function persistQuizzes() {
+  var key = "p2-open-quizes";
+  var want = localStorage.getItem(key);
+  if (!want) return;
+  var openSet = {};
+  try { openSet = JSON.parse(want); } catch (e) {}
+  for (var id in openSet) {
+    var el = document.getElementById(id);
+    if (el && openSet[id]) el.setAttribute("open", "open");
+  }
+}
+function bindQuizPersistence() {
+  document.querySelectorAll(".quiz-box details").forEach(function (d) {
+    if (!d.id) d.id = "quizd-" + Math.random().toString(36).slice(2, 8);
+  });
+  document.querySelectorAll(".quiz-box details").forEach(function (d) {
+    d.addEventListener("toggle", function () {
+      var key = "p2-open-quizes";
+      var set = {};
+      try { set = JSON.parse(localStorage.getItem(key) || "{}"); } catch (e) {}
+      set[d.id] = d.open;
+      localStorage.setItem(key, JSON.stringify(set));
+    });
+  });
+}
+function applySrShuffleUI() {
+  var btn = document.getElementById("srShuffleBtn");
+  if (btn) {
+    btn.textContent = "🔀 Shuffle: " + (srShuffle ? "On" : "Off");
+    btn.style.background = srShuffle ? "#e53e3e" : "#4a5568";
+  }
+}
+
 // ===== Init =====
 markButtons();
 updateProgress();
 renderSRStats();
+applySrShuffleUI();
+addCopyButtons();
+bindQuizPersistence();
+persistQuizzes();
 </script>
 </body>
 </html>
