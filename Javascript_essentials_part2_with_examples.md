@@ -95,6 +95,74 @@ Each `.then` returns a new promise, so you can keep chaining. A single `.catch` 
 
 **Why callbacks are replaced by promises:** promises are *composable* — you pass them around, store them, and attach handlers anytime, instead of nesting callbacks.
 
+### Promise combinators
+
+`Promise` gives you four combinators to work with several promises at once.
+
+`Promise.all` — **all must succeed**, resolves with an array of values (rejects fast on the first failure):
+
+```javascript
+const [users, posts] = await Promise.all([fetchUsers(), fetchPosts()]);
+console.log(users.length, posts.length);
+```
+
+`Promise.allSettled` — never rejects; reports each result, successful or not:
+
+```javascript
+const results = await Promise.allSettled([
+  fetchUsers(), fetchMissing()
+]);
+// [{status:"fulfilled", value:[...]}, {status:"rejected", reason:Error}]
+```
+
+`Promise.race` — resolves/rejects with the **first** one to settle (great for timeouts):
+
+```javascript
+function withTimeout(promise, ms) {
+  const timer = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Timed out")), ms)
+  );
+  return Promise.race([promise, timer]);
+}
+```
+
+`Promise.any` — resolves with the **first to succeed** (fails only if *all* reject):
+
+```javascript
+const firstOk = await Promise.any([cdnA(), cdnB(), cdnC()]);
+// picks whichever CDN responds first with a value
+```
+
+> 🧠 Quick pick: need **all** → `all`. Need **every outcome** → `allSettled`. Need the **fastest** regardless → `race`. Need the **first success** → `any`.
+
+### Worked Example: Promise.all with a catch
+
+**Step 1 — Understand the problem:** load a user and their posts in parallel, but handle a network failure gracefully instead of crashing.
+
+**Step 2 — Anatomy:** two independent async calls → `Promise.all` → `try/catch` around `await`.
+
+**Step 3 — First attempt:**
+```javascript
+async function loadDashboard() {
+  // your code here — fetch user and posts in parallel
+}
+```
+
+**Step 4 — Complete solution:**
+```javascript
+async function loadDashboard() {
+  try {
+    const [user, posts] = await Promise.all([fetchUser(1), fetchPosts(1)]);
+    return { user, posts };
+  } catch (err) {
+    console.error("Dashboard failed:", err.message);
+    return null;
+  }
+}
+```
+
+**Step 5 — Variations:** load 5 repos in parallel and keep the fastest with `Promise.race`; or report partial success with `allSettled`.
+
 ### Quiz (Self-test)
 
 1. **What does a promise's state start as?**
@@ -102,6 +170,12 @@ Each `.then` returns a new promise, so you can keep chaining. A single `.catch` 
 
 2. **Which method always runs whether the promise succeeded or failed?**
    - A) `.then`  B) `.catch`  C) `.finally` → **Answer:** C) `.finally`.
+
+3. **Which combinator resolves with the first *successful* promise (and fails only if all reject)?**
+   - A) `Promise.all`  B) `Promise.race`  C) `Promise.any` → **Answer:** C) `Promise.any`.
+
+4. **Which combinator settles only when *every* promise settles, reporting success or failure?**
+   - A) `Promise.all`  B) `Promise.allSettled`  C) `Promise.any` → **Answer:** B) `Promise.allSettled`.
 
 ---
 
@@ -166,6 +240,43 @@ The second version finishes in about `max(timeA, timeB)` instead of `timeA + tim
 for (const item of items) {
   await processItem(item);  // one at a time
 }
+```
+
+### `for await...of` — async iteration
+
+For **async iterables** (like streams or async generators), `for await...of` lets you consume each awaited value as it arrives:
+
+```javascript
+async function* generateNumbers() {
+  yield 1; yield 2; yield 3;
+}
+
+for await (const num of generateNumbers()) {
+  console.log(num); // 1, then 2, then 3
+}
+```
+
+It's how Node.js lets you read a stream line-by-line without loading it all into memory:
+
+```javascript
+for await (const line of readline.createInterface(input)) {
+  console.log("Line:", line);
+}
+```
+
+### Real-world example: fetching with `async/await`
+
+```javascript
+async function getGitHubUser(username) {
+  const res = await fetch(`https://api.github.com/users/${username}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const user = await res.json();
+  return user;
+}
+
+getGitHubUser("rohithr1008")
+  .then((u) => console.log("Login:", u.login))
+  .catch((err) => console.error("Failed:", err.message));
 ```
 
 ### Top-level await
@@ -369,6 +480,50 @@ const admin = new Admin("A", 30, ["edit"]);
 console.log(admin instanceof Admin); // true
 console.log(admin instanceof User);  // true (inheritance chain)
 ```
+
+### Worked Example: a small class hierarchy
+
+**Step 1 — Understand the problem:** build a `BankAccount` with private `#balance`, then a `SavingsAccount` subclass that can't go overdrawn and adds interest.
+
+**Step 2 — Anatomy:** a `class` with private field + methods, a subclass using `super()`, and a `throw` on invalid operations.
+
+**Step 3 — First attempt:**
+```javascript
+class BankAccount {
+  // your code here — private #balance, deposit, getBalance
+}
+class SavingsAccount extends BankAccount {
+  // your code here — withdraw guard + addInterest
+}
+```
+
+**Step 4 — Complete solution:**
+```javascript
+class BankAccount {
+  #balance = 0;
+  deposit(amount) {
+    this.#balance += amount;
+  }
+  getBalance() {
+    return this.#balance;
+  }
+}
+class SavingsAccount extends BankAccount {
+  constructor(rate) {
+    super();            // call parent constructor (no args needed)
+    this.rate = rate;
+  }
+  withdraw(amount) {
+    if (amount > this.getBalance()) throw new Error("Insufficient funds");
+    this.deposit(-amount);
+  }
+  addInterest() {
+    this.deposit(this.getBalance() * this.rate);
+  }
+}
+```
+
+**Step 5 — Variations:** add a `get formatted()` accessor that returns `$1,234.56`; or make the classes live in their own module and export them.
 
 ### Quiz (Self-test)
 
@@ -632,7 +787,7 @@ Write an `async` function that dynamically imports a module name (as a string) a
 
 ### Quiz answers
 
-- **Section 1:** 1-A (pending) · 2-C (`.finally`)
+- **Section 1:** 1-A (pending) · 2-C (`.finally`) · 3-C (`Promise.any`) · 4-B (`Promise.allSettled`)
 - **Section 2:** 1-B (promise) · 2-B (`Promise.all`)
 - **Section 3:** 1-B (TypeError) · 2-B (`finally`)
 - **Section 4:** 1-A (`super()`) · 2-B (`#`)

@@ -155,7 +155,27 @@ fetchUser
 <details><summary>Q1. What does a promise's state start as?</summary><p class="quiz-correct">A) pending</p><p>It later settles to fulfilled or rejected.</p></details>
 <details><summary>Q2. Which method always runs whether the promise succeeded or failed?</summary><p class="quiz-correct">C) .finally</p></details>
 <details><summary>Q3. What does each `.then()` return?</summary><p class="quiz-correct">A new promise</p><p>that's why you can chain.</p></details>
+<details><summary>Q4. Which combinator resolves with the first *successful* promise?</summary><p class="quiz-correct">C) Promise.any</p></details>
+<details><summary>Q5. Which combinator settles only when every promise settles?</summary><p class="quiz-correct">B) Promise.allSettled</p></details>
 </div>
+
+<h3>Promise combinators</h3>
+<pre><code>// all — all must succeed; resolves with an array of values
+const [users, posts] = await Promise.all([fetchUsers(), fetchPosts()]);
+
+// allSettled — never rejects; reports every outcome
+const results = await Promise.allSettled([fetchUsers(), fetchMissing()]);
+
+// race — first to settle wins (great for timeouts)
+function withTimeout(promise, ms) {
+  const timer = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Timed out")), ms));
+  return Promise.race([promise, timer]);
+}
+
+// any — first to succeed wins (fails only if all reject)
+const firstOk = await Promise.any([cdnA(), cdnB(), cdnC()]);</code></pre>
+<p>🧠 Quick pick: <strong>all</strong> → all · <strong>every outcome</strong> → allSettled · <strong>fastest</strong> → race · <strong>first success</strong> → any</p>
 
 <hr>
 <h2 id="2-async--await">2. async / await</h2>
@@ -202,6 +222,28 @@ const b = await taskB();
 
 // Parallel (fast):    max(timeA, timeB)
 const [a2, b2] = await Promise.all([taskA(), taskB()]);</code></pre>
+
+<h3>`for await...of` — async iteration</h3>
+<pre><code>async function* generateNumbers() {
+  yield 1; yield 2; yield 3;
+}
+for await (const num of generateNumbers()) {
+  console.log(num); // 1, then 2, then 3
+}
+// Read a Node.js stream line-by-line:
+for await (const line of readline.createInterface(input)) {
+  console.log("Line:", line);
+}</code></pre>
+
+<h3>Real-world example: fetching with async/await</h3>
+<pre><code>async function getGitHubUser(username) {
+  const res = await fetch(`https://api.github.com/users/${username}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+getGitHubUser("rohithr1008")
+  .then((u) => console.log("Login:", u.login))
+  .catch((err) => console.error("Failed:", err.message));</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 async / await quiz</h3>
@@ -304,6 +346,30 @@ class Admin extends User {
 <div class="flashcard"><details><summary>What does `super()` do?</summary><p class="back">Calls the <strong>parent class constructor</strong>.</p></details></div>
 <div class="flashcard"><details><summary>What makes a field truly private?</summary><p class="back">The <strong>`#` prefix</strong> — `#balance`.</p></details></div>
 <div class="flashcard"><details><summary>How is a static method accessed?</summary><p class="back">On the <strong>class</strong>: MathUtils.sum(...).</p></details></div>
+
+<h3>Worked Example: a small class hierarchy</h3>
+<p><strong>Problem:</strong> build a `BankAccount` with private `#balance`, then a `SavingsAccount` subclass that can't go overdrawn and adds interest.</p>
+<p><strong>First attempt:</strong></p>
+<pre><code>class BankAccount {
+  // your code here — private #balance, deposit, getBalance
+}
+class SavingsAccount extends BankAccount {
+  // your code here — withdraw guard + addInterest
+}</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>class BankAccount {
+  #balance = 0;
+  deposit(amount) { this.#balance += amount; }
+  getBalance() { return this.#balance; }
+}
+class SavingsAccount extends BankAccount {
+  constructor(rate) { super(); this.rate = rate; }
+  withdraw(amount) {
+    if (amount > this.getBalance()) throw new Error("Insufficient funds");
+    this.deposit(-amount);
+  }
+  addInterest() { this.deposit(this.getBalance() * this.rate); }
+}</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 Classes quiz</h3>
@@ -444,7 +510,7 @@ class SavingsAccount extends Account {
 
 <div class="quiz-box">
 <h3>✅ Quiz answers</h3>
-<details><summary>Reveal</summary><p>Section 1: 1-A · 2-C · 3-A<br>Section 2: 1-B · 2-B<br>Section 3: 1-B · 2-B<br>Section 4: 1-A · 2-B<br>Section 5: 1-A · 2-B</p></details>
+<details><summary>Reveal</summary><p>Section 1: 1-A · 2-C · 3-A · 4-C (Promise.any) · 5-B (Promise.allSettled)<br>Section 2: 1-B · 2-B<br>Section 3: 1-B · 2-B<br>Section 4: 1-A · 2-B<br>Section 5: 1-A · 2-B</p></details>
 </div>
 
 <div class="chall"><strong>C1 — Promise queue</strong><br>

@@ -179,6 +179,46 @@ new Promise((resolve) => resolve(4))
 
 Each `.then` returns a new promise, so you can keep chaining. A single `.catch` at the end handles errors from any earlier step.
 
+### Promise combinators
+
+`Promise` gives you four ways to work with several promises at once.
+
+<details class="hint"><summary>⚡ `Promise.all` — all must succeed (array of values)</summary>
+```javascript
+const [users, posts] = await Promise.all([fetchUsers(), fetchPosts()]);
+console.log(users.length, posts.length);
+```
+Rejects fast on the first failure.
+</details>
+
+<details class="hint"><summary>⚡ `Promise.allSettled` — reports every outcome</summary>
+```javascript
+const results = await Promise.allSettled([fetchUsers(), fetchMissing()]);
+// [{status:"fulfilled", value:[...]}, {status:"rejected", reason:Error}]
+```
+Never rejects; great for partial-success reporting.
+</details>
+
+<details class="hint"><summary>⚡ `Promise.race` — first to settle wins (timeouts)</summary>
+```javascript
+function withTimeout(promise, ms) {
+  const timer = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Timed out")), ms)
+  );
+  return Promise.race([promise, timer]);
+}
+```
+</details>
+
+<details class="hint"><summary>⚡ `Promise.any` — first to succeed wins (CDNs)</summary>
+```javascript
+const firstOk = await Promise.any([cdnA(), cdnB(), cdnC()]);
+```
+Fails only if *all* reject.
+</details>
+
+> 🧠 Quick pick: **all** → `all` · **every outcome** → `allSettled` · **fastest** → `race` · **first success** → `any`.
+
 <div class="mood"><span>Promise states click?</span>
 <input type="radio" name="m1" id="p1a"><label for="p1a">👍 Got it</label>
 <input type="radio" name="m1" id="p1b"><label for="p1b">🔄 Review</label></div>
@@ -196,7 +236,14 @@ Each `.then` returns a new promise, so you can keep chaining. A single `.catch` 
 
 <details><summary>Q3. What does each `.then()` return?</summary>
 <div class="answer"><span class="quiz-correct">A new promise</span> — that's why you can keep chaining.</div></details>
+
+<details><summary>Q4. Which combinator resolves with the first *successful* promise?</summary>
+<div class="answer"><span class="quiz-correct">C) Promise.any</span> — fails only if all reject.</div></details>
+
+<details><summary>Q5. Which combinator settles only when every promise settles?</summary>
+<div class="answer"><span class="quiz-correct">B) Promise.allSettled</span> — reports success or failure per item.</div></details>
 </div>
+
 
 ---
 
@@ -292,6 +339,40 @@ const [a, b] = await Promise.all([taskA(), taskB()]);
 ```
 
 The second version finishes in about `max(timeA, timeB)` instead of `timeA + timeB`.
+
+### `for await...of` — async iteration
+
+For **async iterables** (streams, async generators), `for await...of` consumes each awaited value as it arrives:
+
+```javascript
+async function* generateNumbers() {
+  yield 1; yield 2; yield 3;
+}
+for await (const num of generateNumbers()) {
+  console.log(num); // 1, then 2, then 3
+}
+```
+
+This is how Node.js reads a stream line-by-line without loading it all into memory:
+
+```javascript
+for await (const line of readline.createInterface(input)) {
+  console.log("Line:", line);
+}
+```
+
+### Real-world example: fetching with `async/await`
+
+```javascript
+async function getGitHubUser(username) {
+  const res = await fetch(`https://api.github.com/users/${username}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+getGitHubUser("rohithr1008")
+  .then((u) => console.log("Login:", u.login))
+  .catch((err) => console.error("Failed:", err.message));
+```
 
 ### Predict the output
 
@@ -508,6 +589,48 @@ console.log(admin instanceof User);  // true (inheritance chain)
 
 <div class="flashcard"><details><summary>What makes a private field private?</summary>
 <div class="back">The <strong>`#` prefix</strong> — `#balance` is truly private, unlike a convention like `_balance`.</div></details></div>
+
+### Worked Example: a small class hierarchy
+
+**Step 1 — Understand the problem:** build a `BankAccount` with private `#balance`, then a `SavingsAccount` subclass that can't go overdrawn and adds interest.
+
+**Step 2 — Anatomy:** a `class` with a private field, a subclass using `super()`, and a `throw` on invalid operations.
+
+**Step 3 — First attempt:**
+```javascript
+class BankAccount {
+  // your code here — private #balance, deposit, getBalance
+}
+class SavingsAccount extends BankAccount {
+  // your code here — withdraw guard + addInterest
+}
+```
+
+**Step 4 — Complete solution:**
+<details class="solution"><summary>Show solution</summary>
+```javascript
+class BankAccount {
+  #balance = 0;
+  deposit(amount) { this.#balance += amount; }
+  getBalance() { return this.#balance; }
+}
+class SavingsAccount extends BankAccount {
+  constructor(rate) {
+    super();
+    this.rate = rate;
+  }
+  withdraw(amount) {
+    if (amount > this.getBalance()) throw new Error("Insufficient funds");
+    this.deposit(-amount);
+  }
+  addInterest() {
+    this.deposit(this.getBalance() * this.rate);
+  }
+}
+```
+</details>
+
+**Step 5 — Variations:** add a `get formatted()` accessor that returns `$1,234.56`, or export the classes as a module.
 
 ### Predict the output
 
