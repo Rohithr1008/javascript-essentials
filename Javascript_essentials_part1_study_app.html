@@ -10,7 +10,17 @@
 
 <h1>JavaScript Essentials - Part 1</h1>
 
-<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme">🌙 Dark mode</button>
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
+
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
+  <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
+  <button onclick="fontZoom1(-1)" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button onclick="fontZoom1(0)" title="Reset text size" aria-label="Reset text size">A</button>
+  <button onclick="fontZoom1(1)" title="Increase text size" aria-label="Increase text size">A+</button>
+  <span style="width:14px;"></span>
+  <button onclick="collapseAllQuizzes1(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAllQuizzes1(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
+</div>
 
 <p>A quick reference covering the JavaScript fundamentals you have learned so far.</p>
 
@@ -19,8 +29,8 @@
 <div id="boostBar1" style="background:#1a202c;border:2px solid #dd6b20;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
   <div style="font-weight:700;">⚡ <span id="streakCount1" style="color:#fbbf24;">0-day streak</span></div>
   <div style="font-weight:700;">⭐ <span id="pointCount1" style="color:#fbbf24;">0 XP</span></div>
-  <div><button onclick="boostSurprise1()" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
-  <div><button onclick="startFocusTimer1()" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><button onclick="boostSurprise1()" title="Jump to a random section to explore" aria-label="Surprise me: jump to a random section" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer1()" title="Start/stop a 25-minute focus sprint" aria-label="Start or stop a 25 minute focus sprint" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
   <div><span id="focusTimer1" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
 </div>
 
@@ -204,6 +214,23 @@ html.force-dark body { background: #0f1216; color: #e2e8f0; }
 .toast.badge { border-left-color: #805ad5; }
 @keyframes slidein1 { from { opacity:0; transform: translateX(20px);} to { opacity:1; transform:none;} }
 .toast { animation: slidein1 .3s ease; }
+html { font-size: 16px; }
+html.font-sm { font-size: 15px; }
+html.font-md { font-size: 17px; }
+html.font-lg { font-size: 18px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .toast, details[open] > :not(summary) { animation: none !important; }
+}
+@media print {
+  .theme-btn, #boostBar, #boostBar1, #toastZone, #toastZone1, #confettiCanvas, #confettiCanvas1,
+  .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, .quiz-box button,
+  button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; max-width: 100%; }
+  .quiz-box, .flashcard, pre, .interactive-tool { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
+  details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
+}
 </style>
 
 <hr>
@@ -5388,6 +5415,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Restore ADHD engagement stats
   saveBoost1();
+
+  // Restore accessibility font size
+  applyFontZoom1();
 });
 
 // ===== ADHD Engagement Engine (Part 1) =====
@@ -5418,6 +5448,7 @@ function toast1(msg, cls) {
   setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
 }
 function celebrate1() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const c = document.getElementById('confettiCanvas1');
   if (!c) return;
   c.style.display = 'block';
@@ -5461,6 +5492,26 @@ function startFocusTimer1() {
       celebrate1(); toast1('🎉 Focus sprint complete! +10 XP.', 'celebrate'); addXP1(10); trackStreak1();
     }
   }, 1000);
+}
+
+// ===== Accessibility: font size + quiz collapse (Part 1) =====
+function fontZoom1(dir) {
+  const html = document.documentElement;
+  const levels = ['font-sm','','font-md','font-lg'];
+  let cur = '';
+  ['font-sm','font-md','font-lg'].forEach(c => { if (html.classList.contains(c)) cur = c; });
+  let idx = cur==='font-sm'?0 : cur==='font-lg'?3 : cur==='font-md'?2 : 1;
+  const nxt = Math.max(0, Math.min(3, idx + dir));
+  html.className = html.className.split(' ').filter(c=>['font-sm','font-md','font-lg'].indexOf(c)===-1).join(' ') + ' ' + (levels[nxt]||'');
+  html.className = html.className.trim();
+  localStorage.setItem('p1-font', levels[nxt] || 'normal');
+}
+function applyFontZoom1() {
+  const saved = localStorage.getItem('p1-font');
+  if (saved && saved !== 'normal') document.documentElement.className = (document.documentElement.className.split(' ').filter(c=>['font-sm','font-md','font-lg'].indexOf(c)===-1).join(' ')+' '+saved).trim();
+}
+function collapseAllQuizzes1(expandEls) {
+  document.querySelectorAll('.quiz-box details').forEach(d => { if (expandEls) d.setAttribute('open','open'); else d.removeAttribute('open'); });
 }
 
 // ===== Event Loop Visualizer (async preview) =====

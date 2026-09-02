@@ -9,7 +9,17 @@
 
 <h1>JavaScript Essentials - Part 2</h1>
 
-<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme">🌙 Dark mode</button>
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
+
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
+  <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
+  <button onclick="fontZoom(-1)" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button onclick="fontZoom(0)" title="Reset text size" aria-label="Reset text size">A</button>
+  <button onclick="fontZoom(1)" title="Increase text size" aria-label="Increase text size">A+</button>
+  <span style="width:14px;"></span>
+  <button onclick="collapseAllQuizzes(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAllQuizzes(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
+</div>
 
 <p>A quick reference covering the JavaScript <strong>intermediate</strong> concepts: promises, async/await, error handling, classes/OOP, and modules.</p>
 
@@ -18,8 +28,8 @@
 <div id="boostBar" style="background:#1a202c;border:2px solid #dd6b20;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
   <div style="font-weight:700;">⚡ <span id="streakCount" style="color:#fbbf24;">0-day streak</span></div>
   <div style="font-weight:700;">⭐ <span id="pointCount" style="color:#fbbf24;">0 XP</span></div>
-  <div><button onclick="boostSurprise()" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
-  <div><button onclick="startFocusTimer()" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><button onclick="boostSurprise()" title="Jump to a random section to explore" aria-label="Surprise me: jump to a random section" style="padding:6px 14px;background:#dd6b20;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer()" title="Start/stop a 25-minute focus sprint" aria-label="Start or stop a 25 minute focus sprint" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
   <div><span id="focusTimer" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
 </div>
 
@@ -114,6 +124,26 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
   .challenge { background: #141c28; border-color: #2d3748; }
   nav a { color: #90cdf4; }
   pre { background: #0b1220; }
+}
+
+html { font-size: 16px; }
+html.font-sm { font-size: 15px; }
+html.font-md { font-size: 17px; }
+html.font-lg { font-size: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .toast, details[open] > :not(summary) { animation: none !important; }
+}
+
+@media print {
+  .theme-btn, #boostBar, #boostBar1, #toastZone, #toastZone1, #confettiCanvas, #confettiCanvas1,
+  .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav,
+  button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; max-width: 100%; }
+  .quiz-box, .flashcard, pre { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
+  details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
 }
 </style>
 
@@ -1016,6 +1046,7 @@ function toast(msg, cls) {
   setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
 }
 function celebrate() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var c = document.getElementById("confettiCanvas");
   if (!c) return;
   c.style.display = "block";
@@ -1086,6 +1117,29 @@ function toggleSection(n) {
   }
 }
 
+// ===== Accessibility: font size + quiz collapse =====
+var fontLevels = ["font-sm", "", "font-md", "font-lg"];
+function fontZoom(dir) {
+  var html = document.documentElement;
+  var cur = "font-sm"; ["font-sm","font-md","font-lg"].forEach(function (c) { if (html.classList.contains(c)) cur = c; });
+  var idx = fontLevels.indexOf(cur || "");
+  if (cur === "font-md") idx = 2; if (cur === "font-lg") idx = 3;
+  var nxt = Math.max(0, Math.min(3, idx + dir));
+  html.className = html.className.split(" ").filter(function (c) { return ["font-sm","font-md","font-lg"].indexOf(c) === -1; }).join(" ") + " " + (!fontLevels[nxt] ? "" : fontLevels[nxt]);
+  html.className = html.className.trim();
+  localStorage.setItem("p2-font", fontLevels[nxt] || "normal");
+}
+function applyFontZoom() {
+  var saved = localStorage.getItem("p2-font");
+  if (saved && saved !== "normal") document.documentElement.className = (document.documentElement.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ")+" "+saved).trim();
+}
+function collapseAllQuizzes(expand) {
+  document.querySelectorAll(".quiz-box details").forEach(function (d) {
+    if (expand) d.setAttribute("open", "open");
+    else d.removeAttribute("open");
+  });
+}
+
 // ===== Init =====
 markButtons();
 updateProgress();
@@ -1095,6 +1149,7 @@ addCopyButtons();
 bindQuizPersistence();
 persistQuizzes();
 saveBoost();
+applyFontZoom();
 </script>
 </body>
 </html>
