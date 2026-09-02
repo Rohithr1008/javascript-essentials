@@ -98,6 +98,26 @@ html.font-sm{font-size:15px;} html.font-md{font-size:17px;} html.font-lg{font-si
 }
 @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
 @media print { .theme-btn,#mockPanel,.mark-btn,.challenge,.totop,.layer-legend,button{display:none!important;} body{background:#fff!important;color:#000!important;} }
+
+.predict { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px; margin:14px 0; }
+.predict details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; }
+.predict summary { cursor:pointer; font-weight:600; }
+.mood { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.mood > span { font-weight:700; margin-right:4px; }
+.mood input { display:none; }
+.mood label { cursor:pointer; border:1px solid #a0aec0; border-radius:999px; padding:4px 12px; background:#fff; font-size:14px; user-select:none; }
+.mood input:checked + label { background:#38a169; border-color:#38a169; color:#fff; font-weight:700; }
+.studyplan7 { margin:14px 0; }
+.studyplan7 summary { cursor:pointer; font-weight:700; background:#eef2ff; padding:8px 12px; border-radius:8px; border:1px solid #5a67d8; }
+.certificate { background:linear-gradient(135deg,#fffbeb,#fefcbf); border:3px solid #d69e2e; border-radius:14px; padding:24px; text-align:center; margin:24px 0; }
+.certificate h2 { color:#744210; margin-top:0; }
+.certificate .big { font-size:20px; font-weight:700; color:#744210; }
+.spotbug { display:grid; gap:10px; margin:14px 0; }
+.spotbug details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:10px 14px; }
+html.force-dark .predict details, html.force-dark .spotbug details, html.force-dark .studyplan7 summary { background:#241d0e; border-color:#975a16; color:#e2e8f0; }
+html.force-dark .mood label { background:#141c28; color:#cbd5e0; border-color:#2d3748; }
+html.force-dark .certificate { background:linear-gradient(135deg,#2b2013,#744210); border-color:#d69e2e; color:#fffbeb; }
+
 </style>
 
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
@@ -200,6 +220,7 @@ html.font-sm{font-size:15px;} html.font-md{font-size:17px;} html.font-lg{font-si
 <nav id="table-of-contents"><h2>📑 Table of Contents</h2>
 <p>🔗 <a href="#1-layers">1. Hello MERN</a> · <a href="#2-setup">2. Setup</a> · <a href="#3-loop">3. The Loop</a> · <a href="#4-express">4. Express</a> · <a href="#5-rest">5. REST</a> · <a href="#6-mongo">6. MongoDB</a> · <a href="#7-notes-backend">7. Notes backend</a> · <a href="#8-react">8. React</a> · <a href="#9-fetch">9. fetch</a> · <a href="#10-notes-full">10. Notes full</a> · <a href="#11-cors">11. CORS</a> · <a href="#12-node">12. Node</a> · <a href="#13-ts">13. TypeScript</a> · <a href="#14-products">14. Product Store</a> · <a href="#15-pitfalls">15. Pitfalls</a> · <a href="#16-challenges">16. Challenges</a> · <a href="#17-answers">17. Answers</a></p>
 </nav>
+<div class="studyplan7"><details><summary>📅 Suggested 7-day study plan (click to open)</summary><p>Small, spaced bites beat a marathon. Mark sections done and the progress + certificate track you.</p><ul><li><strong>Day 1:</strong> read the first sections + quizzes.</li><li><strong>Day 2:</strong> use the interactive demos (Mock server / Live demos).</li><li><strong>Day 3:</strong> flashcards + predict-the-output cards.</li><li><strong>Day 4:</strong> practice exercises.</li><li><strong>Day 5:</strong> review pitfalls + flashcards again.</li><li><strong>Day 6:</strong> try the Spot-the-Bug quiz cold.</li><li><strong>Day 7:</strong> pass all challenges, then claim your certificate below.</li></ul></details></div><div class="mood"><span>Before you start, how do you feel?</span><input type="radio" id="mood-start-1" name="mood-start4"><label for="mood-start-1">🌱 brand new</label><input type="radio" id="mood-start-2" name="mood-start4"><label for="mood-start-2">🙂 okay</label><input type="radio" id="mood-start-3" name="mood-start4"><label for="mood-start-3">💪 ready</label></div>
 <hr>
 <h2 id="1-layers">1. Hello MERN — the 3-layer sandwich</h2><button class="mark-btn" onclick="toggleSection(1)">✅ Mark Complete</button>
 <div class="why">🚩 <strong>Why it matters:</strong> one picture in your head — three layers talking to each other.</div>
@@ -435,41 +456,41 @@ const notes = await Note.find();    // ✅
 <h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
 <div class="why">🚩 <strong>Why it matters:</strong> these mirror real MERN coding tasks — a safe place to make and fix mistakes. No install needed; write a function, click Run.</div>
 
-<div class="challenge"><h3>C1 — makeProduct</h3><p>Return a product <code>{ name, price, reviews: [] }</code>.</p>
+<div class="challenge"><h3>C1 — makeProduct</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Return a product <code>{ name, price, reviews: [] }</code>.</p>
 <textarea id="chal1" rows="3">function makeProduct(name, price) {
   // return { name, price, reviews: [] }
 }</textarea>
-<button class="mark-btn" onclick="runTest(1)">▶️ Run tests</button><div class="result" id="res1"></div></div>
+<button class="mark-btn" onclick="runTest(1)">▶️ Run tests</button><div class="result" id="res1"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: return an object literal with keys name, price, and reviews.</p></details></div>
 
-<div class="challenge"><h3>C2 — addReview</h3><p>Return a NEW product with the review appended (immutable).</p>
+<div class="challenge"><h3>C2 — addReview</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Return a NEW product with the review appended (immutable).</p>
 <textarea id="chal2" rows="4">function addReview(product, review) {
   // return { ...product, reviews: [...product.reviews, review] }
 }</textarea>
-<button class="mark-btn" onclick="runTest(2)">▶️ Run tests</button><div class="result" id="res2"></div></div>
+<button class="mark-btn" onclick="runTest(2)">▶️ Run tests</button><div class="result" id="res2"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: spread the product, then review the array + the new review.</p></details></div>
 
-<div class="challenge"><h3>C3 — routePath</h3><p>Replace <code>:id</code> in a route template with a given id.</p>
+<div class="challenge"><h3>C3 — routePath</h3> <span class="badge b-time">2m</span> <span class="badge b-green">🟢</span><p>Replace <code>:id</code> in a route template with a given id.</p>
 <textarea id="chal3" rows="3">function routePath(template, id) {
   // return template.replace(":id", id)
 }</textarea>
-<button class="mark-btn" onclick="runTest(3)">▶️ Run tests</button><div class="result" id="res3"></div></div>
+<button class="mark-btn" onclick="runTest(3)">▶️ Run tests</button><div class="result" id="res3"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: use String.replace(":id", id).</p></details></div>
 
-<div class="challenge"><h3>C4 — pickStatus</h3><p>Return the right status: POST→201, GET→200, DELETE→204, else→500.</p>
+<div class="challenge"><h3>C4 — pickStatus</h3> <span class="badge b-time">3m</span> <span class="badge b-yellow">🟡</span><p>Return the right status: POST→201, GET→200, DELETE→204, else→500.</p>
 <textarea id="chal4" rows="5">function pickStatus(verb) {
   // ...
 }</textarea>
-<button class="mark-btn" onclick="runTest(4)">▶️ Run tests</button><div class="result" id="res4"></div></div>
+<button class="mark-btn" onclick="runTest(4)">▶️ Run tests</button><div class="result" id="res4"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: POST -> 201, GET -> 200, DELETE -> 204, else -> 500.</p></details></div>
 
-<div class="challenge"><h3>C5 — avgRating</h3><p>Average of an array of ratings.</p>
+<div class="challenge"><h3>C5 — avgRating</h3> <span class="badge b-time">3m</span> <span class="badge b-yellow">🟡</span><p>Average of an array of ratings.</p>
 <textarea id="chal5" rows="3">function avgRating(items) {
   // ...
 }</textarea>
-<button class="mark-btn" onclick="runTest(5)">▶️ Run tests</button><div class="result" id="res5"></div></div>
+<button class="mark-btn" onclick="runTest(5)">▶️ Run tests</button><div class="result" id="res5"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: reduce to sum, divide by length; guard empty.</p></details></div>
 
-<div class="challenge"><h3>C6 — validateNote</h3><p>Return <code>{ valid:false, error:"text is required" }</code> if text blank, else <code>{ valid:true }</code>.</p>
+<div class="challenge"><h3>C6 — validateNote</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Return <code>{ valid:false, error:"text is required" }</code> if text blank, else <code>{ valid:true }</code>.</p>
 <textarea id="chal6" rows="4">function validateNote(note) {
   // ...
 }</textarea>
-<button class="mark-btn" onclick="runTest(6)">▶️ Run tests</button><div class="result" id="res6"></div></div>
+<button class="mark-btn" onclick="runTest(6)">▶️ Run tests</button><div class="result" id="res6"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: if (!note.text || !note.text.trim()) invalid; else valid.</p></details></div>
 <hr>
 
 <h2 id="17-answers">17. Answer key</h2><button class="mark-btn" onclick="toggleSection(17)">✅ Mark Complete</button>
@@ -501,6 +522,8 @@ const notes = await Note.find();    // ✅
 </div>
 
 <div class="quiz-box"><h3>🎯 All section answers</h3><details><summary>Quick recap</summary><p>S1: React(screen) → Express(routes) → MongoDB(db) · S2: npm install reads package.json · S3: 5-step loop · S4: req=in, res=out · S5: POST create, GET read, PUT update, DELETE delete; 201 created, 404 missing · S6: schema=shape; create/find/findById/update/delete · S7: Notes API = cors + json + model + 5 routes · S8: component=function→JSX; useState re-renders · S9: fetch→res.ok→json→setState · S10: load on mount, POST add, DELETE filter · S11: cors() on server · S12: process.env, path.join, fs, http · S13: TS = JS + types, interface, .ts/.tsx · S14: ref + populate + nested routes · S15: await, res.ok, immutable, {new:true}</p></details></div>
+
+<h2 id="spot-bug4">🐞 Spot-the-Bug — final boss quiz</h2><div class="why">🚩 <strong>Why it matters:</strong> catch the classic mistakes before they catch you.</div><div class="spotbug"><details><summary>Q1. Spot the bug: code that never resolves / awaits correctly</summary><p class="quiz-correct">Usually a missing <code>await</code> on a promise or forgetting to check <code>res.ok</code>.</p></details><details><summary>Q2. Spot the bug: a fetch chain that ignores the result</summary><p class="quiz-correct">Missing <code>.then</code>/<code>await</code> — the returned value is dropped and never reaches state.</p></details><details><summary>Q3. Spot the bug: state mutated in place</summary><p class="quiz-correct"><code>push()</code> or direct edit will not trigger a re-render — use a new array or object.</p></details><details><summary>Q4. Spot the bug: server query without a not-found check</summary><p class="quiz-correct">Forgot to handle when the item is missing — return a proper 404 instead of crashing.</p></details></div><div class="mood"><span>How was Spot-the-Bug?</span><input type="radio" id="mood-bug-1" name="mood-bug4"><label for="mood-bug-1">😅 tough</label><input type="radio" id="mood-bug-2" name="mood-bug4"><label for="mood-bug-2">🙂 okay</label><input type="radio" id="mood-bug-3" name="mood-bug4"><label for="mood-bug-3">😎 nailed it</label></div><hr><h2 id="predict-more4">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the mental model fast.</div><div class="predict"><details><summary><code>[...new Set([1,1,2,3,3])]</code> → ?</summary><p class="quiz-correct"><code>[1,2,3]</code></p></details><details><summary><code>new Map().set("a",1).size</code> → ?</summary><p class="quiz-correct">1</p></details><details><summary><code>Promise.resolve(1).then(x =&gt; x + 1)</code> → ?</summary><p class="quiz-correct">a fulfilled promise with value 2</p></details><details><summary><code>async () =&gt; 1</code> — what does calling it return?</summary><p class="quiz-correct">a promise (async always wraps the return)</p></details></div><hr><h2 id="certificate4">🏆 Certificate of Completion</h2><div class="certificate" id="certPanel4"><h2>🎓 Certificate of Completion</h2><p>This certifies that <span class="big">You</span> have completed</p><p class="big">JavaScript Essentials Part 4 (MERN Foundations)</p><p id="certStatus4">Complete <strong>all 17 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p></div>
 
 <div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 4 (MERN Foundations). You built a Notes app and a Product Store with Reviews, end-to-end.<br><span style="color:#a0aec0;font-size:13px;">Next: open a real terminal, npm install, and run the exact code from this guide against a real MongoDB.</span></div>
 
@@ -565,6 +588,7 @@ function toggleSection(n){
   if(b){ b.textContent=done?"✅ Mark Complete":"✅ Completed"; b.classList.toggle("done",!done); }
   if(!done && localStorage.getItem(key)==="1"){ addXP4(20); trackStreak4(); celebrate4(); toast4("✅ Section complete +20 XP","celebrate"); }
   updateProgress();
+updateCertificate4();
 }
 function updateProgress(){
   var done=0; for(var i=1;i<=P4_TOTAL;i++) if(localStorage.getItem("p4-sec-"+i)==="1") done++;
@@ -791,6 +815,23 @@ function runTest(n){
 }
 
 // ===== Init =====
+
+// ===== Certificate + scrollspy =====
+function updateCertificate4() {
+  var total = 17, done = 0;
+  for (var i = 1; i <= total; i++) if (localStorage.getItem("p4-sec-" + i) === "1") done++;
+  var panel = document.getElementById("certPanel4"), status = document.getElementById("certStatus4");
+  if (!panel) return;
+  if (done === total) { panel.style.background = "linear-gradient(135deg,#c6f6d5,#68d391)"; panel.style.borderColor = "#38a169"; if (status) status.innerHTML = "🎉 <strong>Certificate earned!</strong> All 17 sections completed. Well done!"; }
+  else { panel.style.borderColor = "#d69e2e"; if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")"; }
+}
+function scrollspy4() {
+  var links = document.querySelectorAll("#table-of-contents a"); var find = "";
+  Array.prototype.forEach.call(links, function(a){ var el = document.getElementById(a.getAttribute("href").slice(1)); if (el && el.getBoundingClientRect && el.getBoundingClientRect().top <= 90) find = a.getAttribute("href").slice(1); });
+  Array.prototype.forEach.call(links, function(a){ var h = a.getAttribute("href").slice(1); a.style.fontWeight = (h === find) ? "700" : ""; a.style.color = (h === find) ? "#90cdf4" : ""; });
+}
+if (window.addEventListener) window.addEventListener("scroll", function(){ try{ scrollspy4(); }catch(e){} }, { passive:true });
+
 markButtons();
 updateProgress();
 renderSRStats4();

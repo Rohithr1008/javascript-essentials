@@ -167,6 +167,27 @@ html.font-lg { font-size: 18px; }
   .quiz-box, .flashcard, pre { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
   details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
 }
+/* ===== Part-1-style enhancements (parity) ===== */
+.badge { display:inline-block; font-size:12px; padding:2px 9px; border-radius:999px; margin-left:6px; vertical-align:middle; font-weight:700; }
+.b-green{background:#c6f6d5;color:#22543d;} .b-yellow{background:#fefcbf;color:#744210;} .b-red{background:#fed7d7;color:#742a2a;} .b-time{background:#e2e8f0;color:#2d3748;font-weight:600;}
+.predict { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px; margin:14px 0; }
+.predict details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; }
+.predict summary { cursor:pointer; font-weight:600; }
+.mood { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.mood > span { font-weight:700; margin-right:4px; }
+.mood input { display:none; }
+.mood label { cursor:pointer; border:1px solid #a0aec0; border-radius:999px; padding:4px 12px; background:#fff; font-size:14px; user-select:none; }
+.mood input:checked + label { background:#38a169; border-color:#38a169; color:#fff; font-weight:700; }
+.studyplan7 { margin:14px 0; }
+.studyplan7 summary { cursor:pointer; font-weight:700; background:#eef2ff; padding:8px 12px; border-radius:8px; border:1px solid #5a67d8; }
+.certificate { background:linear-gradient(135deg,#fffbeb,#fefcbf); border:3px solid #d69e2e; border-radius:14px; padding:24px; text-align:center; margin:24px 0; }
+.certificate h2 { color:#744210; margin-top:0; }
+.certificate .big { font-size:20px; font-weight:700; color:#744210; }
+.spotbug { display:grid; gap:10px; margin:14px 0; }
+.spotbug details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:10px 14px; }
+html.force-dark .predict details, html.force-dark .spotbug details, html.force-dark .studyplan7 summary { background:#241d0e; border-color:#975a16; color:#e2e8f0; }
+html.force-dark .mood label { background:#141c28; color:#cbd5e0; border-color:#2d3748; }
+html.force-dark .certificate { background:linear-gradient(135deg,#2b2013,#744210); border-color:#d69e2e; color:#fffbeb; }
 </style>
 
 <div class="interactive-note">💡 <strong>Interactive Study App — Part 2:</strong> clickable quizzes, live Promise Simulator, Code Sandbox, 5 auto-graded challenges, Spaced Repetition Flashcards, Learning Path, progress tracking (saved locally), and dark mode.</div>
@@ -187,6 +208,24 @@ html.font-lg { font-size: 18px; }
 <a href="#9-answer-key">9. Answer Key</a>
 </p>
 </nav>
+<div class="studyplan7"><details><summary>📅 Suggested 7-day study plan (click to open)</summary>
+<p>Study in small, spaced bites — a little every day beats a marathon. Mark sections done as you go and the progress bar + certificate track you.</p>
+<ul>
+<li><strong>Day 1:</strong> Section 1 (Promises) — read + quiz (5–10 min).</li>
+<li><strong>Day 2:</strong> Section 2 (async/await) + the Promise Simulator (do it twice).</li>
+<li><strong>Day 3:</strong> Section 3 (Error Handling) — try each catch pattern in the sandbox.</li>
+<li><strong>Day 4:</strong> Section 4 (Classes &amp; OOP) — redraw the example with paper.</li>
+<li><strong>Day 5:</strong> Section 5 (Modules) + flashcards review.</li>
+<li><strong>Day 6:</strong> Sections 6–7 (Pitfalls + practice) — do the Spot-the-Bug quiz cold.</li>
+<li><strong>Day 7:</strong> Section 8 (Challenges) — pass all 5, then claim your certificate below.</li>
+</ul>
+</details></div>
+
+<div class="mood"><span>Before you start, how do you feel?</span>
+<input type="radio" id="mood-start-1" name="mood-start"><label for="mood-start-1">🌱 brand new</label>
+<input type="radio" id="mood-start-2" name="mood-start"><label for="mood-start-2">🙂 okay</label>
+<input type="radio" id="mood-start-3" name="mood-start"><label for="mood-start-3">💪 ready</label>
+</div>
 
 <div class="tip"><strong>Golden rules:</strong> Prefer `async/await` over `.then()` mostly, but keep `Promise.all` for parallel work. Always `catch` async errors. Use `for...of` + `await` for sequential loops, `Promise.all` for parallel.</div>
 
@@ -692,6 +731,39 @@ class SavingsAccount extends Account {
 }</code></pre>
 </div>
 
+<h2 id="spot-bug">🐞 Spot-the-Bug — final boss quiz</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> the #1 skill in async code is spotting <em>which promise never resolves</em>. Try each, then reveal.</div>
+<div class="spotbug">
+<details><summary>Q1. What's the bug?  <code>fetch(url).then(r =&gt; r.json());</code></summary><p class="quiz-correct">The result isn't returned/consumed — you must return it or attach another <code>.then()</code>. The chain ends with a dangling promise.</p></details>
+<details><summary>Q2. What's the bug?  <code>for (const x of arr) { await work(x); }</code> in a <em>non-async</em> function</summary><p class="quiz-correct"><code>await</code> is only valid inside an <code>async</code> function — this throws a SyntaxError. Wrap it in <code>async function(){...}</code>.</p></details>
+<details><summary>Q3. What's the bug?  <code>Promise.all(fetch(a), fetch(b))</code></summary><p class="quiz-correct"><code>Promise.all</code> takes an <strong>array</strong>: <code>Promise.all([fetch(a), fetch(b)])</code>.</p></details>
+<details><summary>Q4. What's the bug?  <code>new Promise((resolve) =&gt; { work(); });</code></summary><p class="quiz-correct">The promise never calls <code>resolve()</code>/<code>reject()</code> — it stays pending forever. It must resolve/reject once the work finishes.</p></details>
+<details><summary>Q5. What's the bug?  <code>catch(async () =&gt; { await x(); })</code> on a promise chain</summary><p class="quiz-correct">You usually want <code>.catch(err =&gt; ...)</code> with a handler that consumes the error. Using an async arrow that returns a promise means the catch itself can fail silently — fixed error handling should be explicit.</p></details>
+</div>
+<div class="mood"><span>How was Spot-the-Bug?</span>
+<input type="radio" id="mood-bug-1" name="mood-bug"><label for="mood-bug-1">😅 tough</label>
+<input type="radio" id="mood-bug-2" name="mood-bug"><label for="mood-bug-2">🙂 okay</label>
+<input type="radio" id="mood-bug-3" name="mood-bug"><label for="mood-bug-3">😎 nailed it</label>
+</div>
+<hr>
+
+<h2 id="predict-more">🤔 More predict-the-output cards</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> guessing the output trains the async mental model faster than reading.</div>
+<div class="predict">
+<details><summary><code>Promise.resolve(1).then(x =&gt; x + 1)</code> → ?</summary><p class="quiz-correct">2 (a fulfilled promise with 2)</p></details>
+<details><summary><code>await Promise.allSettled([Promise.resolve(1), Promise.reject(2)])</code> → ?</summary><p class="quiz-correct"><code>[{status:"fulfilled",value:1},{status:"rejected",reason:2}]</code> — allSettled never rejects</p></details>
+<details><summary><code>setTimeout(() => console.log('b'),0); console.log('a');</code> → ?</summary><p class="quiz-correct"><code>a</code> then <code>b</code> (timers are async)</p></details>
+<details><summary><code>Promise.reject('x').catch(() => 7)</code> → ?</summary><p class="quiz-correct">fulfilled with 7 (the catch's return value)</p></details>
+</div>
+<hr>
+
+<h2 id="certificate">🏆 Certificate of Completion</h2>
+<div class="certificate" id="certPanel2">
+<h2>🎓 Certificate of Completion</h2>
+<p>This certifies that <span class="big">You</span> have completed</p>
+<p class="big">JavaScript Essentials — Part 2 (Async/OOP/Modules)</p>
+<p id="certStatus2">Complete <strong>all 9 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p>
+</div>
 <div class="footer">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 2!</div>
 
 <div class="totop"><a href="#table-of-contents">⬆ Back to top</a></div>
@@ -1190,6 +1262,38 @@ function collapseAllQuizzes(expand) {
   });
 }
 
+// ===== Certificate + scrollspy =====
+function updateCertificate2() {
+  var total = 9, done = 0;
+  for (var i = 1; i <= total; i++) if (localStorage.getItem("p2-sec-" + i) === "1") done++;
+  var panel = document.getElementById("certPanel2"), status = document.getElementById("certStatus2");
+  if (!panel) return;
+  if (done === total) {
+    panel.style.background = "linear-gradient(135deg,#c6f6d5,#68d391)";
+    panel.style.borderColor = "#38a169";
+    if (status) status.innerHTML = "🎉 <strong>Certificate earned!</strong> All 9 sections completed. Well done!";
+  } else {
+    panel.style.borderColor = "#d69e2e";
+    if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")";
+  }
+}
+// Lightweight scrollspy: highlight the TOC link of the section currently in view
+function scrollspy2() {
+  var links = document.querySelectorAll("nav a[href^='#']");
+  var ids = Array.prototype.map.call(links, function(a){ return a.getAttribute("href").slice(1); });
+  var find = "";
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el && el.getBoundingClientRect && el.getBoundingClientRect().top <= 90) find = ids[i];
+  }
+  Array.prototype.forEach.call(links, function(a){
+    var href = a.getAttribute("href").slice(1);
+    a.style.fontWeight = (href === find) ? "700" : "";
+    a.style.color = (href === find) ? "#2b6cb0" : "";
+  });
+}
+if (window.addEventListener) window.addEventListener("scroll", function(){ try{ scrollspy2(); }catch(e){} }, { passive:true });
+
 // ===== Init =====
 markButtons();
 updateProgress();
@@ -1198,6 +1302,7 @@ applySrShuffleUI();
 addCopyButtons();
 bindQuizPersistence();
 persistQuizzes();
+updateCertificate2();
 saveBoost();
 applyFontZoom();
 </script>
