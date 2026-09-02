@@ -165,3 +165,9 @@ See [`JAVASCRIPT_ESSENTIALS_PART5_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART5_CONTE
 ---
 
 *The full 5-part series covers JavaScript → MERN apps → production.* ❤️
+
+---
+
+## 📌 Handoff documentation
+
+See **[`HANDOFF.md`](HANDOFF.md)** for the full project handoff — conventions, architecture rules, verification checklist, known gotchas, and what's done vs. next steps. A fresh session should read it first.
