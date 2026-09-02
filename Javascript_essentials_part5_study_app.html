@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Essentials — Part 5</title>
+<style>
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.partnav { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#2d3748; color:#e2e8f0; padding:8px 12px; border-radius:8px; margin:6px 0 12px 0; font-size:0.95rem; }
+.partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
+.partnav a:hover { text-decoration:underline; }
+.partnav strong { color:#fff; }
+h2[id], h3[id] { scroll-margin-top: 16px; }
+.theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+h1 { color:#2b6cb0; margin-bottom: 4px; }
+h2 { border-bottom: 3px solid #3182ce; padding-bottom: 6px; color:#2b6cb0; }
+.tip   { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.warn  { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.chall { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.why   { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
+.layer-legend { display:flex; gap:8px; flex-wrap:wrap; background:#edf2f7; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:10px 0; font-size:0.9rem; }
+.layer-legend .l { padding:3px 10px; border-radius:999px; color:#fff; font-weight:600; }
+.l-react { background:#6d28d9; } .l-express { background:#047857; } .l-mongo { background:#b45309; } .l-node { background:#374151; } .l-auth { background:#be185d; } .l-prod { background:#0f766e; }
+</style>
+</head>
+<body>
+
+<h1>JavaScript Essentials - Part 5</h1>
+
+<div class="partnav" aria-label="Part navigation">
+  <a href="Javascript_essentials_part4_study_app.html">← 4 MERN Foundations</a>
+  <strong>5 Production: Auth + Deployment</strong>
+</div>
+<style>
+.sandbox { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px; color:#e2e8f0; margin:12px 0; }
+.sandbox textarea, .sandbox input, .sandbox select { width:100%; box-sizing:border-box; background:#0b1220; color:#a5f3fc; border:1px solid #334155; border-radius:6px; font-family:Consolas,monospace; padding:9px; }
+.sandbox .out { background:#020617; color:#86efac; border-radius:6px; padding:10px; margin-top:8px; min-height:42px; white-space:pre-wrap; font-family:Consolas,monospace; }
+.sandbox .err { color:#fca5a5; }
+.sandbox button { background:#2563eb; color:#fff; border:none; padding:7px 14px; border-radius:6px; cursor:pointer; margin:6px 6px 0 0; font-weight:600; }
+.quiz-box { background:#f7f9fc; border:2px solid #3182ce; border-radius:10px; padding:14px 18px; margin:18px 0; }
+.quiz-box h3 { margin-top:0; color:#2b6cb0; }
+.quiz-box details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:8px 0; }
+.quiz-box summary { cursor:pointer; font-weight:600; }
+.quiz-correct { color:#276749; font-weight:700; }
+pre { background:#1a202c; color:#e2e8f0; padding:12px 14px; border-radius:8px; overflow-x:auto; }
+pre code { background:transparent; color:inherit; font-family:Consolas,monospace; }
+code { background:#e2e8f0; padding:1px 5px; border-radius:4px; font-family:Consolas,monospace; color:#2d3748; }
+.challenge { border:1px solid #4a5568; border-radius:10px; padding:12px 16px; margin:14px 0; background:#fafbfc; }
+.challenge textarea { width:100%; box-sizing:border-box; background:#0b1220; color:#a5f3fc; border:1px solid #334155; border-radius:6px; font-family:Consolas,monospace; padding:10px; }
+.challenge .result { margin-top:8px; padding:8px 10px; border-radius:6px; font-weight:600; white-space:pre-wrap; }
+.pass { background:#c6f6d5; color:#22543d; } .fail { background:#fed7d7; color:#742a2a; }
+.mark-btn { margin:8px 0 4px 0; padding:5px 12px; background:#38a169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; }
+.mark-btn.done { background:#718096; }
+.toast { background:#1a202c; color:#e2e8f0; border-left:4px solid #dd6b20; padding:10px 14px; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.3); font-weight:600; max-width:280px; animation:slidein .3s ease; }
+.toast.celebrate { border-left-color:#38a169; }
+.toast.badge { border-left-color:#805ad5; }
+@keyframes slidein { from{opacity:0;transform:translateX(20px);} to{opacity:1;transform:none;} }
+.auth-box { background:#0f172a; border:1px solid #be185d; border-radius:12px; padding:16px; color:#e2e8f0; margin:12px 0; }
+.auth-box .log { background:#020617; color:#a5f3fc; border-radius:8px; padding:12px; font-family:Consolas,monospace; font-size:13px; min-height:120px; max-height:240px; overflow:auto; }
+.auth-box .log .req { color:#fbbf24; } .auth-box .log .ok { color:#86efac; } .auth-box .log .err { color:#f87171; }
+.auth-box .hash-demo { background:#020617; border:1px solid #334155; border-radius:8px; padding:10px; font-family:Consolas,monospace; font-size:13px; margin-top:8px; }
+.auth-box .token-chips { display:flex; gap:6px; flex-wrap:wrap; font-family:Consolas,monospace; font-size:12px; margin-top:8px; }
+.auth-box .chip { padding:4px 8px; border-radius:6px; } .chip-h { background:#6d28d9; } .chip-p { background:#047857; } .chip-s { background:#be185d; }
+.totop { text-align:right; margin:6px 0; }
+body.focus-mode #progressBar, body.focus-mode #authPanel, body.focus-mode #spacedRepetitionPanel, body.focus-mode #learningPathPanel { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+html.font-sm{font-size:15px;} html.font-md{font-size:17px;} html.font-lg{font-size:18px;}
+.tipbox { border:1px dashed #be185d; background:#fdf2f8; border-radius:8px; padding:10px 14px; margin:10px 0; }
+.tip-glossary details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:6px 10px; margin:6px 0; }
+.tip-glossary summary { cursor:pointer; font-weight:600; }
+@media (prefers-color-scheme: dark){
+  body{background:#0d1117;color:#e6edf3;}
+  h1,h2{color:#5b9bf0;} h2{border-bottom-color:#63b3ed;}
+  code{background:#1f2937;color:#e2e8f0;}
+  .quiz-box{background:#141c28;border-color:#2b6cb0;color:#e2e8f0;}
+  .quiz-box h3{color:#90cdf4;} .quiz-box details{background:#0f1622;border-color:#2d3748;}
+  .challenge{background:#141c28;border-color:#2d3748;}
+  .why{background:#1c2333;border-left-color:#6366f1;color:#dbe4ef;}
+  .layer-legend{background:#1a202c;border-color:#2d3748;}
+}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
+@media print { .theme-btn,#authPanel,.mark-btn,.challenge,.totop,.layer-legend,button{display:none!important;} body{background:#fff!important;color:#000!important;} }
+</style>
+
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
+  <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
+  <button onclick="fontZoom5(-1)">A−</button>
+  <button onclick="fontZoom5(0)">A</button>
+  <button onclick="fontZoom5(1)">A+</button>
+  <span style="width:14px;"></span>
+  <button onclick="collapseAll5(true)">📖 Expand all</button>
+  <button onclick="collapseAll5(false)">📕 Collapse all</button>
+  <span style="width:14px;"></span>
+  <button id="focusBtn5" onclick="focusMode5(this)" aria-pressed="false">🧘 Focus Mode</button>
+</div>
+<div id="focusHint5" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — panels hidden, quizzes closed for calm reading. Click it again to restore.</div>
+
+<p>This part extends <strong>Part 4</strong> from "it works on my laptop" to <strong>production</strong>: real user accounts (<em>authentication</em>) and putting your app on the internet (<em>deployment</em>). You'll build a login flow and learn where to host each piece.</p>
+
+<div class="layer-legend" aria-label="Layers including auth and production">
+  <span class="l l-react">🟣 React — client / screen</span>
+  <span class="l l-express">🟢 Express — server</span>
+  <span class="l l-mongo">🟡 MongoDB — database</span>
+  <span class="l l-auth">🩷 Auth — identity</span>
+  <span class="l l-prod">🟩 Production — hosting</span>
+</div>
+
+<div class="chall" style="border-left-color:#be185d;background:#fdf2f8;"><strong>👋 New to auth? Here's the 3-minute map:</strong> 1️⃣ Users sign up with a <strong>hashed</strong> password (never plain text). 2️⃣ On login the server hands them a <strong>JWT</strong> (a signed "ID badge"). 3️⃣ Every later request sends that badge in the <code>Authorization</code> header so the server knows <em>who</em> they are. Then we ship it all to the internet.</div>
+
+<div class="tipbox tip-glossary" aria-label="Auth & deployment jargon glossary">
+  <strong>🔤 Production jargon, made friendly</strong> (tap to expand)
+  <details><summary><code>Authentication</code> (auth)</summary>Proving WHO you are — login/register.</details>
+  <details><summary><code>Authorization</code></summary>What you're ALLOWED to do once we know who you are.</details>
+  <details><summary><code>Hash / hashing</code></summary>Turning a password into a one-way scrambled string you can't unscramble.</details>
+  <details><summary><code>bcrypt</code></summary>A library that hashes + checks passwords safely (adds salt, slow on purpose).</details>
+  <details><summary><code>JWT</code></summary>JSON Web Token — a signed "ID badge" with 3 parts (header, payload, signature).</details>
+  <details><summary><code>Token</code></summary>The string the server issues on login; the client sends it with each request.</details>
+  <details><summary><code>Authorization header</code></summary>Where the token travels: <code>Authorization: Bearer &lt;token&gt;</code>.</details>
+  <details><summary><code>Middleware</code></summary>A function that runs before a route (e.g. "check the token first").</details>
+  <details><summary><code>Protected route</code></summary>A route that only works with a valid token; otherwise 401.</details>
+  <details><summary><code>Deployment</code></summary>Putting your app on the internet so anyone can use it (not just localhost).</details>
+  <details><summary><code>Environment variable (.env)</code></summary>A secret setting (DB URL, JWT secret, port) not hard-coded into the code.</details>
+  <details><summary><code>MongoDB Atlas</code></summary>MongoDB hosted in the cloud, reachable from anywhere.</details>
+  <details><summary><code>401 / 403</code></summary>401 = "not logged in / bad token". 403 = "logged in but not allowed".</details>
+  <details><summary><code>CORS in production</code></summary>The frontend's real domain must be allowed by the backend — not localhost anymore.</details>
+</div>
+<div id="progressBar" style="background:#2d3748;border:1px solid #4a5568;border-radius:8px;padding:10px 16px;margin:10px 0;color:#e2e8f0;font-weight:600;text-align:center;">📊 Progress: 0/16 sections (0%)</div>
+
+<div id="boostBar" style="background:#1a202c;border:2px solid #be185d;border-radius:12px;padding:12px 16px;margin:12px 0;color:#e2e8f0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+  <div style="font-weight:700;">⚡ <span id="streakCount5" style="color:#fbbf24;">0-day streak</span></div>
+  <div style="font-weight:700;">⭐ <span id="pointCount5" style="color:#fbbf24;">0 XP</span></div>
+  <div><button onclick="boostSurprise5()" aria-label="Surprise me" style="padding:6px 14px;background:#be185d;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🎲 Surprise me</button></div>
+  <div><button onclick="startFocusTimer5()" aria-label="Focus sprint" style="padding:6px 14px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧠 Focus sprint</button></div>
+  <div><span id="focusTimer5" style="font-weight:700;color:#68d391;">⏱ 25:00</span></div>
+</div>
+
+<div id="toastZone5" style="position:fixed;top:16px;right:16px;z-index:999;display:flex;flex-direction:column;gap:8px;"></div>
+<canvas id="confettiCanvas5" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;display:none;"></canvas>
+
+<div id="learningPathPanel" style="background:#2d3748;border:2px solid #805ad5;border-radius:12px;padding:16px 20px;margin:16px 0;"><h3 style="color:#b794f4;margin-top:0;">🧭 Learning Path</h3><div id="learningPathContent5" style="color:#e2e8f0;"><p>⏳ Complete sections to get personalized recommendations…</p></div></div>
+
+<div id="spacedRepetitionPanel" style="background:#2d3748;border:2px solid #319795;border-radius:12px;padding:16px 20px;margin:16px 0;">
+  <h3 style="color:#4fd1c5;margin-top:0;">🃏 Spaced Repetition Flashcards</h3>
+  <div id="srCard5" style="background:#1a202c;border:1px solid #4a5568;border-radius:8px;padding:16px;margin:10px 0;text-align:center;">
+    <p id="srQuestion5" style="color:#e2e8f0;font-size:16px;margin:0 0 12px 0;">Click "Start Review" to begin!</p>
+    <p id="srAnswer5" style="color:#68d391;font-size:14px;margin:0 0 12px 0;display:none;"></p>
+    <div id="srButtons5" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="startSRReview5()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Start Review</button>
+      <button onclick="srToggleShuffle5()" id="srShuffleBtn5" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔀 Shuffle: Off</button>
+    </div>
+    <div id="srStats5" style="color:#a0aec0;font-size:12px;margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- ===== Live mock auth server ===== -->
+<div id="authPanel" class="auth-box" aria-label="Live mock auth + token demo">
+  <h3 style="margin-top:0;color:#f9a8d4;">🔐 Live Mock Auth &amp; Token Demo <small style="color:#a0aec0;">(no install — watch login &amp; a protected route work)</small></h3>
+  <p style="color:#cbd5e0;font-size:14px;margin:4px 0 10px 0;">Register a user, log in, and hit a <strong>protected route</strong>. You'll SEE your password get "hashed" (never stored plain), a <strong>JWT</strong> issued, and the <code>Authorization: Bearer</code> header control access.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+    <button onclick="authDemo('register')" style="background:#be185d;">📝 Register</button>
+    <button onclick="authDemo('login')" style="background:#047857;">🔑 Login</button>
+    <button onclick="authDemo('me')" style="background:#3182ce;">🔒 Get /api/me (protected)</button>
+    <button onclick="authDemo('logout')" style="background:#4a5568;">🚪 Logout</button>
+    <button onclick="authDemo('autoplay')" style="background:#6d28d9;">▶️ Watch the whole flow</button>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0;">
+    <span style="color:#a0aec0;font-size:13px;">Token: </span>
+    <span id="tokenStatus5" style="color:#fbbf24;font-size:13px;font-family:Consolas,monospace;">(none — not logged in)</span>
+  </div>
+  <div class="token-chips" id="tokenChips5" style="display:none;"><span class="chip chip-h" id="chipH5"></span><span class="chip chip-p" id="chipP5"></span><span class="chip chip-s" id="chipS5"></span></div>
+  <div class="log" id="authLog5">👋 Press <strong>"▶️ Watch the whole flow"</strong> to see register → hash → login → token → protected route, step by step. Or click the buttons yourself.</div>
+</div>
+
+<nav id="table-of-contents"><h2>📑 Table of Contents</h2>
+<p>🔗 <a href="#1-prod">1. Production layer</a> · <a href="#2-authvsz">2. Auth vs Authz</a> · <a href="#3-hash">3. Hashing</a> · <a href="#4-jwt">4. JWT</a> · <a href="#5-register">5. Register</a> · <a href="#6-login">6. Login</a> · <a href="#7-protect">7. Protected routes</a> · <a href="#8-react-auth">8. Token in React</a> · <a href="#9-auth-demo">9. Auth demo</a> · <a href="#10-deploy">10. Deployment</a> · <a href="#11-render">11. Backend hosting</a> · <a href="#12-frontend-host">12. Frontend hosting</a> · <a href="#13-testing">13. Testing</a> · <a href="#14-router">14. Routing</a> · <a href="#15-pitfalls">15. Pitfalls</a> · <a href="#16-challenges">16. Challenges</a></p>
+</nav>
+<hr>
+<h2 id="1-prod">1. The production layer</h2><button class="mark-btn" onclick="toggleSection(1)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> "works on my laptop" ≠ "ready for real users." Production = accounts + putting it online + keeping it safe.</div>
+<div class="tip">🖥 <strong>local</strong> = your machine (localhost:3000). <strong>production</strong> = a server on the internet (e.g. myapp.onrender.com) anyone can visit.</div>
+<p><strong>Two big things production adds on top of Part 4:</strong></p>
+<pre><code>1. AUTHENTICATION (auth)   → who is the user? (accounts, login)
+2. DEPLOYMENT              → put the app on the internet (host each piece)</code></pre>
+<div class="quiz-box"><h3>🎯 Section 1 quiz</h3><details><summary>What does "production" mean here?</summary><p class="quiz-correct">Your app running on a real server on the internet for anyone to use</p></details><details><summary>What are the two production topics this part adds?</summary><p class="quiz-correct">Authentication (accounts) and Deployment (hosting)</p></details></div>
+<hr>
+
+<h2 id="2-authvsz">2. Authentication vs Authorization</h2><button class="mark-btn" onclick="toggleSection(2)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> two words, two jobs. Mixing them up causes bugs.</div>
+<pre><code>AUTHENTICATION  = WHO are you?        (login / register)   → proves identity
+AUTHORIZATION   = WHAT may you do?     (permissions)        → allows actions</code></pre>
+<p>Check-in at a hotel = <strong>authentication</strong> (show ID). Getting a key card only to <em>your</em> room = <strong>authorization</strong>.</p>
+<div class="quiz-box"><h3>🎯 Section 2 quiz</h3><details><summary>"Show your ID to prove who you are" is…</summary><p class="quiz-correct">Authentication</p></details><details><summary>"You may only edit YOUR OWN notes" is…</summary><p class="quiz-correct">Authorization</p></details><details><summary>"Log in with your email &amp; password" is…</summary><p class="quiz-correct">Authentication</p></details></div>
+<hr>
+
+<h2 id="3-hash">3. Passwords done right — hashing with bcrypt</h2><button class="mark-btn" onclick="toggleSection(3)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> storing plain-text passwords is a disaster. Hashing scrambles them one-way.</div>
+<div class="tip">🧪 <strong>Try it:</strong> in the 🔐 auth panel below, click <strong>Register</strong> — watch how your password is NEVER shown/stored as-is, only a "<code>hash</code>".</div>
+<pre><code>// NEVER store the raw password:
+user.password = req.body.password;        // ❌ bad: relation — if DB leaks, passwords leak
+
+// DO store a HASH (one-way, can't be unscrambled):
+const bcrypt = require("bcrypt");
+const saltRounds = 10;                     // makes it slower = harder to crack
+const hash = await bcrypt.hash(req.body.password, saltRounds);
+user.password = hash;                      // ✅ store only the hash
+
+// To CHECK a login: bcrypt re-hashes and compares in one safe step
+const ok = await bcrypt.compare(typedPassword, savedHash);
+if (!ok) return res.status(401).json({ error: "Wrong password" });</code></pre>
+<div class="quiz-box"><h3>🎯 Section 3 quiz</h3><details><summary>Why NOT store plain-text passwords?</summary><p class="quiz-correct">If the database leaks, passwords are exposed — hashing makes them useless</p></details><details><summary>Can you turn a hash back into the password?</summary><p class="quiz-correct">No — it's one-way</p></details><details><summary>How do you CHECK a password at login?</summary><p class="quiz-correct">bcrypt.compare(typed, savedHash)</p></details></div>
+<hr>
+
+<h2 id="4-jwt">4. JWT — the three parts</h2><button class="mark-btn" onclick="toggleSection(4)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> a JWT is the "ID badge" the server issues so it can trust the user WITHOUT re-checking the password every request.</div>
+<pre><code>jwt.sign({ userId, name }, SECRET, { expiresIn: "7d" })
+// → a long string:  header.payload.signature
+
+ JWT = HEADER . PAYLOAD . SIGNATURE
+        (type)    (data)   (tamper-proof seal)</code></pre>
+<div class="tip">🧪 <strong>See it live:</strong> after Logging in the auth panel, the token shows as 3 coloured chips: <span class="chip chip-h">header</span> · <span class="chip chip-p">payload</span> · <span class="chip chip-s">signature</span>.</div>
+<ul><li><strong>Header</strong> — says "I'm a JWT".</li><li><strong>Payload</strong> — the safe claims like <code>userId</code> (NOT the password).</li><li><strong>Signature</strong> — a cryptographic seal from the server's secret; if anyone edits the token, the seal breaks.</li></ul>
+<div class="quiz-box"><h3>🎯 Section 4 quiz</h3><details><summary>How many parts does a JWT have?</summary><p class="quiz-correct">3 — header, payload, signature</p></details><details><summary>Does the payload contain the password?</summary><p class="quiz-correct">No — only safe claims like userId</p></details><details><summary>What does the signature do?</summary><p class="quiz-correct">Proves the token wasn't tampered with</p></details></div>
+<hr>
+<h2 id="5-register">5. Register a user (backend)</h2><button class="mark-btn" onclick="toggleSection(5)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> signup must validate input, hash the password, and avoid duplicate emails.</div>
+<pre><code>app.post("/api/auth/register", async (req, res) => {
+  const { email, password } = req.body;
+
+  const exists = await User.findOne({ email });
+  if (exists) return res.status(400).json({ error: "Email already used" });
+  if (!password || password.length < 6)
+    return res.status(400).json({ error: "Password must be at least 6 chars" });
+
+  const hash = await bcrypt.hash(password, 10);       // hash, not plain
+  const user = await User.create({ email, password: hash });
+  res.status(201).json({ message: "User created" });  // NEVER return the hash
+});</code></pre>
+<div class="quiz-box"><h3>🎯 Section 5 quiz</h3><details><summary>What must registration do to the password?</summary><p class="quiz-correct">Hash it with bcrypt before saving</p></details><details><summary>What if the email already exists?</summary><p class="quiz-correct">Return 400 "Email already used"</p></details><details><summary>Should the response include the saved hash?</summary><p class="quiz-correct">No — never return the password/hash</p></details></div>
+<hr>
+
+<h2 id="6-login">6. Login &amp; issuing a token</h2><button class="mark-btn" onclick="toggleSection(6)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> login checks the password, then issues a JWT the client uses for later requests.</div>
+<pre><code>app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(401).json({ error: "Bad credentials" });
+
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) return res.status(401).json({ error: "Bad credentials" });
+
+  const token = jwt.sign({ userId: user._id, email: user.email }, SECRET, { expiresIn: "7d" });
+  res.json({ token, user: { id: user._id, email: user.email } });
+});</code></pre>
+<div class="quiz-box"><h3>🎯 Section 6 quiz</h3><details><summary>What does the server hand back on successful login?</summary><p class="quiz-correct">A JWT token (plus safe user info)</p></details><details><summary>What status for wrong email/password?</summary><p class="quiz-correct">401</p></details><details><summary>What goes in the JWT payload?</summary><p class="quiz-correct">user.id and email — never the password</p></details></div>
+<hr>
+
+<h2 id="7-protect">7. Protecting routes with middleware</h2><button class="mark-btn" onclick="toggleSection(7)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> middleware checks the token BEFORE the route runs, so private data stays private.</div>
+<pre><code>function auth(req, res, next) {
+  const header = req.headers.authorization;              // "Bearer &lt;token&gt;"
+  if (!header || !header.startsWith("Bearer "))
+    return res.status(401).json({ error: "No token" });
+  const token = header.split(" ")[1];
+  try {
+    req.user = jwt.verify(token, SECRET);                // seal OK → user known
+    next();                                               // 🔓 carry on to the route
+  } catch {
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+app.get("/api/me", auth, async (req, res) => {
+  res.json({ user: req.user });                          // only if token valid
+});</code></pre>
+<div class="quiz-box"><h3>🎯 Section 7 quiz</h3><details><summary>What does the middleware do before the route runs?</summary><p class="quiz-correct">Verifies the JWT in the Authorization header</p></details><details><summary>What if no/invalid token?</summary><p class="quiz-correct">Return 401 without running the route</p></details><details><summary>How is a private route marked?</summary><p class="quiz-correct">Pass `auth` as middleware before the handler</p></details></div>
+<hr>
+<h2 id="8-react-auth">8. Using the token in React</h2><button class="mark-btn" onclick="toggleSection(8)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the frontend stores the token (localStorage) and sends it in the request header.</div>
+<pre><code>async function login(email, password) {
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  localStorage.setItem("token", data.token);        // remember the badge
+  setUser(data.user);
+}
+async function loadMe() {
+  const token = localStorage.getItem("token");
+  const res = await fetch("/api/me", {
+    headers: { "Authorization": "Bearer " + token }, // send the badge
+  });
+  if (res.status === 401) { setUser(null); return; } // expired → log out
+  setUser(await res.json());
+}</code></pre>
+<div class="tip">🧠 <strong>memory aid:</strong> login → <code>localStorage.setItem("token", …)</code> → every protected call sends <code>Authorization: Bearer token</code>.</div>
+<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>Where does the frontend store the token?</summary><p class="quiz-correct">localStorage</p></details><details><summary>What header carries the token?</summary><p class="quiz-correct">Authorization: Bearer &lt;token&gt;</p></details><details><summary>What if /api/me returns 401?</summary><p class="quiz-correct">Log the user out (token expired)</p></details></div>
+<hr>
+
+<h2 id="9-auth-demo">9. 🔐 Auth demo — a full module</h2><button class="mark-btn" onclick="toggleSection(9)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the complete auth module — server + client in one place. Use the 🔐 mock server above to SEE it run.</div>
+<div class="tip">🧪 <strong>Try it now:</strong> press <strong>"▶️ Watch the whole flow"</strong> in the 🔐 auth panel above. It runs: register → hash → login → JWT issued → Get /api/me with Bearer (200) → logout → Get /api/me again (401).</div>
+<pre><code>// SERVER — register + login + protected
+app.post("/api/auth/register", async (req,res)=>{ const {email,password}=req.body;
+  if(await User.findOne({email})) return res.status(400).json({error:"exists"});
+  const user=await User.create({email, password:await bcrypt.hash(password,10)});
+  res.status(201).json({message:"User created"}); });
+app.post("/api/auth/login", async (req,res)=>{ const {email,password}=req.body;
+  const u=await User.findOne({email}); if(!u) return res.status(401).json({error:"bad"});
+  const ok=await bcrypt.compare(password,u.password); if(!ok) return res.status(401).json({error:"bad"});
+  const token=jwt.sign({userId:u._id,email:u.email},SECRET,{expiresIn:"7d"});
+  res.json({token,user:{id:u._id,email:u.email}}); });
+app.get("/api/me", auth, (req,res)=>res.json({user:req.user}));   // auth middleware from §7</code></pre>
+<div class="quiz-box"><h3>🎯 Section 9 quiz</h3><details><summary>What 5 steps is the whole auth flow?</summary><p class="quiz-correct">register → hash → login → JWT → protected route with Bearer header</p></details><details><summary>What status if you hit a protected route with NO token?</summary><p class="quiz-correct">401</p></details></div>
+<hr>
+
+<h2 id="10-deploy">10. Deployment — what it actually means</h2><button class="mark-btn" onclick="toggleSection(10)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> your app on localhost only works on YOUR computer. Deployment puts it on the internet for everyone.</div>
+<div class="tip">🌍 <strong>Before:</strong> url is localhost:3000 — only you. <strong>After:</strong> url is myapp.onrender.com — anyone with the link.</div>
+<pre><code>Deploying a MERN app = hosting 3 things:
+  1. BACKEND (Express)   → Render / Railway / Fly.io
+  2. FRONTEND (React)    → Vercel / Netlify
+  3. DATABASE (MongoDB)  → MongoDB Atlas (cloud)
+
+Each hosting company gives your piece a public URL, and they talk to each other over the internet.</code></pre>
+<div class="quiz-box"><h3>🎯 Section 10 quiz</h3><details><summary>What 3 pieces do you host for MERN?</summary><p class="quiz-correct">Backend (Engine), Frontend (React), Database (MongoDB)</p></details><details><summary>Where does the database live in production?</summary><p class="quiz-correct">MongoDB Atlas (cloud)</p></details></div>
+<hr>
+<h2 id="11-render">11. Hosting the backend (Render) + env vars + Atlas</h2><button class="mark-btn" onclick="toggleSection(11)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the server needs a public home, plus secrets (DB URL, JWT secret) set as env variables — never hard-coded.</div>
+<pre><code>// .env (DO NOT commit this file!)
+PORT=3000
+MONGODB_URI=mongodb+srv://user:pw@cluster.mongodb.net/<br>JWT_SECRET=make-up-a-long-secret-string
+
+// server.js reads them
+const PORT = process.env.PORT || 3000;
+mongoose.connect(process.env.MONGODB_URI);
+const SECRET = process.env.JWT_SECRET;   // used by jwt.sign / jwt.verify</code></pre>
+<p><strong>Steps to host the backend on Render:</strong> 1️⃣ push your code to GitHub · 2️⃣ New → Web Service · 3️⃣ pick the repo · 4️⃣ Set start command `node server/server.js` · 5️⃣ add the <code>.env</code> secrets in Render's "Environment" tab · 6️⃣ Deploy → get a public URL.</p>
+<div class="tip">🧠 <strong>never commit secrets:</strong> add <code>.env</code> to <code>.gitignore</code>. Use env vars in the host (Render/Vercel) instead.</div>
+<div class="quiz-box"><h3>🎯 Section 11 quiz</h3><details><summary>Where do secrets live in production?</summary><p class="quiz-correct">Environment variables (Render's env tab / .env, not hard-coded)</p></details><details><summary>What two secrets do you almost always need?</summary><p class="quiz-correct">MONGODB_URI and JWT_SECRET</p></details><details><summary>Should .env be committed to git?</summary><p class="quiz-correct">No — add it to .gitignore</p></details></div>
+<hr>
+
+<h2 id="12-frontend-host">12. Hosting the frontend (Vercel / Netlify)</h2><button class="mark-btn" onclick="toggleSection(12)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> the React screen needs a public URL, and its fetch calls must point at the hosted backend (plus CORS).</div>
+<pre><code>// BAD: hard-coded localhost (won't work after deploy)
+fetch("http://localhost:3000/api/notes");
+
+// GOOD: use an env var at build time
+fetch(import.meta.env.VITE_API_URL + "/api/notes");
+// Vite .env →  VITE_API_URL=https://my-backend.onrender.com</code></pre>
+<p><strong>Steps:</strong> 1️⃣ build the app (`npm run build`) · 2️⃣ connect the repo to Vercel/Netlify · 3️⃣ add <code>VITE_API_URL</code> as an env var · 4️⃣ deploy → get a public URL. Then update the <strong>backend's CORS</strong> to allow your new frontend URL.</p>
+<div class="quiz-box"><h3>🎯 Section 12 quiz</h3><details><summary>What must the frontend's fetch URLs use in production?</summary><p class="quiz-correct">The hosted backend URL via an env var (VITE_API_URL)</p></details><details><summary>After moving the frontend to a real domain, what must you update on the backend?</summary><p class="quiz-correct">CORS to allow the new frontend origin</p></details></div>
+<hr>
+
+<h2 id="13-testing">13. Testing basics</h2><button class="mark-btn" onclick="toggleSection(13)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> a test is just code that checks your code. It catches regressions before users do.</div>
+<pre><code>// A test = describe what should happen + assert it
+// Example (Vitest / Jest style):
+function hashPassword(pw){ return pw.split("").reverse().join(""); } // fake demo
+test("hashPassword scrambles", () => {
+  expect(hashPassword("abc")).toBe("cba");
+  expect(hashPassword("abc")).not.toBe("abc");
+});</code></pre>
+<p><strong>Mental model:</strong> write a tiny function that calls your real function and asserts the result. If the function breaks later, the test turns red and tells you.</p>
+<div class="quiz-box"><h3>🎯 Section 13 quiz</h3><details><summary>What does a test do?</summary><p class="quiz-correct">Asserts your code behaves as expected, catching regressions</p></details><details><summary>When a test "goes red", what does it mean?</summary><p class="quiz-correct">Something broke — fix it before shipping</p></details></div>
+<hr>
+
+<h2 id="14-router">14. Routing libraries (React Router)</h2><button class="mark-btn" onclick="toggleSection(14)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> real apps have multiple pages (Home, Login, Profile). React Router maps URLs to components.</div>
+<pre><code>// App.jsx with React Router (react-router-dom)
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+
+function App() {
+  const { user } = useAuth();
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/login" element={&lt;Login /&gt;} /&gt;
+        &lt;Route path="/profile" element={user ? &lt;Profile /&gt; : &lt;Navigate to="/login" /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</code></pre>
+<div class="quiz-box"><h3>🎯 Section 14 quiz</h3><details><summary>What does React Router do?</summary><p class="quiz-correct">Maps URL paths to components (pages)</p></details><details><summary>How do you protect a /profile page in React?</summary><p class="quiz-correct">Redirect to /login if not authenticated (Navigate)</p></details></div>
+<hr>
+<h2 id="15-pitfalls">15. Common production pitfalls</h2><button class="mark-btn" onclick="toggleSection(15)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> these are the 5 mistakes that break deployed apps.</div>
+<pre><code>1. Storing plain-text passwords               ❌  →  always bcrypt.hash
+2. Hard-coding the JWT secret / DB URL        ❌  →  use env vars (.env / host env tab)
+3. Committing .env to GitHub                  ❌  →  add to .gitignore
+4. Forgetting CORS on the deployed backend    ❌  →  allow your real frontend URL
+5. Frontend still calls localhost after deploy ❌  →  use VITE_API_URL env var
+6. Putting the password IN the JWT payload    ❌  →  only userId/email, never secrets</code></pre>
+<div class="quiz-box"><h3>🎯 Section 15 quiz</h3><details><summary>Deployed frontend can't reach the API? First check?</summary><p class="quiz-correct">CORS on the backend + the API URL env var</p></details><details><summary>Your .env got pushed to GitHub? What's the lesson?</summary><p class="quiz-correct">Add .env to .gitignore; rotate the leaked secrets</p></details><details><summary>Should the JWT payload contain the password?</summary><p class="quiz-correct">Never</p></details></div>
+<hr>
+
+<h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
+<div class="why">🚩 <strong>Why it matters:</strong> these pure functions mirror real auth/deploy logic — safe place to practice, no install.</div>
+
+<div class="challenge"><h3>C1 — neverPlainText</h3><p>Return <code>true</code> if the stored value is a HASH (contains the marker <code>$</code>, as our demo hashes do), <code>false</code> if it's a plain password.</p>
+<textarea id="chal1" rows="3">function neverPlainText(stored) {
+  // A hash contains a "$" marker; a plain password (e.g. "secret") does not.
+  // return stored.indexOf("$") !== -1;
+}</textarea>
+<button class="mark-btn" onclick="runTest(1)">▶️ Run tests</button><div class="result" id="res1"></div></div>
+
+<div class="challenge"><h3>C2 — tokenPayload</h3><p>Given a "payload" object, return a SAFE token payload: only <code>userId</code> and <code>email</code> (never password).</p>
+<textarea id="chal2" rows="4">function tokenPayload(user) {
+  // return { userId: user.userId, email: user.email };
+}</textarea>
+<button class="mark-btn" onclick="runTest(2)">▶️ Run tests</button><div class="result" id="res2"></div></div>
+
+<div class="challenge"><h3>C3 — attachAuthHeader</h3><p>Return the headers object for a fetch call, adding <code>Authorization: "Bearer " + token</code>, keeping any existing headers.</p>
+<textarea id="chal3" rows="4">function attachAuthHeader(existing, token) {
+  // return { ...existing, Authorization: "Bearer " + token };
+}</textarea>
+<button class="mark-btn" onclick="runTest(3)">▶️ Run tests</button><div class="result" id="res3"></div></div>
+
+<div class="challenge"><h3>C4 — authMiddleware</h3><p>Return <code>"401"</code> if no token, else <code>"ok"</code>. (Simulates checking the Authorization header.)</p>
+<textarea id="chal4" rows="4">function authMiddleware(req) {
+  // if (req && req.headers && req.headers.authorization) return "ok"; return "401";
+}</textarea>
+<button class="mark-btn" onclick="runTest(4)">▶️ Run tests</button><div class="result" id="res4"></div></div>
+
+<div class="challenge"><h3>C5 — deployOrder</h3><p>Given an array of steps, sort them into the correct deploy order: 1) push code, 2) set env vars, 3) deploy backend, 4) deploy frontend, 5) update CORS. Each step has a <code>sort</code> number.</p>
+<textarea id="chal5" rows="4">function deployOrder(steps) {
+  // return steps.slice().sort((a,b) => a.sort - b.sort);
+}</textarea>
+<button class="mark-btn" onclick="runTest(5)">▶️ Run tests</button><div class="result" id="res5"></div></div>
+
+<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 5 (Production: Auth + Deployment). You can now explain auth &amp; deployment and are ready to ship a real MERN app.<br><span style="color:#a0aec0;font-size:13px;">Next: pick one real project, add auth, and deploy it to Render + Vercel + Atlas.</span></div>
+
+<div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
+<script>
+// ===== Part 5 Study App — Script =====
+function toggleTheme(){
+  var cur=document.documentElement.className;
+  var next=cur==="force-dark"?"force-light":"force-dark";
+  document.documentElement.className=next;
+  localStorage.setItem("p5-theme",next);
+  document.getElementById("themeBtn").textContent=next==="force-dark"?"☀️ Light mode":"🌙 Dark mode";
+}
+function applySysDark(){
+  if(!localStorage.getItem("p5-theme") && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
+    document.documentElement.className="force-dark";
+    document.getElementById("themeBtn").textContent="☀️ Light mode";
+  }
+}
+applySysDark();
+
+var fontLevels5=["font-sm","","font-md","font-lg"];
+function fontZoom5(dir){
+  var html=document.documentElement, cur="";
+  ["font-sm","font-md","font-lg"].forEach(function(c){ if(html.classList.contains(c)) cur=c; });
+  html.className=html.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ").trim();
+  if(dir!==0){
+    var idx=cur==="font-md"?2:cur==="font-lg"?3:cur==="font-sm"?0:1;
+    var nxt=Math.max(0,Math.min(3,idx+dir)), add=fontLevels5[nxt];
+    if(add) html.className=(html.className+" "+add).trim();
+    localStorage.setItem("p5-font",add||"normal");
+  } else { localStorage.setItem("p5-font","normal"); }
+}
+function applyFontZoom5(){ var s=localStorage.getItem("p5-font"); if(s && s!=="normal") document.documentElement.className=(document.documentElement.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ")+" "+s).trim(); }
+
+var P5_TOTAL=16;
+function toggleSection(n){
+  var key="p5-sec-"+n, done=localStorage.getItem(key)==="1";
+  localStorage.setItem(key, done?"0":"1");
+  var b=document.querySelector('button[onclick="toggleSection('+n+')"]');
+  if(b){ b.textContent=done?"✅ Mark Complete":"✅ Completed"; b.classList.toggle("done",!done); }
+  if(!done && localStorage.getItem(key)==="1"){ addXP5(20); trackStreak5(); celebrate5(); toast5("✅ Section complete +20 XP","celebrate"); }
+  updateProgress();
+}
+function updateProgress(){
+  var done=0; for(var i=1;i<=P5_TOTAL;i++) if(localStorage.getItem("p5-sec-"+i)==="1") done++;
+  var bar=document.getElementById("progressBar");
+  if(bar) bar.textContent="📊 Progress: "+done+"/"+P5_TOTAL+" sections ("+Math.round(done/P5_TOTAL*100)+"%)";
+  updateLearningPath5(done);
+}
+function markButtons(){ for(var i=1;i<=P5_TOTAL;i++){ var b=document.querySelector('button[onclick="toggleSection('+i+')"]'); if(b && localStorage.getItem("p5-sec-"+i)==="1"){ b.textContent="✅ Completed"; b.classList.add("done"); } } }
+function updateLearningPath5(done){
+  var el=document.getElementById("learningPathContent5"); if(!el) return;
+  var names={1:"Production layer",2:"Auth vs Authz",3:"Hashing",4:"JWT",5:"Register",6:"Login",7:"Protected routes",8:"Token in React",9:"Auth module",10:"Deployment",11:"Backend hosting",12:"Frontend hosting",13:"Testing",14:"Routing",15:"Pitfalls",16:"Challenges"};
+  var next=""; for(var i=1;i<=P5_TOTAL;i++) if(localStorage.getItem("p5-sec-"+i)!=="1"){ next=i; break; }
+  el.innerHTML=done===0?"<p>⏳ Start with <strong>Section 1 (Production layer)</strong>.</p>":(next?"<p>⏳ Next: <strong>Section "+next+" ("+names[next]+")</strong></p>":"<p>🎉 All sections complete!</p>");
+}
+
+var boost5=JSON.parse(localStorage.getItem("p5-boost")||"{}");
+var boostX5=boost5.xp||0, boostStreak5=boost5.streak||0, boostDate5=boost5.streakDate||"";
+function saveBoost5(){ localStorage.setItem("p5-boost",JSON.stringify({xp:boostX5,streak:boostStreak5,streakDate:boostDate5}));
+  var s=document.getElementById("streakCount5"), p=document.getElementById("pointCount5");
+  if(s) s.textContent=boostStreak5+"-day streak"; if(p) p.textContent=boostX5+" XP"; }
+function trackStreak5(){ var today=new Date().toDateString(); boostStreak5=(boostDate5===today)?boostStreak5:(boostDate5===new Date(Date.now()-864e5).toDateString()?boostStreak5+1:1); boostDate5=today; saveBoost5(); }
+function addXP5(n){ boostX5+=n; saveBoost5(); }
+function toast5(msg,cls){ var z=document.getElementById("toastZone5"); if(!z) return; var t=document.createElement("div"); t.className="toast"+(cls?" "+cls:""); t.textContent=msg; t.setAttribute("role","status"); z.appendChild(t); setTimeout(function(){ t.style.opacity="0"; setTimeout(function(){ z.removeChild(t); },300); },2600); }
+function celebrate5(){ var cv=document.getElementById("confettiCanvas5"); if(!cv) return; cv.style.display="block"; var ctx=cv.getContext("2d"); cv.width=window.innerWidth; cv.height=window.innerHeight; var parts=[]; for(var i=0;i<80;i++) parts.push({x:Math.random()*cv.width,y:-10,vy:2+Math.random()*3,c:"hsl("+(Math.random()*360)+",80%,60%)",r:3+Math.random()*4}); var n=0; var iv=setInterval(function(){ n++; ctx.clearRect(0,0,cv.width,cv.height); parts.forEach(function(p){ p.y+=p.vy; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill(); if(p.y<cv.height){ p.x+=Math.sin(n*0.1+p.r)*1.5; } }); if(n>120){ clearInterval(iv); cv.style.display="none"; } },16); }
+function boostSurprise5(){ var ids={1:"1-prod",2:"2-authvsz",3:"3-hash",4:"4-jwt",5:"5-register",6:"6-login",7:"7-protect",8:"8-react-auth",9:"9-auth-demo",10:"10-deploy",11:"11-render",12:"12-frontend-host",13:"13-testing",14:"14-router",15:"15-pitfalls",16:"16-challenges"}; var keys=Object.keys(ids); var pick=keys[Math.floor(Math.random()*keys.length)]; toast5("🎲 Surprise! Section "+pick,"badge"); var h=document.getElementById(ids[pick]); if(h) h.scrollIntoView({behavior:"smooth"}); }
+var focusLen5=25*60, focusLeft5=focusLen5, focusTimer5=null, focusRun5=false;
+function startFocusTimer5(){ var d=document.getElementById("focusTimer5");
+  if(focusRun5){ clearInterval(focusTimer5); focusRun5=false; focusLeft5=focusLen5; if(d)d.textContent="⏱ 25:00"; toast5("🧠 Sprint done — take a break! ☕","celebrate"); return; }
+  focusRun5=true; focusTimer5=setInterval(function(){ focusLeft5--; if(d)d.textContent="⏱ "+Math.floor(focusLeft5/60)+":"+String(focusLeft5%60).padStart(2,"0"); if(focusLeft5<=0){ clearInterval(focusTimer5); focusRun5=false; focusLeft5=focusLen5; if(d)d.textContent="⏱ 25:00"; celebrate5(); toast5("🎉 Focus sprint +10 XP","celebrate"); addXP5(10); trackStreak5(); } },1000); }
+saveBoost5();
+
+var srState5=JSON.parse(localStorage.getItem("p5-sr")||"{}");
+var srCards5=[
+  {q:"Authentication proves WHAT about you?",a:"WHO you are (identity) — login/register",lvl:1},
+  {q:"Authorization controls what?",a:"What you're ALLOWED to do",lvl:1},
+  {q:"Should you store plain-text passwords?",a:"No — store a one-way hash (bcrypt)",lvl:1},
+  {q:"How many parts does a JWT have?",a:"3 — header, payload, signature",lvl:1},
+  {q:"What header carries the token?",a:"Authorization: Bearer <token>",lvl:1},
+  {q:"What does a protected route return without a token?",a:"401",lvl:1},
+  {q:"Where does the React app store the token?",a:"localStorage",lvl:1},
+  {q:"Where do production secrets live?",a:"Environment variables (.env) — never hard-coded",lvl:1},
+  {q:"Where does the app's database live in production?",a:"MongoDB Atlas (cloud)",lvl:1},
+  {q:"After deploying the frontend, what must you update on the backend?",a:"CORS to allow the new frontend origin",lvl:1},
+  {q:"What runs before a route to check the token?",a:"Middleware",lvl:1},
+  {q:"What does React Router do?",a:"Maps URL paths to components/pages",lvl:1}
+];
+var srIdx5=0, srShuffle5=localStorage.getItem("p5-sr-shuffle")==="1";
+function srToggleShuffle5(){ srShuffle5=!srShuffle5; localStorage.setItem("p5-sr-shuffle",srShuffle5?"1":"0"); var b=document.getElementById("srShuffleBtn5"); if(b){ b.textContent="🔀 Shuffle: "+(srShuffle5?"On":"Off"); b.style.background=srShuffle5?"#e53e3e":"#4a5568"; } }
+function startSRReview5(){ var due=srCards5.filter(function(c){ var m=srState5[c.q]||{}; return !m.next || Date.now()>=m.next; }); if(srShuffle5 && due.length>1) for(var i=due.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=due[i]; due[i]=due[j]; due[j]=t; } srIdx5=due.length===0?-1:0; showSRCard5(); }
+function showSRCard5(){ var q=document.getElementById("srQuestion5"), a=document.getElementById("srAnswer5"), b=document.getElementById("srButtons5");
+  if(!q) return; if(srIdx5===-1){ q.textContent="🎉 All reviewed!"; a.style.display="none"; b.innerHTML='<button onclick="startSRReview5()" style="padding:8px 16px;background:#319795;color:#fff;border:none;border-radius:8px;cursor:pointer;">Reset</button>'; renderSRStats5(); return; }
+  if(srIdx5>=srCards5.length){ srIdx5=-1; showSRCard5(); return; }
+  var c=srCards5[srIdx5]; q.textContent=c.q; a.textContent=c.a; a.style.display="none";
+  b.innerHTML='<button onclick="srAnswer5About(true)" style="padding:8px 16px;background:#38a169;color:#fff;border:none;border-radius:8px;cursor:pointer;">I knew it</button><button onclick="srAnswer5About(false)" style="padding:8px 16px;background:#e53e3e;color:#fff;border:none;border-radius:8px;cursor:pointer;">Still learning</button><button onclick="srFlip5()" style="padding:8px 16px;background:#4a5568;color:#fff;border:none;border-radius:8px;cursor:pointer;">Flip</button>';
+  renderSRStats5();
+}
+function srFlip5(){ var a=document.getElementById("srAnswer5"); if(a) a.style.display=a.style.display==="none"?"block":"none"; }
+function srAnswer5About(know){ var c=srCards5[srIdx5]; var m=srState5[c.q]||{lvl:0}; var next=know?Math.min(3,m.lvl+1):0; var hours=next===0?0.02:next===1?0.03:next===2?0.05:0.1; srState5[c.q]={lvl:next,next:Date.now()+hours*3600*1000}; localStorage.setItem("p5-sr",JSON.stringify(srState5)); srIdx5++; if(srIdx5>=srCards5.length){ srIdx5=-1; } showSRCard5(); }
+function renderSRStats5(){ var s=document.getElementById("srStats5"); if(!s) return; var n=0,l=0,ma=0; srCards5.forEach(function(c){ var lvl=(srState5[c.q]||{lvl:0}).lvl||0; if(lvl===0)n++; else if(lvl<3)l++; else ma++; }); s.textContent="🆕 "+n+" new · 📖 "+l+" learning · 🏆 "+ma+" mastered"; }
+
+function focusMode5(btn){
+  var on=!document.body.classList.contains("focus-mode");
+  document.body.classList.toggle("focus-mode",on);
+  var h=document.getElementById("focusHint5"); if(h) h.style.display=on?"block":"none";
+  if(btn){ btn.textContent=on?"🧘 Focus ON":"🧘 Focus Mode"; btn.setAttribute("aria-pressed",on?"true":"false"); btn.style.background=on?"#319795":""; }
+  document.querySelectorAll("details").forEach(function(d){ try{d.open=false;}catch(e){} });
+  if(on){ try{ window.scrollTo({top:0,behavior:"smooth" });}catch(e){} }
+}
+function collapseAll5(open){ document.querySelectorAll("details").forEach(function(d){ try{ d.open=open; }catch(e){} }); }
+
+// ===== Mock Auth (in-page "server") =====
+var authDB={ users:[] }; var activeToken="";
+function authLog(html,cls){ var el=document.getElementById("authLog5"); if(!el) return; el.insertAdjacentHTML("beforeend",'<div class="'+(cls||"ok")+'">'+html+'</div>'); el.scrollTop=el.scrollHeight; }
+function authDigitHash(pw){ // fake one-way hash for the demo (real apps use bcrypt)
+  var h=0; for(var i=0;i<pw.length;i++){ h=(h*31+pw.charCodeAt(i))>>>0; } return "h$"+h.toString(16)+"$"+pw.length;
+}
+function authChips(token){ var el=document.getElementById("tokenChips5"), ts=document.getElementById("tokenStatus5");
+  if(!token){ if(ts) ts.textContent="(none — not logged in)"; if(el) el.style.display="none"; return; }
+  var parts=token.split("."); var h=parts[0]||"", p=parts[1]||"", s=parts[2]||"";
+  if(el){ el.style.display="flex"; document.getElementById("chipH5").textContent="header: "+h; document.getElementById("chipP5").textContent="payload: "+p; document.getElementById("chipS5").textContent="signature: "+s.slice(0,10)+"…"; }
+  if(ts) ts.textContent="Bearer " + token.slice(0,24) + "…";
+}
+function authMakeToken(userId){
+  // base64url: no "+", "/", or "=", and crucially NO dots — so a JWT is exactly 3 parts
+  function b64url(o){ var s; try{ s=btoa(JSON.stringify(o)); }catch(e){ s=Buffer.from(JSON.stringify(o)).toString("base64"); }
+    return s.replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_"); }
+  var header=b64url({alg:"HS256",type:"JWT"});
+  var payload=b64url({userId:userId,exp:Math.floor(Date.now()/1000)+604800});
+  // A REAL signature is the HMAC output, base64url-encoded (dot-free). Demo uses a hex-style digest.
+  var sig=authDigitHash("sig:"+userId);   // e.g. "h$1f2e3$..." — no dots
+  return header+"."+payload+"."+sig;
+}
+function authRegister(){ var email="rohit@example.com", pw="secret123"; var hash=authDigitHash(pw);
+  authDB.users.push({email:email,password:hash}); authLog("📝 <span class='req'>Register " + email + "</span><br>");
+  authLog("🩷 Server: got password <b>\"secret123\"</b> — now HASHING it… (never stored plain)<br>");
+  authLog("🟡 MongoDB: saved <code>password: \""+hash+"\"</code> (a one-way hash)<br>");
+  authLog("<span class='ok'>← 201 User created. Plain password is GONE.</span><br>"); addXP5(5); return true;
+}
+function authLogin(){ var email="rohit@example.com", pw="secret123";
+  var u=authDB.users.find(function(x){return x.email===email;}); if(!u){ authLog("<span class='err'>401 — no user found. Register first.</span><br>"); return; }
+  authLog("🔑 <span class='req'>Login " + email + "</span><br>");
+  var hash=authDigitHash(pw); if(hash!==u.password){ authLog("<span class='err'>401 — bcrypt.compare failed (wrong password)</span><br>"); return; }
+  authLog("🟢 Express: bcrypt.compare(typed, savedHash) → ✅ matched<br>");
+  activeToken=authMakeToken(u.email); authLog("🟢 Express: jwt.sign({userId,email}) → issuing token<br>");
+  authChips(activeToken); authLog("<span class='ok'>← 200 token issued (shown as 3 chips: header · payload · signature)</span><br>"); addXP5(5); return true;
+}
+function authMe(){ authLog("🔒 <span class='req'>GET /api/me</span> (protected)<br>");
+  if(!activeToken){ authLog("<span class='err'>401 — NO Authorization header / no token → blocked</span><br>"); return; }
+  authLog("🟢 Express: auth middleware → jwt.verify(Bearer " + activeToken.slice(0,12) + "…) → ✅ valid seal<br>");
+  authLog("<span class='ok'>← 200 { user: { email: rohit@example.com } }</span><br>");
+}
+function authLogout(){ activeToken=""; authChips(null); authLog("🚪 Logged out — Authorization header cleared.<br>"); }
+function authDemo(action){
+  if(action==="register") authRegister();
+  else if(action==="login") authLogin();
+  else if(action==="me") authMe();
+  else if(action==="logout") authLogout();
+  else if(action==="autoplay"){
+    authLog("<span class='req'>▶️ Watching the whole auth flow…</span><br>");
+    setTimeout(authRegister,0);
+    setTimeout(authLogin,400);
+    setTimeout(authMe,800);
+    setTimeout(authMe,1200);    // still logged in → 200
+    setTimeout(function(){ authLogout(); authLog("🔒 GET /api/me again…<br>"); authMe(); },1600);
+  }
+}
+authChips(null);
+
+var P5_TESTS = {
+  1: 'check("hashes long", neverPlainText("h$1a2b3$8")===true);\ncheck("plain short is false", neverPlainText("secret")===false);',
+  2: 'var safe=tokenPayload({userId:"u1",email:"a@b.co",password:"hush"});\ncheck("has userId", safe.userId==="u1");\ncheck("has email", safe.email==="a@b.co");\ncheck("NO password", safe.password===undefined);\ncheck("only 2 keys", Object.keys(safe).length===2);',
+  3: 'var h=attachAuthHeader({"Content-Type":"application/json"},"myToken");\ncheck("keeps existing", h["Content-Type"]==="application/json");\ncheck("adds auth", h.Authorization==="Bearer myToken");',
+  4: 'check("no token → 401", authMiddleware({headers:{}})==="401");\ncheck("with token → ok", authMiddleware({headers:{authorization:"Bearer x"}})==="ok");',
+  5: 'var s=[{sort:4,name:"frontend"},{sort:1,name:"push"},{sort:3,name:"backend"},{sort:5,name:"cors"},{sort:2,name:"env"}];\nvar r=deployOrder(s);\ncheck("5 steps", r.length===5);\ncheck("ordered", r[0].sort===1 && r[4].sort===5);'
+};
+function runTest(n){
+  var code=document.getElementById("chal"+n).value, res=document.getElementById("res"+n);
+  res.className="result";
+  var harness="return (async () => {\n  var passed=[], failed=[];\n  function check(name, cond){ (cond?passed:failed).push(name); }\n"+code+"\n"+(P5_TESTS[n]||"")+"\n  return {passed:passed, failed:failed};\n})();";
+  var fn; try { fn=new Function(harness); } catch(e){ res.className="result fail"; res.textContent="Syntax Error: "+e.message; return; }
+  Promise.resolve(fn()).then(function(r){
+    res.className=r.failed.length?"result fail":"result pass";
+    var lines=r.passed.map(function(t){return "✅ "+t;}).concat(r.failed.map(function(t){return "❌ "+t;}));
+    if(r.passed.length && !r.failed.length){ lines.push("🎉 All tests passed!"); addXP5(30); toast5("🏅 Challenge complete! +30 XP","badge"); celebrate5(); }
+    res.textContent=lines.join("\n")||"(no tests ran)";
+  }).catch(function(e){ res.className="result fail"; res.textContent="Error: "+e.message; });
+}
+
+markButtons();
+updateProgress();
+renderSRStats5();
+applyFontZoom5();
+</script>
+</body>
+</html>
+<!--P5H-END-->
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 A hands-on study kit covering the JavaScript fundamentals: variables, control flow, functions, closures, arrays, strings, objects, and the classic pitfalls — in **three editions**, from print-friendly to fully interactive.
 
-> **Progress:** Part 1 ✅ · Part 2 ✅ · Part 3 (MERN Bridge) ✅ · Part 4 (MERN Foundations: Express, Mongoose, React, TypeScript) ✅ complete
+> **Progress:** Part 1 ✅ · Part 2 ✅ · Part 3 (MERN Bridge) ✅ · Part 4 (MERN Foundations) ✅ · Part 5 (Production: Auth + Deployment) ✅ complete
 
 ---
 
@@ -108,7 +108,7 @@ node -e "console.log([...new Set([1,1,2,3,3])]); const slugify=s=>s.toLowerCase(
 ### 🧩 Series at a glance
 
 ```
-Part 1  Core  →  Part 2  Async/OOP  →  Part 3  MERN Bridge  →  Part 4  MERN Foundations
+Part 1  Core  →  Part 2  Async/OOP  →  Part 3  MERN Bridge  →  Part 4  MERN Foundations  →  Part 5  Production
 ```
 
 ---
@@ -144,4 +144,24 @@ See [`JAVASCRIPT_ESSENTIALS_PART4_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART4_CONTE
 
 ---
 
-*Series complete: Parts 1–3 are the full JavaScript language foundation; Part 4 turns it into working MERN apps.* ❤️
+## ⚡ Part 5 — Production: Auth + Deployment
+
+Take your Part 4 MERN app and make it real: **user authentication** (bcrypt hashing, JWT, protected routes) and **deployment** (Render + Vercel/Netlify + MongoDB Atlas). Beginner-friendly with a **live in-page mock auth server** — watch register → hash → login → token → protected route, no install needed.
+
+### 📚 Choose your edition
+
+| Edition | Best for | Link |
+|---|---|---|
+| 🖥️ **Interactive Study App** | **Live mock auth server** + JWT viewer, 5 auto-graded challenges, Focus Mode | [Open live](https://rohithr1008.github.io/javascript-essentials/Javascript_essentials_part5_study_app.html) — or open offline |
+| 📝 **Interactive Markdown** | VS Code / Typora — auth demos, quizzes, flashcards | [`Javascript_essentials_part5_interactive.md`](Javascript_essentials_part5_interactive.md) — `Ctrl+Shift+V` |
+| 📄 **Plain Markdown** | Printing / PDF / distraction-free reading | [`Javascript_essentials_part5_with_examples.md`](Javascript_essentials_part5_with_examples.md) |
+
+### 🗂️ What's covered (16 sections)
+
+1. The production layer · 2. Authentication vs Authorization · 3. Hashing with bcrypt · 4. JWT (header·payload·signature) · 5. Register · 6. Login &amp; issuing a token · 7. Protected routes (middleware) · 8. Token in React · 9. Full auth module · 10. Deployment · 11. Backend hosting + env + Atlas · 12. Frontend hosting · 13. Testing · 14. Routing (React Router) · 15. Production pitfalls · 16. Practice &amp; challenges
+
+See [`JAVASCRIPT_ESSENTIALS_PART5_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART5_CONTEXT.md) for full context/transfer notes.
+
+---
+
+*The full 5-part series covers JavaScript → MERN apps → production.* ❤️
