@@ -2,7 +2,7 @@
 
 A hands-on study kit covering the JavaScript fundamentals: variables, control flow, functions, closures, arrays, strings, objects, and the classic pitfalls — in **three editions**, from print-friendly to fully interactive.
 
-> **Progress:** Part 1 ✅ complete · Part 2 (promises, async/await, classes, modules) ✅ complete
+> **Progress:** Part 1 ✅ complete · Part 2 (promises, async/await, classes, modules) ✅ complete · Part 3 (MERN Bridge: Map/Set, generators, regex, DOM & events, fetch, Node core) ✅ complete
 
 ---
 
@@ -77,4 +77,42 @@ The same three-edition study kit, now for the **intermediate** level.
 node -e "async function inSequence(t){const r=[];for(const x of t)r.push(await x());return r;} ; inSequence([async()=>1,async()=>2]).then(console.log)  # [1, 2]"
 ```
 
-See [`JAVASCRIPT_ESSENTIALS_PART2_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART2_CONTEXT.md) for the full context/transfer notes, and [`index.html`](index.html) to launch either part.
+See [`JAVASCRIPT_ESSENTIALS_PART2_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART2_CONTEXT.md) for the full context/transfer notes, and [`index.html`](index.html) to launch any part.
+
+---
+
+## ⚡ Part 3 — MERN Bridge (Map/Set, generators, regex, DOM & events, fetch, Node core)
+
+The same three-edition study kit, now for the **full-stack (MERN)** JavaScript you use across Mongo, Express, React, and Node.
+
+### 📚 Choose your edition
+
+| Edition | Best for | Link |
+|---|---|---|
+| 🖥️ **Interactive Study App** | Browser study — dark mode, saved progress, learning path, spaced repetition, **live DOM + fetch demos**, **🧘 Focus Mode**, **5 auto-graded challenges** | [Open the live app](https://rohithr1008.github.io/javascript-essentials/Javascript_essentials_part3_study_app.html) — or open the file offline by double-clicking |
+| 📝 **Interactive Markdown** | VS Code / Typora — Map/Set playground, RegExp tester, live DOM & fetch demos, quizzes | [`Javascript_essentials_part3_interactive.md`](Javascript_essentials_part3_interactive.md) — open with `Ctrl+Shift+V` |
+| 📄 **Plain Markdown** | Printing / PDF / distraction-free reading | [`Javascript_essentials_part3_with_examples.md`](Javascript_essentials_part3_with_examples.md) |
+
+### 🗂️ What's covered (10 sections)
+
+1. Iterables, Map & Set · 2. Generators & async iteration · 3. Regular Expressions · 4. DOM & Events (for React) · 5. fetch & Web APIs · 6. Node.js Core · 7. Common Pitfalls (MERN) · 8. Practice Exercises · 9. Challenges (5, auto-graded) · 10. Answer Key
+
+### 🚀 Part 3 quick start
+
+```bash
+# De-dupe + slugify + count words — the MERN bread-and-butter
+node -e "console.log([...new Set([1,1,2,3,3])]); const slugify=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); console.log(slugify('Hello World!')); const f=(t)=>{const o={};for(const w of t.split(/\s+/).filter(Boolean))o[w]=(o[w]||0)+1;return o;}; console.log(f('the cat sat'));"
+# [ 1, 2, 3 ]  hello-world  { the: 1, cat: 1, sat: 1 }
+```
+
+### 🧩 Series at a glance
+
+```
+Part 1  Core language  →  Part 2  Async/OOP/Modules  →  Part 3  MERN Bridge  →  (next: Express/React/Mongoose fundamentals)
+```
+
+See [`JAVASCRIPT_ESSENTIALS_PART3_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART3_CONTEXT.md) for the full context/transfer notes.
+
+---
+
+*Series complete: Parts 1–3 cover the JavaScript language foundation for full-stack MERN development.* ❤️
