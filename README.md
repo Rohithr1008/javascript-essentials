@@ -22,15 +22,16 @@ All three editions contain identical content — pick the format that fits how y
 
 1. Variables: `let`, `const`, `var` · 2. Conditions · 3. Loops · 4. Logical operators · 5. Data types & NaN · 6. Mutable vs immutable (+ `Object.freeze`) · 7. Operators & `Math` · 8. Functions, arrows, closures, hoisting · 9. Arrays & methods (incl. ES2023 `toSorted`/`with`) · 10. Strings & methods (+ template literals) · 11. Objects, methods & `this` · 12. Symbols cheat sheet · 13. 13 common pitfalls · 14. 10 practice exercises · 15. 9 challenges · 16. Answer key
 
-## 🧪 Built-in interactivity
+## 🧪 Built-in interactivity (in every part's study app — parts 1–5)
 
-- 🧪 **9 self-test quizzes** with click-to-reveal answers
-- 🤔 **15 predict-the-output cards** (logic, mutability, array traps)
-- 🃏 **16 flashcards** + symbol drills
-- 🟢🟡🔴 **Difficulty & time badges** with 💡 hints on all 19 exercises/challenges
+- 🧪 **Self-test quizzes** with click-to-reveal answers
+- 🤔 **Predict-the-output cards** (logic, mutability, async, MERN/auth traps)
+- 🃏 **Flashcards** + SRS spaced repetition + symbol drills
+- 🟢🟡🔴 **Difficulty & time badges** with 💡 hints on exercises/challenges
 - 🐞 **Spot-the-bug** final boss quiz
-- 😅 **Mood checks** after every self-test · 📅 7-day study plan · 🏆 completion certificate
-- *(App edition)* 🌙 dark mode · 📊 progress bar that persists via localStorage · 🧭 scrollspy navigation
+- 😅 **Mood checks** · 📅 **7-day study plan** · 🏆 **completion certificate**
+- *(App edition)* 🌙 dark mode · 📊 progress that persists via localStorage · 🧭 scrollspy navigation · 🧘 Focus Mode
+- Every feature is **content-tailored to its part** (Part 4 → MERN, Part 5 → auth/deploy), so no two parts share identical material.
 
 ## 🚀 Quick start
 

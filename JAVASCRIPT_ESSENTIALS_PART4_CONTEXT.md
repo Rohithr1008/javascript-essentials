@@ -53,15 +53,17 @@ server** so learners experience the full request/response cycle with zero instal
    `_id` via `ref: "Product"`; nested routes `/api/products/:id/reviews`; `populate` (Mongoose's
    "join") fills in linked docs. A React product page renders the product with its reviews.
 
-## Study App Interactivity (reuses proven Parts 1–3 features)
+## Study App Interactivity (reuses proven Parts 1–3 features; now at full parity)
 
 - Theme (dark/light + system), font zoom, progress bar + Mark Complete (localStorage)
 - Learning Path, SRS flashcards + shuffle, mood checks, Focus Mode, collapse/expand-all
+- **Full parity feature set** (matches Parts 1–3): predict-the-output cards, difficulty/time badges + per-challenge hints, 7-day study plan, 🐞 Spot-the-Bug final quiz, 🏆 completion certificate (unlocks at 100%), 🧭 scrollspy nav
 - **Live Mock MERN Server** — click GET/POST/PUT/DELETE + product/review routes and watch the
   React→Express→MongoDB round-trip in a colour-coded log
 - **Live mini Notes app** and **Product + Reviews demo** wired to the mock API
 - **6 auto-graded challenges** (pure functions, no install) with XP/confetti/streak
 - Focus sprint timer, surprise button, toast notifications
+- All part-specific content (predict cards, Spot-the-Bug, 7-day plan) tailored to **MERN**
 
 ## Verification Done
 
@@ -69,6 +71,7 @@ server** so learners experience the full request/response cycle with zero instal
   DOCTYPE/body/html, P4H-END sentinel present, no leftover build markers
 - **Functional DOM tests pass**: mock API CRUD (POST adds, PUT updates, DELETE removes), nested
   review route links reviews to the right product, Focus Mode toggles, collapse works
+- **Certificate**: unlocks green at 100% and correctly resets to locked when sections are un-marked
 - **All 6 auto-graded challenges pass** with canonical solutions (C1 3/3, C2 2/2, C3 1/1, C4 3/3,
   C5 2/2, C6 3/3 = **14/14 assertions**)
 - Interactive markdown: 1 balanced `<script>` (compiles), 17 sections, P4I-END present

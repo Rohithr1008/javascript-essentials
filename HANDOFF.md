@@ -137,10 +137,10 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 - **JWT viewer** (3 colour chips: header·payload·signature) · **hash demo**
 - Auth/deploy jargon glossary (4) · 5 auto-graded challenges
 
-### 📋 Interaction consistency rules
-- **Every app** must have: quiz-boxes, SRS flashcards engine, progress+Mark Complete, learning path, Focus Mode, collapse/expand, theme, font zoom, XP/streak/confetti, skip link.
-- **Not every app** has every *visual* widget (e.g. 4/5 skip inline flashcard/hint markup). That's fine — but **before adding a feature to one part, mirror it to the others** or the set drifts.
-- When you extend a part, update this inventory **and** the context doc so the handoff stays truthful.
+### 📋 Interaction consistency (now at parity)
+- **Every app has all of these,** verified in the parity pass: predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug final quiz, completion certificate (unlocks at 100%), 🧭 scrollspy nav — plus the shared engine (quiz-boxes, SRS flashcards, progress + Mark Complete, learning path, Focus Mode, collapse/expand, theme, font zoom, XP/streak/confetti, skip link).
+- Parts 1–5 previously differed in *which* of these each had; the parity pass brought Parts 4–5 level with Parts 1–3 (and gave Parts 2–3 the certificate/scrollspy they lacked).
+- **Content is part-specific:** predict cards, 7-day plans, Spot-the-Bug questions, badges and hints are tailored to each part's material (e.g. Part 4 → MERN; Part 5 → auth/deploy). When you add/change one, keep each part's version distinct and re-run the inventory audit.
 
 ---
 ---
@@ -186,9 +186,10 @@ node --check _v.js
 - Parts 1–5, three editions each, all pushed
 - Part 4 + 5 polish (animated mock demos, glossaries, onboarding, skip links)
 - Full smoke test: all scripts compile; core systems load/run; 11/11 challenge solutions pass
+- **Feature parity (2026):** the Part 1 feature set (predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug quiz, completion certificate, scrollspy nav) is now in **Parts 2–5 study apps** too — no two parts share identical interactivity; each is content-tailored.
+- **Part 4/5 interactive content tailored** to MERN (Part 4) and Auth/Deploy (Part 5) — predict cards, Spot-the-Bug questions, and 7-day plans are distinct per part.
 
 ### 🔜 Natural next steps (not started — only continue if asked)
-- **Consistency polish (known gap):** Parts 4–5 study apps have the SRS engine but no inline `<div class="flashcard">` cards in the body and no `<div class="hint">` on challenges, unlike Parts 1–3. If visual parity is wanted, add those to Part 4 & 5 (mirror Part 3's markup).
 - **Scaling / reliability**: CI/CD (auto-deploy on push), monitoring & logging, performance tuning
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
@@ -200,6 +201,9 @@ node --check _v.js
 - A **focus-mode harness false-positive** was a mock artifact — isolate the function in a minimal test to confirm app code is fine.
 - **README/interactive demos** that show `node -e` output should be run once to confirm the comment matches.
 - "Part N complete" was corrected twice when the **context doc / index.html / README** were still missing Part N — always update those three together with a new part.
+- **Certificate must reset on lock too:** an earned certificate turned green stays green unless the locked branch also clears the background — set `panel.style.background = ""` in the "incomplete" path (fixed across Parts 2–5).
+- **Challenge-runner tests need a real canvas mock:** when evaluating `runTest` in Node, the confetti path calls `canvas.getContext("2d")`. Without it the promise rejects and "result pass" is overwritten to "result fail" — a harness artifact, not an app bug. Provide a `getContext` stub.
+- **Watch the path** — the recurring `.cline` vs `.clinete` typo creates a stray temp folder; always type `C:\Users\rohit\.cline\data\workspaces\chat\javascript-essentials` exactly.
 
 ---
 

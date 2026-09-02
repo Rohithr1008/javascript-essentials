@@ -45,14 +45,16 @@ auth server** so learners watch the whole register → hash → login → JWT �
 15. **Common production pitfalls** — the 6 classic leaks/bugs
 16. **Practice & auto-graded challenges** — 5 challenges
 
-## Study App Interactivity (reuses proven Parts 1–4 features)
+## Study App Interactivity (reuses proven Parts 1–4 features; now at full parity)
 
 - Theme, font zoom, progress + Mark Complete, Learning Path, SRS + shuffle, Focus Mode
+- **Full parity feature set** (matches Parts 1–3): predict-the-output cards, difficulty/time badges + per-challenge hints, mood checks, 7-day study plan, 🐞 Spot-the-Bug final quiz, 🏆 completion certificate (unlocks at 100%), 🧭 scrollspy nav
 - **🔐 Live Mock Auth Server** — buttons for Register / Login / Get /api/me / Logout / Watch-the-whole-flow
 - **JWT viewer** — token shown as 3 coloured chips (header · payload · signature)
 - **Hash demo** — see a password become a one-way hash
 - **5 auto-graded challenges** (neverPlainText, tokenPayload, attachAuthHeader, authMiddleware, deployOrder)
 - Onboarding hint + auth/deploy jargon glossary, XP/streak/confetti, focus timer, surprise
+- All part-specific content (predict cards, Spot-the-Bug, 7-day plan) tailored to **auth/deploy**
 
 ## Verification Done
 
@@ -63,6 +65,7 @@ auth server** so learners watch the whole register → hash → login → JWT �
   and all 5 challenge solutions pass (C1–C5)
 - **Found & fixed a real bug:** the mock JWT signature `"sig"+userId` contained a literal dot (email) →
   made it 4 parts instead of 3. Fixed with a base64url codec + dot-free hex-style signature → exactly 3 parts.
+- **Certificate**: unlocks green at 100% and correctly resets to locked when sections are un-marked
 - Made challenge C1 unambiguous (rule: a hash contains `$`; plain `secret` doesn't)
 - Interactive markdown: 1 balanced `<script>` (compiles), 17 `<h2>` sections, P5I-END present
 - Plain markdown: 17 sections, P5-END present
