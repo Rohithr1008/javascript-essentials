@@ -11,7 +11,10 @@ A quick reference covering the JavaScript you need for **full-stack (MERN) devel
   <span style="flex:1;"></span>
   <button onclick="p3iExpand(1)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📖 Expand all</button>
   <button onclick="p3iExpand(0)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📕 Collapse all</button>
+  <button onclick="p3iFocus(this)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">🧘 Focus Mode</button>
 </div>
+
+<div id="p3iFocusHint" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:8px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — extra panels are hidden and quizzes are closed for calm reading. Click "🧘 Focus Mode" again to restore everything.</div>
 
 <style>
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
@@ -44,6 +47,10 @@ h2[id] { scroll-margin-top: 12px; }
 details[open] > :not(summary) { animation: pop .25s ease; }
 @keyframes pop { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
 .totop { text-align: right; margin: 6px 0; }
+.why { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+body.focus-mode .interactive-note, body.focus-mode .badge { opacity:.85; }
+body.focus-mode .mood { display:none; }
 .totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
 pre { background: #1a202c; color: #e2e8f0; padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
 pre code { background: transparent; color: inherit; font-family: "Cascadia Code", Consolas, monospace; }
@@ -116,6 +123,8 @@ pre code { background: transparent; color: inherit; font-family: "Cascadia Code"
 ---
 
 ## 1. Iterables, Map & Set
+
+<div class="why">🚩 **Why it matters:** MongoDB cursors and de-duplicating tags/lists in a cart or feed use these daily — `Set` removes duplicates in one line, and `Map` stores any key type in order.</div>
 
 <div class="tip">💡 An <strong>iterable</strong> is anything you loop with `for...of`. <strong>`Map`</strong> allows any key type + preserves insertion order; <strong>`Set`</strong> stores unique values.</div>
 
@@ -190,6 +199,8 @@ const unique = [...new Set([1,1,2,3,3])]; // [1,2,3]
 
 ## 2. Generators & async iteration
 
+<div class="why">🚩 **Why it matters:** paginating large API results and async data streams (Mongo cursors, infinite scroll) are built on generators — `for await` consumes them.</div>
+
 <div class="tip">💡 A <strong>generator</strong> is a pause-able function: `function*` + `yield`. `.next()` pulls the next `{value, done}`.</div>
 
 ```javascript
@@ -251,6 +262,8 @@ for await (const res of fetchPages()) {
 
 ## 3. Regular Expressions
 
+<div class="why">🚩 **Why it matters:** slugifying URLs, validating emails/phone numbers, and search autocomplete on your Express API are all regex under the hood.</div>
+
 <div class="chall">🔤 A <strong>RegExp</strong> is a pattern for matching text — used for validation, extraction, and cleanup.</div>
 
 ### Patterns & flags
@@ -308,6 +321,8 @@ function rxTest() {
 
 ## 4. DOM & Events (for React)
 
+<div class="why">🚩 **Why it matters:** this is exactly what React compiles to — every `onClick`/`onChange` becomes `addEventListener` + reading `event.target`.</div>
+
 <div class="warn">🌐 Browser-only API — run in the browser dev tools or a React project, not Node.</div>
 
 ### Selecting, creating, modifying
@@ -361,6 +376,8 @@ form.addEventListener("submit", (event) => {
 ---
 
 ## 5. fetch & Web APIs
+
+<div class="why">🚩 **Why it matters:** the React front-end talking to your Express API — every read/write to the server goes through `fetch`, and checking `res.ok` is non-negotiable.</div>
 
 <div class="chall">📡 Use `fetch` to talk to your Express API from a React app. Returns a promise.</div>
 
@@ -422,6 +439,8 @@ await fetch(url, { signal: controller.signal });
 
 ## 6. Node.js Core
 
+<div class="why">🚩 **Why it matters:** `fs`, `path`, `process.env`, and `http` are the engine running Express & Mongoose on the server — the "N" in MERN.</div>
+
 <div class="tip">🖥 Node runs JS on the server — <strong>Express & Mongoose</strong> sit on top. These run in Node, not the browser.</div>
 
 ### modules, fs, path, process
@@ -468,6 +487,8 @@ Express wraps this same `http` server.
 
 ## 7. Common Pitfalls (MERN)
 
+<div class="why">🚩 **Why it matters:** these are the real bugs that crash MERN apps in production — knowing them up-front saves hours of debugging later.</div>
+
 <div class="warn"><strong>1. `await` inside `.forEach`</strong> — `.forEach` does NOT await!</div>
 ```javascript
 // ❌ promises escape, order lost
@@ -494,6 +515,8 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
 ## 8. Practice Exercises
 
+<div class="why">🚩 **Why it matters:** short, spaced, low-stakes practice is how knowledge moves from "seen it" to "can build with it."</div>
+
 **Exercise 1** <span class="badge b-green">Easy</span> Create a Map of 3 students → scores; iterate logging `name: score`.
 
 **Exercise 2** <span class="badge b-green">Easy</span> Dedupe `[1,1,2,3,3,4,4,5]` with a Set.
@@ -516,6 +539,8 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 ---
 
 ## 9. Challenges
+
+<div class="why">🚩 **Why it matters:** these graded challenges mirror the exact coding tasks you'll do daily as a MERN dev — a safe place to make (and fix) mistakes.</div>
 
 **Challenge 1** <span class="badge b-red">Hard</span> `countWords(text)` → Map of word→count + `unique` (via `map.size`).
 
@@ -545,6 +570,8 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 ---
 
 ## 10. Answer Key
+
+<div class="why">🚩 **Why it matters:** compare your work against the canonical solutions — noticing small differences is where real learning happens.</div>
 
 <div class="answer-key">
 
@@ -670,6 +697,14 @@ async function fetchWithTimeout(url, ms){
 // ===== Interactive-part live demos (DOM & fetch) =====
 function p3iExpand(open){
   document.querySelectorAll("details").forEach(function(d){ try{ d.open = !!open; }catch(e){} });
+}
+function p3iFocus(btn){
+  var on = !document.body.classList.contains("focus-mode");
+  document.body.classList.toggle("focus-mode", on);
+  var hint = document.getElementById("p3iFocusHint");
+  if(hint) hint.style.display = on ? "block" : "none";
+  if(btn) btn.textContent = on ? "🧘 Focus ON" : "🧘 Focus Mode";
+  document.querySelectorAll("details").forEach(function(d){ try{ d.open = false; }catch(e){} });
 }
 var p3iDomCount = 0;
 function p3iDomAdd(){

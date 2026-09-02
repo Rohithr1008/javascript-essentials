@@ -86,6 +86,8 @@ This is the **MERN Bridge** — it connects your JS knowledge to the four pillar
 Finish this part and you have the complete JS language foundation to start building real MERN apps (a cart, a blog, a chat) instead of just studying fragments.
 ## 1. Iterables, Map & Set
 
+> 🚩 **Why it matters:** MongoDB cursors and de-duplicating tags/lists in a cart or feed use these daily — `Set` removes duplicates in one line, and `Map` stores any key type in order.
+
 > An **iterable** is anything you can loop over with `for...of` — arrays, strings, maps, sets. `Map` and `Set` are two built-in collections with real advantages over objects/arrays.
 
 ### Map
@@ -149,6 +151,8 @@ const unique = [...new Set([1,1,2,3,3])];   // [1,2,3]
 ---
 
 ## 2. Generators & async iteration
+
+> 🚩 **Why it matters:** paginating large API results and async data streams (Mongo cursors, infinite scroll) are built on generators — `for await` consumes them.
 
 > A **generator** is a function you can pause and resume. Declared with `function*`, it yields values one at a time with `yield`, and `.next()` pulls the next value.
 
@@ -227,6 +231,8 @@ for await (const res of fetchPages()) {
 
 ## 3. Regular Expressions
 
+> 🚩 **Why it matters:** slugifying URLs, validating emails/phone numbers, and search autocomplete on your Express API are all regex under the hood.
+
 > A **RegExp** is a pattern for matching text. Use it to validate input, extract data, or transform strings.
 
 ### Basic patterns & flags
@@ -277,6 +283,8 @@ console.log(m[1], m[2], m[3]);   // 2026 09 02
 ---
 
 ## 4. DOM & Events (for React)
+
+> 🚩 **Why it matters:** this is exactly what React compiles to — every `onClick`/`onChange` becomes `addEventListener` + reading `event.target`.
 
 > The **DOM** (Document Object Model) is the browser's tree of elements. React builds on the DOM behind the scenes, so understanding it is a must. These are browser-only APIs — run in the browser dev tools or a React project, not Node.
 
@@ -342,6 +350,8 @@ input.addEventListener("input", handleChange);
 ---
 
 ## 5. fetch & Web APIs
+
+> 🚩 **Why it matters:** the React front-end talking to your Express API — every read/write to the server goes through `fetch`, and checking `res.ok` is non-negotiable.
 
 > **`fetch`** is the modern way to make HTTP requests in the browser (and Node 18+). It returns a promise. Use it to talk to your Express API from a React app.
 
@@ -418,6 +428,8 @@ const res = await fetch(url, { signal: controller.signal });
 ---
 
 ## 6. Node.js Core
+
+> 🚩 **Why it matters:** `fs`, `path`, `process.env`, and `http` are the engine running Express & Mongoose on the server — the "N" in MERN.
 
 > **Node.js** runs JavaScript on the server. Express and Mongoose run on it. The core APIs below are what you'll reach for daily. These run in Node, not the browser.
 
@@ -502,6 +514,8 @@ Express wraps this: `app.listen(3000)` is built on this same `http` server.
 
 ## 7. Common Pitfalls (MERN)
 
+> 🚩 **Why it matters:** these are the real bugs that crash MERN apps in production — knowing them up-front saves hours of debugging later.
+
 **1. `await` inside a `.forEach`**
 
 ```javascript
@@ -566,6 +580,8 @@ setItems([...items, newItem]);
 
 ## 8. Practice Exercises
 
+> 🚩 **Why it matters:** short, spaced, low-stakes practice is how knowledge moves from "seen it" to "can build with it."
+
 **Exercise 1 — Map of scores** <span class="badge b-green">Easy</span><span class="badge b-time">~3 min</span>
 
 Create a `Map` of three students to their scores, then iterate it with `for...of` logging `name: score`.
@@ -601,6 +617,8 @@ Use `fs.promises.readFile` with a `path.join` to read `data.json` and `console.l
 ---
 
 ## 9. Challenges
+
+> 🚩 **Why it matters:** these graded challenges mirror the exact coding tasks you'll do daily as a MERN dev — a safe place to make (and fix) mistakes.
 
 **Challenge 1 — Unique words counter** <span class="badge b-red">Hard</span><span class="badge b-time">~10 min</span>
 
@@ -649,6 +667,8 @@ const res = await fetch(url, { signal: c.signal });
 ---
 
 ## 10. Answer Key
+
+> 🚩 **Why it matters:** compare your work against the canonical solutions — noticing small differences is where real learning happens.
 
 ### Quiz answers
 

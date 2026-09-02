@@ -82,6 +82,8 @@ Continuing the **React shopping cart**: once the cart works locally, it must tal
 Every concept below is what makes the "async" half of **M**ongo, **E**xpress, **R**eact, **N**ode actually work. Get comfortable with promises and error handling and the rest of MERN clicks into place.
 ## 1. Promises
 
+> 🚩 **Why it matters:** every async I/O — fetching data, DB queries, timers — settles as a promise; mastering it unlocks the whole stack.
+
 ### Simple: a promise lifecycle
 
 > A **Promise** is an object representing a value that will be available now, later, or never. It starts **pending**, then becomes **fulfilled** (with a value) or **rejected** (with a reason).
@@ -201,6 +203,8 @@ async function loadDashboard() {
 ---
 
 ## 2. async / await
+
+> 🚩 **Why it matters:** reads like plain synchronous code but stays non-blocking — the default style for all MERN I/O.
 
 > **`async function`** always returns a promise. **`await`** pauses the function until the awaited promise settles, then unwraps its value. Inside `async` functions you can write async code that reads like sync code.
 
@@ -322,6 +326,8 @@ console.log(data);
 
 ## 3. Error Handling
 
+> 🚩 **Why it matters:** a crash in one request shouldn't kill the server — `try/catch` and central error handlers keep your API alive.
+
 > JavaScript errors are objects. `throw` raises one; `try / catch / finally` catches and recovers. Different error types tell you what kind of thing went wrong.
 
 ### Error types
@@ -401,6 +407,8 @@ try {
 ---
 
 ## 4. Classes & OOP
+
+> 🚩 **Why it matters:** Express controllers and Mongoose models are structured as classes/objects — this is the shape of server code.
 
 > A **class** is a blueprint for creating objects. It bundles a `constructor` and methods. JavaScript classes are syntactic sugar over prototype-based objects.
 
@@ -558,6 +566,8 @@ class SavingsAccount extends BankAccount {
 
 ## 5. Modules
 
+> 🚩 **Why it matters:** real MERN projects split models, routes, and utilities into separate `export`/`import` files — modules make that possible.
+
 > ES modules let you split code into files that explicitly `export` what they share and `import` what they need. They run in strict mode and are the modern standard.
 
 ### Named exports & imports
@@ -650,6 +660,8 @@ export { fs };
 
 ## 6. Common Pitfalls
 
+> 🚩 **Why it matters:** these are the real async bugs that silently cost hours — knowing them upfront skips the pain.
+
 **1. Forgetting to `await` or to handle a rejection**
 
 ```javascript
@@ -704,6 +716,8 @@ b.x = 2;           // a.x is now 2 too
 
 ## 7. Practice Exercises
 
+> 🚩 **Why it matters:** short, low-stakes reps move knowledge from "seen it" to "can build with it."
+
 **Exercise 1 — Promise from a timeout** (Easy, ~2 min)
 
 Write a function `delay(ms)` that returns a promise resolving after `ms` milliseconds.
@@ -751,6 +765,8 @@ Create a module exporting `export const PI` and `export const double = x => x * 
 ---
 
 ## 8. Challenges
+
+> 🚩 **Why it matters:** these graded tasks mirror what you'll actually code daily as a MERN developer.
 
 **Challenge 1 — Promise queue** (Hard, ~10 min)
 
@@ -805,6 +821,8 @@ Write an `async` function that dynamically imports a module name (as a string) a
 ---
 
 ## 9. Answer Key
+
+> 🚩 **Why it matters:** comparing your solution to the canonical one is where the real learning happens.
 
 ### Quiz answers
 

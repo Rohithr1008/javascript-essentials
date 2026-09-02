@@ -26,7 +26,11 @@
   <span style="width:14px;"></span>
   <button onclick="collapseAllQuizzes1(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
   <button onclick="collapseAllQuizzes1(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
+  <span style="width:14px;"></span>
+  <button id="focusBtn1" onclick="focusMode1(this)" title="Focus Mode hides distractions for calm, deep reading" aria-pressed="false">🧘 Focus Mode</button>
 </div>
+
+<div id="focusHint1" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — extra panels are hidden and quizzes are closed so you can read one thing at a time. Click "🧘 Focus Mode" again to bring everything back.</div>
 
 <p>A quick reference covering the JavaScript fundamentals you have learned so far.</p>
 
@@ -74,6 +78,11 @@ body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; pa
 .partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
 .partnav a:hover { text-decoration:underline; }
 .partnav strong { color:#fff; }
+/* Focus Mode: calm, distraction-free reading */
+body.focus-mode #progressBar, body.focus-mode #boostBar1, body.focus-mode #learningPathPanel, body.focus-mode #spacedRepetitionPanel { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+.why { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
 html { scroll-behavior: smooth; }
 h2[id], h3[id] { scroll-margin-top: 16px; }
 .theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
@@ -418,6 +427,7 @@ console.log(2);
 <div style="page-break-after: always;"></div>
 
 <h2 id="1-variables-let-const-var">1. Variables: `let`, `const`, `var`</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> everything you write — React state, cart totals, API data — starts with choosing `const` vs `let` correctly.</div>
 
 <tr><td>Keyword</td><td>Scope</td><td>Reassign?</td><td>Notes</td></tr>
 <tr><td>----------</td><td>----------------</td><td>-----------</td><td>--------------------------------</td></tr>
@@ -535,6 +545,7 @@ console.log(functionScoped); <c>// <s>"</s> (works - var is function-scoped)</c>
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="2-conditions-if-else-and-switch">2. Conditions: `if...else` and `switch`</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> rendering logged-in vs logged-out UI, validation, access control — all conditional logic starts here.</div>
 
 <h3 id="if-else">`if...else`</h3>
 
@@ -708,6 +719,7 @@ if (booking.seatsAvailable) {
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="3-loops-while-do-while-for">3. Loops: `while`, `do...while`, `for`</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> rendering lists, processing rows, pagination — looping is how you touch many items with one idea.</div>
 
 <h3 id="while-basic-example">`while` - Basic Example</h3>
 
@@ -948,6 +960,7 @@ console.log(<s>"</s>);   <c>// runs after loop ends</c></code></pre>
 <blockquote>💡 Rule of thumb: **arrays → `for...of`**, **objects → `for...in`**, everything else → `for`/`while`.</blockquote>
 
 <h2 id="4-logical-operators">4. Logical Operators</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> `&&`, `||`, and `!` combine conditions — and `||`/`&&` double as clever defaulting in React.</div>
 
 <tr><td>Operator</td><td>Meaning</td></tr>
 <tr><td>----------</td><td>--------------------------------------------</td></tr>
@@ -1177,6 +1190,7 @@ for (const [i, color] of colors.entries()) {
 <c>// <n>2</n>: blue</c></code></pre>
 
 <h2 id="5-data-types">5. Data Types</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> knowing what a value *is* (number, string, object…) stops most type bugs before they start.</div>
 
 <h3 id="primitives-immutable">Primitives (immutable)</h3>
 
@@ -1290,6 +1304,7 @@ console.log(parseFloat(<s>"</s>)); <c>// <n>3.5</n> (keeps decimals, unlike pars
 </div>
 
 <h2 id="6-mutable-vs-immutable">6. Mutable vs Immutable</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> React re-renders rely on snapshots — mutating arrays/objects in place is the #1 cause of "UI won't update" bugs.</div>
 
 <h3 id="primitive-assignment-copies-the-value">Primitive assignment copies the value</h3>
 
@@ -1439,6 +1454,7 @@ console.log(frozen.score); <c>// <n>10</n></c></code></pre>
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="7-operators">7. Operators</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> `+`, `===`, `??`, spread — the everyday tools for transforming values and combining data.</div>
 
 <h3 id="arithmetic-operators">Arithmetic Operators</h3>
 
@@ -1639,6 +1655,7 @@ console.log(total &gt;= <n>200</n> &amp;&amp; total &lt; <n>300</n>); <c>// true
 <blockquote>Assignment (`=`, `+=`…) and ternary sit at the very bottom.</blockquote>
 
 <h2 id="8-functions-and-arrow-functions">8. Functions and Arrow Functions</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> every React component and every event handler is just a function — this is the core shape of React.</div>
 
 <h3 id="function-declaration-basic">Function Declaration - Basic</h3>
 
@@ -2005,6 +2022,7 @@ console.log(new Set(mixed).size); <c>// <n>3</n></c>
 console.log(new Set(mixed).has(<n>2</n>)); <c>// true</c></code></pre>
 
 <h2 id="9-arrays-and-methods">9. Arrays and Methods</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> `map`/`filter`/`reduce` power 90% of React list rendering and data shaping — the most used tool in the stack.</div>
 
 <pre><code>let numbers = [<n>1</n>, <n>2</n>, <n>3</n>, <n>4</n>, <n>5</n>];
 console.log(numbers[<n>0</n>]); <c>// <n>1</n></c></code></pre>
@@ -2642,6 +2660,7 @@ const passingTotal = scores.reduce((sum, score) =>
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="10-strings-and-common-methods">10. Strings and Common Methods</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> formatting prices, URLs, names, and user input — string methods do the everyday cleanup in every app.</div>
 
 <p>Strings are **immutable** in JavaScript. Every method that "changes" a string actually returns a **new string**; the original is not modified.</p>
 
@@ -3112,6 +3131,7 @@ console.log([setting.slice(<n>0</n>, eqIndex), setting.slice(eqIndex + <n>1</n>)
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="11-objects">11. Objects</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> JSON — the format of every API — *is* JS objects; reading/writing them is how you talk to any server.</div>
 
 <h3 id="basic-object-operations">Basic Object Operations</h3>
 
@@ -3674,6 +3694,7 @@ console.log(merged);                        <c>// {<s>"</s>:<s>"</s>,<s>"</s>:<n
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="13-common-pitfalls">13. Common Pitfalls</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> these are the classic bugs that confuse beginners — recognizing them saves hours of head-scratching.</div>
 
 <div class="danger">🚨 <strong>The #1 trap:</strong> <code>[10, 1, 2].sort()</code> sorts numbers as <strong>strings</strong>. Always pass a compare function: <code>.sort((a, b) =&gt; a - b)</code>.</div>
 
@@ -3860,6 +3881,7 @@ console.log(original.toSorted((a, b) =&gt; a - b)); <c>// [<n>1</n>, <n>2</n>, <
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="14-practice-exercises">14. Practice Exercises</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> short reps move knowledge from "seen it" to "can build with it."</div>
 
 <div class="interactive-tool" style="background:#1a202c;border:2px solid #805ad5;border-radius:12px;padding:18px 22px;margin:18px 0;">
   <h3 style="color:#b794f4;margin-top:0;">🎯 Difficulty Filters</h3>
@@ -3999,6 +4021,7 @@ const queue = [<n>10</n>, <n>20</n>, <n>30</n>, <n>40</n>];
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="15-challenges">15. Challenges</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> graded tasks mirror real coding — a safe place to make and fix mistakes.</div>
 
 <div class="warn">🔥 <strong>Level up:</strong> each challenge mixes 2–4 concepts from earlier sections. Try them before opening the <a href="#16-answer-key">Answer Key</a>.</div>
 
@@ -4218,6 +4241,7 @@ console.log(parsed);</textarea>
 <p class="totop"><a href="#table-of-contents">⬆️ Back to top</a></p>
 
 <h2 id="16-answer-key">16. Answer Key</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> comparing your answer to the canonical one is where the real learning happens.</div>
 
 <blockquote>🙈 **Only look after you have tried!** Click each card to reveal the solution.</blockquote>
 
@@ -5525,6 +5549,21 @@ function applyFontZoom1() {
   const saved = localStorage.getItem('p1-font');
   if (saved && saved !== 'normal') document.documentElement.className = (document.documentElement.className.split(' ').filter(c=>['font-sm','font-md','font-lg'].indexOf(c)===-1).join(' ')+' '+saved).trim();
 }
+// ===== Focus Mode: calm, single-task reading =====
+function focusMode1(btn) {
+  var on = !document.body.classList.contains("focus-mode");
+  document.body.classList.toggle("focus-mode", on);
+  var hint = document.getElementById("focusHint1");
+  if (hint) hint.style.display = on ? "block" : "none";
+  if (btn) {
+    btn.textContent = on ? "🧘 Focus ON" : "🧘 Focus Mode";
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.style.background = on ? "#319795" : "";
+  }
+  document.querySelectorAll("details").forEach(function(d){ try { d.open = false; } catch(e){} });
+  if (on) { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e){} }
+}
+
 function collapseAllQuizzes1(expandEls) {
   document.querySelectorAll('.quiz-box details').forEach(d => { if (expandEls) d.setAttribute('open','open'); else d.removeAttribute('open'); });
 }

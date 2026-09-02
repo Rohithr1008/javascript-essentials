@@ -16,6 +16,7 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 h2[id] { scroll-margin-top: 12px; }
 .interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
 .tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
+.why    { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
 .warn   { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; }
 .chall  { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; }
 .quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
@@ -129,6 +130,8 @@ pre code { background: transparent; color: inherit; font-family: "Cascadia Code"
 ---
 
 ## 1. Promises
+
+<div class="why">🚩 **Why it matters:** every async I/O — fetching data, DB queries, timers — settles as a promise; mastering it unlocks the whole stack.</div>
 
 <div class="tip">💡 A <strong>Promise</strong> is an object representing a value that will be available now, later, or never. It starts <strong>pending</strong>, then becomes <strong>fulfilled</strong> (with a value) or <strong>rejected</strong> (with a reason).</div>
 
@@ -254,6 +257,8 @@ Fails only if *all* reject.
 ---
 
 ## 2. async / await
+
+<div class="why">🚩 **Why it matters:** reads like plain synchronous code but stays non-blocking — the default style for all MERN I/O.</div>
 
 <div class="tip">💡 <strong>`async function`</strong> always returns a promise. <strong>`await`</strong> pauses the function until the awaited promise settles, then unwraps its value. Inside `async` functions you can write async code that reads like sync code.</div>
 
@@ -407,6 +412,8 @@ getGitHubUser("rohithr1008")
 
 ## 3. Error Handling
 
+<div class="why">🚩 **Why it matters:** a crash in one request shouldn't kill the server — `try/catch` and central error handlers keep your API alive.</div>
+
 <div class="warn">⚠️ JavaScript errors are objects. `throw` raises one; `try / catch / finally` catches and recovers. Different error types tell you what kind of thing went wrong.</div>
 
 ### Error types
@@ -484,6 +491,8 @@ try {
 ---
 
 ## 4. Classes & OOP
+
+<div class="why">🚩 **Why it matters:** Express controllers and Mongoose models are structured as classes/objects — this is the shape of server code.</div>
 
 <div class="tip">💡 A <strong>class</strong> is a blueprint for creating objects. It bundles a `constructor` and methods. JavaScript classes are syntactic sugar over prototype-based objects.</div>
 
@@ -665,6 +674,8 @@ class SavingsAccount extends BankAccount {
 
 ## 5. Modules
 
+<div class="why">🚩 **Why it matters:** real MERN projects split models, routes, and utilities into separate `export`/`import` files — modules make that possible.</div>
+
 <div class="chall">📦 ES modules let you split code into files that explicitly `export` what they share and `import` what they need. They run in strict mode and are the modern standard.</div>
 
 ### Named exports & imports
@@ -759,6 +770,8 @@ async function loadTheme() {
 
 ## 6. Common Pitfalls
 
+<div class="why">🚩 **Why it matters:** these are the real async bugs that silently cost hours — knowing them upfront skips the pain.</div>
+
 <div class="danger"><strong>1. Forgetting to `await` or to handle a rejection</strong></div>
 
 ```javascript
@@ -813,6 +826,8 @@ b.x = 2;           // a.x is now 2 too
 
 ## 7. Practice Exercises
 
+<div class="why">🚩 **Why it matters:** short, low-stakes reps move knowledge from "seen it" to "can build with it."</div>
+
 **Exercise 1 — Promise from a timeout** <span class="badge b-green">Easy</span><span class="badge b-time">~2 min</span>
 
 Write a function `delay(ms)` that returns a promise resolving after `ms` milliseconds.
@@ -861,6 +876,8 @@ Create a module exporting `export const PI` and `export const double = x => x * 
 
 ## 8. Challenges
 
+<div class="why">🚩 **Why it matters:** these graded tasks mirror what you'll actually code daily as a MERN developer.</div>
+
 **Challenge 1 — Promise queue** <span class="badge b-red">Hard</span><span class="badge b-time">~10 min</span>
 
 Write a function `inSequence(tasks)` that takes an array of functions (each returning a promise) and runs them one at a time, resolving with an array of results in order.
@@ -904,6 +921,8 @@ Write an `async` function that dynamically imports a module name (as a string) a
 ---
 
 ## 9. Answer Key
+
+<div class="why">🚩 **Why it matters:** comparing your solution to the canonical one is where the real learning happens.</div>
 
 <div class="answer-key">
 

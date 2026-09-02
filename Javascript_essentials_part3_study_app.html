@@ -25,7 +25,11 @@
   <span style="width:14px;"></span>
   <button onclick="collapseAll3(true)" title="Expand all quiz answers">📖 Expand all</button>
   <button onclick="collapseAll3(false)" title="Collapse all quiz answers">📕 Collapse all</button>
+  <span style="width:14px;"></span>
+  <button id="focusBtn3" onclick="focusMode3(this)" title="Focus Mode hides distractions for calm, deep reading" aria-pressed="false">🧘 Focus Mode</button>
 </div>
+
+<div id="focusHint" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — extra panels are hidden and quizzes are closed so you can read one thing at a time. Click "🧘 Focus Mode" again to bring everything back.</div>
 
 <p>A quick reference covering the JavaScript for <strong>full-stack (MERN)</strong> development: Map/Set, generators, regex, DOM & events, fetch, and Node core.</p>
 
@@ -66,6 +70,12 @@ body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; pa
 .partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
 .partnav a:hover { text-decoration:underline; }
 .partnav strong { color:#fff; }
+/* Focus Mode: calm, distraction-free reading */
+body.focus-mode #boostBar, body.focus-mode #learningPathPanel, body.focus-mode #spacedRepetitionPanel, body.focus-mode #progressBar { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+body.focus-mode .interactive-note, body.focus-mode .partnav, body.focus-mode #focusHint ~ .theme-btn { opacity:.9; }
+.why { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
 html { scroll-behavior: smooth; font-size: 16px; }
 h2[id], h3[id] { scroll-margin-top: 16px; }
 .theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
@@ -141,6 +151,7 @@ html.font-lg { font-size: 18px; }
 <hr>
 
 <h2 id="1-mapsets">1. Map &amp; Set</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> MongoDB cursors and de-duplicating tags/lists in a cart or feed use these daily — `Set` removes duplicates in one line, and `Map` stores any key type in order.</div>
 <button class="mark-btn" onclick="toggleSection(1)">✅ Mark Complete</button>
 <div class="tip">💡 <strong>Map</strong> = any keys + insertion order. <strong>Set</strong> = unique values.</div>
 
@@ -170,6 +181,7 @@ const unique = [...new Set([1,1,2,3,3])]; // [1,2,3]</code></pre>
 
 <hr>
 <h2 id="2-generators">2. Generators</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> paginating large API results and async data streams (Mongo cursors, infinite scroll) are built on generators — `for await` is what consumes them.</div>
 <button class="mark-btn" onclick="toggleSection(2)">✅ Mark Complete</button>
 <div class="tip">💡 <strong>function*</strong> + <strong>yield</strong>. <code>.next()</code> → <code>{value, done}</code>.</div>
 
@@ -189,6 +201,7 @@ f.next().value; // 0  (then 1, 1, 2...)</code></pre>
 
 <hr>
 <h2 id="3-regexp">3. Regular Expressions</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> slugifying URLs, validating emails/phone numbers, and search autocomplete on your Express API are all regex under the hood.</div>
 <button class="mark-btn" onclick="toggleSection(3)">✅ Mark Complete</button>
 <div class="chall">🔤 Patterns for validation / extraction, flags <code>g i m</code>.</div>
 
@@ -211,6 +224,7 @@ f.next().value; // 0  (then 1, 1, 2...)</code></pre>
 
 <hr>
 <h2 id="4-dom">4. DOM &amp; Events</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> this is exactly what React compiles to — every `onClick`/`onChange` becomes `addEventListener` + reading `event.target`.</div>
 <button class="mark-btn" onclick="toggleSection(4)">✅ Mark Complete</button>
 <div class="warn">🌐 Browser-only — run in dev tools or a React project.</div>
 
@@ -239,6 +253,7 @@ form.addEventListener("submit", (e) => e.preventDefault());</code></pre>
 
 <hr>
 <h2 id="5-fetch">5. fetch</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> the React front-end talking to your Express API — every read/write to the server goes through `fetch`, and checking `res.ok` is non-negotiable.</div>
 <button class="mark-btn" onclick="toggleSection(5)">✅ Mark Complete</button>
 <div class="chall">📡 Talk to your Express API. Returns a promise; check <code>res.ok</code>.</div>
 
@@ -273,6 +288,7 @@ async function createUser(name){
 
 <hr>
 <h2 id="6-node">6. Node Core</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> `fs`, `path`, `process.env`, and `http` are the engine running Express &amp; Mongoose on the server — the "N" in MERN.</div>
 <button class="mark-btn" onclick="toggleSection(6)">✅ Mark Complete</button>
 <div class="tip">🖥 Node runs JS on the server — Express &amp; Mongoose on top.</div>
 
@@ -296,6 +312,7 @@ createServer((req, res) => {
 
 <hr>
 <h2 id="7-pitfalls">7. Common Pitfalls (MERN)</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> these are the real bugs that crash MERN apps in production — knowing them up-front saves hours of debugging later.</div>
 <button class="mark-btn" onclick="toggleSection(7)">✅ Mark Complete</button>
 <div class="warn">1. <strong>await inside .forEach</strong> — use <code>for...of</code>.</div>
 <div class="warn">2. <strong>Not checking res.ok</strong> after fetch.</div>
@@ -307,6 +324,7 @@ createServer((req, res) => {
 
 <hr>
 <h2 id="8-exercises">8. Practice Exercises</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> short, spaced, low-stakes practice is how knowledge moves from "seen it" to "can build with it."</div>
 <button class="mark-btn" onclick="toggleSection(8)">✅ Mark Complete</button>
 <p><strong>Ex1</strong> <span class="badge b-green">Easy</span> Map of 3 students → scores; iterate.</p>
 <p><strong>Ex2</strong> <span class="badge b-green">Easy</span> Dedupe with a Set: <code>[...new Set(arr)]</code>.</p>
@@ -319,6 +337,7 @@ createServer((req, res) => {
 
 <hr>
 <h2 id="9-challenges">9. Challenges (auto-graded)</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> these graded challenges mirror the exact coding tasks you'll do daily as a MERN dev — a safe place to make (and fix) mistakes.</div>
 <button class="mark-btn" onclick="toggleSection(9)">✅ Mark Complete</button>
 <p>Write each function, click <strong>Run Tests</strong>. Instant pass/fail; completion saved.</p>
 
@@ -374,6 +393,7 @@ createServer((req, res) => {
 
 <hr>
 <h2 id="10-answers">10. Answer Key</h2>
+<div class="why">🚩 <strong>Why it matters:</strong> compare your work against the canonical solutions — noticing small differences is where real learning happens.</div>
 <button class="mark-btn" onclick="toggleSection(10)">✅ Mark Complete</button>
 <div class="quiz-box">
 <h3>✅ Quiz answers</h3>
@@ -617,6 +637,22 @@ function addCopyButtons3() {
     b.onclick=function(){ navigator.clipboard.writeText(code.textContent).then(function(){ b.textContent="✅"; setTimeout(function(){b.textContent="📋";},1500); }); };
     code.parentNode.insertBefore(b, code);
   });
+}
+
+// ===== Focus Mode: calm, single-task reading =====
+function focusMode3(btn) {
+  var on = !document.body.classList.contains("focus-mode");
+  document.body.classList.toggle("focus-mode", on);
+  var hint = document.getElementById("focusHint");
+  if (hint) hint.style.display = on ? "block" : "none";
+  if (btn) {
+    btn.textContent = on ? "🧘 Focus ON" : "🧘 Focus Mode";
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.style.background = on ? "#319795" : "";
+  }
+  // Close all quizzes/flashcards for a quiet page; keep code and text visible.
+  document.querySelectorAll("details").forEach(function(d){ try { d.open = false; } catch(e){} });
+  if (on) { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch(e){} }
 }
 
 // ===== Collapse / Expand all quiz answers =====
