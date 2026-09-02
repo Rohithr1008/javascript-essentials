@@ -21,6 +21,23 @@ A beginner-friendly guide that turns your JS (Parts 1–3) into real websites. T
   <span class="l l-mongo">🟡 MongoDB — database</span>
   <span class="l l-node">Node — runtime</span>
 </div>
+<div class="chall" style="border-left-color:#6b46c1;background:#f5f3ff;">👋 <strong>New to MERN? Here's the fastest path:</strong> read <strong>Section 1</strong> (the 3-layer picture) → watch the loop in the study app's mock server → try the Notes demo in <strong>Section 10</strong>. No install needed.</div>
+
+<details class="glossary" style="background:#faf5ff;border:1px dashed #805ad5;border-radius:8px;padding:8px 12px;margin:10px 0;">
+<summary style="cursor:pointer;font-weight:700;color:#6b46c1;">🔤 MERN jargon, made friendly (tap to expand)</summary>
+- **MERN** — MongoDB + Express + React + Node; the four tools that make a full website.
+- **Client / frontend** — runs in the browser (React); what the user sees.
+- **Server / backend** — runs on a computer (Express); decides what data to give/save.
+- **Database** — remembers data (MongoDB); a digital filing cabinet.
+- **API / endpoint** — the URLs (`/api/notes`) the server listens on.
+- **Route** — one URL + one HTTP verb and what it returns.
+- **HTTP verb** — GET(read), POST(create), PUT(update), DELETE(remove).
+- **Status code** — 200 ok · 201 created · 404 not found · 500 crashed.
+- **JSON** — the text format data travels in (`{ "text": "hi" }`).
+- **fetch** — the JS function the frontend uses to call the API.
+- **Component** — a reusable React function that returns part of the screen.
+- **State** — data React remembers; change it and the screen redraws.
+</details>
 <style>
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 h2[id] { scroll-margin-top: 12px; }
