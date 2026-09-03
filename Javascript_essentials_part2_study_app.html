@@ -130,8 +130,18 @@ html.font-sm { font-size: 15px; }
 html.font-md { font-size: 17px; }
 html.font-lg { font-size: 18px; }
 
-/* Dark: quiz / predict / mood / plan / cert / spotbug */
+/* Callouts — always set explicit color so dark body text never lands on light panels */
+.tip, .warn, .chall, .tipbox, .why, .interactive-note { color: #1a202c; }
+.tip { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.warn { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.chall { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
+.tipbox { border: 1px dashed #be185d; background: #fdf2f8; border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+.why { background: #eef2ff; border-left: 4px solid #5a67d8; padding: 6px 12px; border-radius: 6px; margin: 6px 0 10px 0; font-size: 0.92rem; }
+.interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
+
+/* Dark via OS preference */
 @media (prefers-color-scheme: dark) {
+  body { background: #0d1117; color: #e6edf3; }
   .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
   .quiz-box h3 { color: #90cdf4; }
   .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
@@ -141,13 +151,39 @@ html.font-lg { font-size: 18px; }
   .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
   .studyplan7 summary { background: #1c2333; color: #e2e8f0; }
   .spotbug details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .tip { background: #132a1c; color: #e2e8f0; }
+  .warn { background: #2b2013; color: #e2e8f0; }
+  .chall { background: #2b1420; color: #e2e8f0; }
+  .tipbox { background: #2b1420; color: #e2e8f0; border-color: #be185d; }
+  .why { background: #1c2333; border-left-color: #6366f1; color: #dbe4ef; }
+  .interactive-note { background: #17202b; color: #e2e8f0; }
+  body.focus-mode h2 { background: #1c2333; color: #e2e8f0; }
 }
+
+/* Manual theme wins over OS preference (preserve font-* separately in JS) */
+html.force-light body { background: #f7f9fc; color: #1a202c; }
 html.force-light .quiz-box { background: #f7f9fc; color: #1a202c; }
 html.force-light .quiz-box details { background: #ffffff; color: #1a202c; }
+html.force-light .quiz-box h3 { color: #2b6cb0; }
 html.force-light .quiz-correct { color: #276749; }
 html.force-light .quiz-wrong { color: #9b2c2c; }
+html.force-light .predict details { background: #fff; border-color: #cbd5e0; color: #1a202c; }
+html.force-light .mood label { background: #fff; color: #1a202c; border-color: #a0aec0; }
+html.force-light .studyplan7 summary { background: #eef2ff; color: #1a202c; }
+html.force-light .spotbug details { background: #fff; border-color: #cbd5e0; color: #1a202c; }
+html.force-light .tip { background: #f0fff4; color: #1a202c; }
+html.force-light .warn { background: #fffaf0; color: #1a202c; }
+html.force-light .chall { background: #f5f3ff; color: #1a202c; }
+html.force-light .tipbox { background: #fdf2f8; color: #1a202c; }
+html.force-light .why { background: #eef2ff; color: #1a202c; }
+html.force-light .interactive-note { background: #eef6ff; color: #1a202c; }
+html.force-light body.focus-mode h2 { background: #eef2ff; color: #1a202c; }
+html.force-light .certificate { background: linear-gradient(135deg, #fffbeb, #fefcbf); border-color: #d69e2e; color: #744210; }
+
+html.force-dark body { background: #0d1117; color: #e6edf3; }
 html.force-dark .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
 html.force-dark .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+html.force-dark .quiz-box h3 { color: #90cdf4; }
 html.force-dark .quiz-correct { color: #68d391; }
 html.force-dark .quiz-wrong { color: #fc8181; }
 html.force-dark .predict details,
@@ -155,6 +191,13 @@ html.force-dark .spotbug details,
 html.force-dark .studyplan7 summary { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
 html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
 html.force-dark .certificate { background: linear-gradient(135deg, #2b2013, #744210); border-color: #d69e2e; color: #fffbeb; }
+html.force-dark .tip { background: #132a1c; color: #e2e8f0; }
+html.force-dark .warn { background: #2b2013; color: #e2e8f0; }
+html.force-dark .chall { background: #2b1420; color: #e2e8f0; }
+html.force-dark .tipbox { background: #2b1420; color: #e2e8f0; border-color: #be185d; }
+html.force-dark .why { background: #1c2333; border-left-color: #6366f1; color: #dbe4ef; }
+html.force-dark .interactive-note { background: #17202b; color: #e2e8f0; }
+html.force-dark body.focus-mode h2 { background: #1c2333; color: #e2e8f0; }
 
 /* Reduced motion + print basics */
 @media (prefers-reduced-motion: reduce) {
@@ -177,17 +220,12 @@ body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; pa
 body.focus-mode #progressBar, body.focus-mode #boostBar, body.focus-mode #learningPathPanel, body.focus-mode #spacedRepetitionPanel { display:none !important; }
 body.focus-mode h1 { text-align:center; }
 body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
-.why { background:#eef2ff; border-left:4px solid #5a67d8; padding:6px 12px; border-radius:6px; margin:6px 0 10px 0; font-size:0.92rem; }
 html { scroll-behavior: smooth; }
 h2[id], h3[id] { scroll-margin-top: 16px; }
 .theme-btn { float: right; margin: 4px 0 8px 10px; padding: 6px 14px; background: #4a5568; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
 nav a { color: #2b6cb0; text-decoration: none; font-weight: 600; }
 nav a:hover { text-decoration: underline; }
 h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
-.interactive-note { background: #eef6ff; border-left: 4px solid #2b6cb0; padding: 10px 14px; border-radius: 6px; }
-.tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
-.warn   { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; }
-.chall  { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; }
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
 .flashcard .back { margin-top: 8px; }
@@ -221,11 +259,7 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 @media (prefers-color-scheme: dark) {
   body { background: #0d1117; color: #e6edf3; }
   h2 { border-bottom-color: #63b3ed; }
-  .interactive-note { background: #17202b; }
-  .tip { background: #132a1c; }
-  .warn { background: #2b2013; }
-  .chall { background: #221b3a; }
-  .flashcard { background: #241d0e; border-color: #975a16; }
+  .flashcard { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
   .challenge { background: #141c28; border-color: #2d3748; }
   nav a { color: #90cdf4; }
   pre { background: #0b1220; }
@@ -870,23 +904,28 @@ class SavingsAccount extends Account {
 // ===== Part 2 Study App — Script =====
 
 // ===== Theme =====
+function setThemeClass2(mode) {
+  var root = document.documentElement;
+  root.classList.remove("force-dark", "force-light");
+  root.classList.add(mode);
+  var btn = document.getElementById("themeBtn");
+  if (btn) btn.textContent = mode === "force-dark" ? "☀️ Light mode" : "🌙 Dark mode";
+}
 function toggleTheme() {
-  var cur = document.documentElement.className;
-  var next = cur === "force-dark" ? "force-light" : "force-dark";
-  document.documentElement.className = next;
+  var dark = document.documentElement.classList.contains("force-dark")
+    || (!document.documentElement.classList.contains("force-light")
+        && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  var next = dark ? "force-light" : "force-dark";
+  setThemeClass2(next);
   localStorage.setItem("p2-theme", next);
-  document.getElementById("themeBtn").textContent = next === "force-dark" ? "☀️ Light mode" : "🌙 Dark mode";
 }
 function applyTheme(saved) {
   var t = saved || localStorage.getItem("p2-theme");
-  if (t) { document.documentElement.className = t; document.getElementById("themeBtn").textContent = t === "force-dark" ? "☀️ Light mode" : "🌙 Dark mode"; }
+  if (t === "force-dark" || t === "force-light") { setThemeClass2(t); return; }
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) setThemeClass2("force-dark");
+  else setThemeClass2("force-light");
 }
-function applySysDark() {
-  if (!localStorage.getItem("p2-theme") && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.documentElement.className = "force-dark";
-    document.getElementById("themeBtn").textContent = "☀️ Light mode";
-  }
-}
+function applySysDark() { applyTheme(); }
 applySysDark();
 
 // ===== Progress =====
