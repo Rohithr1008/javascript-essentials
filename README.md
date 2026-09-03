@@ -14,7 +14,10 @@ A hands-on study kit covering the JavaScript fundamentals: variables, control fl
 | 📝 **Interactive Markdown** | VS Code / Typora users — quizzes, flashcards & hint cards inline | [View on GitHub](Javascript_essentials_part1_interactive.md) — open in VS Code preview with `Ctrl+Shift+V` |
 | 📄 **Plain Markdown** | Printing, PDF export, distraction-free reading | [View on GitHub](Javascript_essentials_part1_with_examples.md) |
 
-All three editions contain identical content — pick the format that fits how you study.
+Same curriculum across all three editions; features differ by format — pick what fits how you study:
+- **Study app** — progress, SRS, Spot-the-Bug, live mocks, certificate, theme, Focus Mode
+- **Interactive Markdown** — quizzes, flashcards, Spot-the-Bug + predict cards (Parts 1–5), and inline demos in the preview
+- **Plain Markdown** — print-friendly, open answers, distraction-free reading
 
 ---
 
@@ -28,9 +31,10 @@ All three editions contain identical content — pick the format that fits how y
 - 🤔 **Predict-the-output cards** (logic, mutability, async, MERN/auth traps)
 - 🃏 **Flashcards** + SRS spaced repetition + symbol drills
 - 🟢🟡🔴 **Difficulty & time badges** with 💡 hints on exercises/challenges
-- 🐞 **Spot-the-bug** final boss quiz
-- 😅 **Mood checks** · 📅 **7-day study plan** · 🏆 **completion certificate**
+- 🐞 **Spot-the-bug** final boss quiz *(in interactive Markdown + study apps; study apps also have live mocks / SRS / certificate)*
+- 😅 **Mood checks** · 📅 **7-day study plan** · 🏆 **completion certificate** *(certificate + live mocks + SRS engine: study-app primary)*
 - *(App edition)* 🌙 dark mode · 📊 progress that persists via localStorage · 🧭 scrollspy navigation · 🧘 Focus Mode
+- Interactive Markdown now includes Spot-the-Bug + predict decks for Parts 2–5 (static). Live mocks, SRS, progress, and certificates stay study-app primary.
 - Every feature is **content-tailored to its part** (Part 4 → MERN, Part 5 → auth/deploy), so no two parts share identical material.
 
 ## 🚀 Quick start

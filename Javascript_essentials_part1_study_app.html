@@ -136,6 +136,15 @@ html.font-lg { font-size: 18px; }
 .mark-btn { background: #276749 !important; color: #ffffff !important; }
 .mark-btn.done { background: #4a5568 !important; color: #ffffff !important; }
 .theme-btn { background: #2d3748 !important; color: #ffffff !important; }
+.section-complete-btn { background: #276749 !important; color: #ffffff !important; }
+.copy-btn { background: #2d3748 !important; color: #ffffff !important; }
+/* Self-rating / focus hints — muted gray fails AA on light body */
+[id^="rating-section"] > span { color: #4a5568 !important; }
+.mood input:checked + label {
+  background: #276749 !important;
+  border-color: #276749 !important;
+  color: #ffffff !important;
+}
 #boostBar button[aria-label*="Surprise" i],
 #boostBar1 button[aria-label*="Surprise" i],
 button[onclick*="boostSurprise"] {
@@ -154,31 +163,71 @@ button[onclick*="showSRAnswer"],
 button[onclick*="srKnow"],
 button[onclick*="startSRReview"],
 button[onclick*="srFlip"],
-button[onclick*="srToggleShuffle"] {
+button[onclick*="srToggleShuffle"],
+button[onclick*="srAnswer"],
+button[onclick*="srFlip4"],
+button[onclick*="rateSR"],
+button[onclick*="setSelfRating"] {
   background: #2c5282 !important;
   color: #ffffff !important;
 }
-.tabs label { color: #1a365d !important; border-color: #2b6cb0 !important; }
-.sandbox button, .challenge button, .auth-box button, .mock-api button {
-  background: #1d4ed8 !important;
+/* Tabs: unselected dark-on-light; selected white-on-dark-blue (AA) */
+.tabs label {
+  color: #1a365d !important;
+  border-color: #2b6cb0 !important;
+  background: #ebf8ff !important;
+}
+#tab-arr:checked ~ label[for="tab-arr"],
+#tab-str:checked ~ label[for="tab-str"],
+.tabs input:checked + label {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+.sandbox button, .challenge button, .auth-box button, .mock-api button,
+.interactive-tool button, .chall button {
+  background: #1e40af !important;
   color: #ffffff !important;
 }
 .l-react, .l-express, .l-mongo, .l-node, .l-auth, .l-prod,
 .chip, .chip-h, .chip-p, .chip-s {
   color: #ffffff !important;
 }
-/* Part 1 playground / stepper buttons (inline pastel fills fail AA with white text) */
+/* Part 1 playground / stepper + Part 4 project demo buttons
+   (inline pastel fills fail AA with white text) */
 button[onclick*="checkTruthiness"],
 button[onclick*="runSandbox"],
 button[onclick*="clearSandbox"],
 button[onclick*="elvStep"],
+button[onclick*="elvPlay"],
+button[onclick*="elvReset"],
 button[onclick*="runChallenge"],
 button[onclick*="resetChallenge"],
 button[onclick*="checkAnswer"],
-button[onclick*="runTest"] {
+button[onclick*="runTest"],
+button[onclick*="hoistingPlay"],
+button[onclick*="hoistingReset"],
+button[onclick*="scopeStep"],
+button[onclick*="scopeReset"],
+button[onclick*="memReset"],
+button[onclick*="showOptional"],
+button[onclick*="showCoercion"],
+button[onclick*="filterExercises"],
+button[onclick*="resetCode"],
+button[onclick*="p4Add"],
+button[onclick*="p4Load"],
+button[onclick*="p4Reset"],
+button[onclick*="p4Show"] {
   background: #1e40af !important;
   color: #ffffff !important;
 }
+/* Lesson demo output inside light .chall panels used dark-theme text colors */
+.chall #p4-notes-list,
+.chall #p4-product-view,
+.chall #p4-reviews-list {
+  color: #1a202c !important;
+}
+.chall #p4-notes-log { color: #166534 !important; }
+.chall #p4-reviews-list small { color: #4a5568 !important; }
 .layer-diagram .ld-node { color: #ffffff !important; }
 
 /* Callouts — always set explicit color so dark body text never lands on light panels */

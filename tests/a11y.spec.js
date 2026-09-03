@@ -8,7 +8,7 @@ const APPS = [1, 2, 3, 4, 5].map((n) => ({
 
 for (const app of APPS) {
   test.describe(`a11y Part ${app.n}`, () => {
-    test("no critical / non-contrast serious axe violations", async ({
+    test("no critical / serious axe violations (decorative contrast excluded)", async ({
       page,
     }) => {
       await page.goto(app.path);
@@ -19,8 +19,9 @@ for (const app of APPS) {
       });
 
       // Full-page scan. Educational sandboxes/snippets often include incomplete
-      // markup on purpose; color-contrast on lesson chips is improved in shared
-      // CSS but remains noisy — gate critical + other serious rules.
+      // markup on purpose. color-contrast is gated for interactive chrome
+      // (fixed in shared/study-shell.css). Decorative teaching tokens below
+      // are excluded — visual lesson cues, not user chrome.
       const results = await new AxeBuilder({ page })
         .include("body")
         .exclude(".sandbox")
@@ -29,12 +30,24 @@ for (const app of APPS) {
         .exclude(".mock-api")
         .exclude(".auth-box")
         .exclude(".layer-diagram")
+        // Decorative lesson tokens (badges / chips / layer pills / code)
+        .exclude(".badge")
+        .exclude(".chip")
+        .exclude(".chip-h")
+        .exclude(".chip-p")
+        .exclude(".chip-s")
+        .exclude(".l-react")
+        .exclude(".l-express")
+        .exclude(".l-mongo")
+        .exclude(".l-node")
+        .exclude(".l-auth")
+        .exclude(".l-prod")
         .exclude("pre")
+        .exclude("code")
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .disableRules([
           "nested-interactive",
           "listitem",
-          "color-contrast",
         ])
         .analyze();
 

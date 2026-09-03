@@ -65,6 +65,15 @@ html.font-lg { font-size: 18px; }
 .mark-btn { background: #276749 !important; color: #ffffff !important; }
 .mark-btn.done { background: #4a5568 !important; color: #ffffff !important; }
 .theme-btn { background: #2d3748 !important; color: #ffffff !important; }
+.section-complete-btn { background: #276749 !important; color: #ffffff !important; }
+.copy-btn { background: #2d3748 !important; color: #ffffff !important; }
+/* Self-rating / focus hints — muted gray fails AA on light body */
+[id^="rating-section"] > span { color: #4a5568 !important; }
+.mood input:checked + label {
+  background: #276749 !important;
+  border-color: #276749 !important;
+  color: #ffffff !important;
+}
 #boostBar button[aria-label*="Surprise" i],
 #boostBar1 button[aria-label*="Surprise" i],
 button[onclick*="boostSurprise"] {
@@ -83,31 +92,71 @@ button[onclick*="showSRAnswer"],
 button[onclick*="srKnow"],
 button[onclick*="startSRReview"],
 button[onclick*="srFlip"],
-button[onclick*="srToggleShuffle"] {
+button[onclick*="srToggleShuffle"],
+button[onclick*="srAnswer"],
+button[onclick*="srFlip4"],
+button[onclick*="rateSR"],
+button[onclick*="setSelfRating"] {
   background: #2c5282 !important;
   color: #ffffff !important;
 }
-.tabs label { color: #1a365d !important; border-color: #2b6cb0 !important; }
-.sandbox button, .challenge button, .auth-box button, .mock-api button {
-  background: #1d4ed8 !important;
+/* Tabs: unselected dark-on-light; selected white-on-dark-blue (AA) */
+.tabs label {
+  color: #1a365d !important;
+  border-color: #2b6cb0 !important;
+  background: #ebf8ff !important;
+}
+#tab-arr:checked ~ label[for="tab-arr"],
+#tab-str:checked ~ label[for="tab-str"],
+.tabs input:checked + label {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+.sandbox button, .challenge button, .auth-box button, .mock-api button,
+.interactive-tool button, .chall button {
+  background: #1e40af !important;
   color: #ffffff !important;
 }
 .l-react, .l-express, .l-mongo, .l-node, .l-auth, .l-prod,
 .chip, .chip-h, .chip-p, .chip-s {
   color: #ffffff !important;
 }
-/* Part 1 playground / stepper buttons (inline pastel fills fail AA with white text) */
+/* Part 1 playground / stepper + Part 4 project demo buttons
+   (inline pastel fills fail AA with white text) */
 button[onclick*="checkTruthiness"],
 button[onclick*="runSandbox"],
 button[onclick*="clearSandbox"],
 button[onclick*="elvStep"],
+button[onclick*="elvPlay"],
+button[onclick*="elvReset"],
 button[onclick*="runChallenge"],
 button[onclick*="resetChallenge"],
 button[onclick*="checkAnswer"],
-button[onclick*="runTest"] {
+button[onclick*="runTest"],
+button[onclick*="hoistingPlay"],
+button[onclick*="hoistingReset"],
+button[onclick*="scopeStep"],
+button[onclick*="scopeReset"],
+button[onclick*="memReset"],
+button[onclick*="showOptional"],
+button[onclick*="showCoercion"],
+button[onclick*="filterExercises"],
+button[onclick*="resetCode"],
+button[onclick*="p4Add"],
+button[onclick*="p4Load"],
+button[onclick*="p4Reset"],
+button[onclick*="p4Show"] {
   background: #1e40af !important;
   color: #ffffff !important;
 }
+/* Lesson demo output inside light .chall panels used dark-theme text colors */
+.chall #p4-notes-list,
+.chall #p4-product-view,
+.chall #p4-reviews-list {
+  color: #1a202c !important;
+}
+.chall #p4-notes-log { color: #166534 !important; }
+.chall #p4-reviews-list small { color: #4a5568 !important; }
 .layer-diagram .ld-node { color: #ffffff !important; }
 
 /* Callouts — always set explicit color so dark body text never lands on light panels */
@@ -568,7 +617,7 @@ async function addNote(text) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
-  setNotes([await res.json(), ...notes]);
+  setNotes((prev) => [await res.json(), ...prev]);
 }</code></pre>
 <p><strong>The 4-step pattern:</strong> fetch → check <code>res.ok</code> → <code>.json()</code> → <code>setState</code> (re-render).</p>
 <div class="quiz-box"><h3>🎯 Section 9 quiz</h3><details><summary>What does POST return to you?</summary>
@@ -599,7 +648,7 @@ function App() {
   async function add(){
     const res = await fetch("/api/notes", { method:"POST",
       headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ text }) });
-    setNotes([await res.json(), ...notes]);
+    setNotes((prev) => [await res.json(), ...prev]);
   }
   // ... render it
 }</code></pre>
@@ -712,7 +761,7 @@ if (!res.ok) throw new Error(...);  // ✅ check first
 
 // 3. Mutating state
 notes.push(x); setNotes(notes);     // ❌ no re-render
-setNotes([...notes, x]);            // ✅ new array
+setNotes((prev) => [...prev, x]);            // ✅ new array via functional updater
 
 // 4. findByIdAndUpdate returns OLD doc without { new: true }
 Note.findByIdAndUpdate(id, upd);                   // ❌ old
@@ -732,13 +781,25 @@ Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ new
 <h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
 <div class="why">🚩 <strong>Why it matters:</strong> these mirror real MERN coding tasks — a safe place to make and fix mistakes. No install needed; write a function, click Run.</div>
 
+<div class="quiz-box"><h3>🎬 Scenario check (warm-up)</h3>
+<details><summary>React on :5173 can't reach Express on :5000 — browser CORS error. Where do you fix it?</summary>
+<p><span class="quiz-wrong">❌ In React CSS / Vite config only</span> — CORS is enforced by the browser based on response headers from the API</p>
+<p><span class="quiz-correct">✅ On the server: <code>app.use(cors())</code></span> — allow that origin on Express</p></details>
+<details><summary><code>notes.push(x); setNotes(notes);</code> — UI stuck. Why?</summary>
+<p><span class="quiz-wrong">❌ React never re-renders after setState</span> — it does when the reference changes</p>
+<p><span class="quiz-correct">✅ Same array mutated in place — use a new reference</span> — <code>setNotes([...notes, x])</code> or functional update</p></details>
+<details><summary>POST created a resource but you returned 200. Better status?</summary>
+<p><span class="quiz-wrong">❌ 404</span> — that's "not found"</p>
+<p><span class="quiz-correct">✅ 201 Created</span> — signals a new resource (GET→200, DELETE→204)</p></details>
+</div>
+
 <div class="challenge"><h3>C1 — makeProduct</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Return a product <code>{ name, price, reviews: [] }</code>.</p>
 <textarea id="chal1" rows="3">function makeProduct(name, price) {
   // return { name, price, reviews: [] }
 }</textarea>
 <button class="mark-btn" onclick="runTest(1)">▶️ Run tests</button><div class="result" id="res1"></div><br><details class="hint" style="margin-top:6px;"><summary>💡 Hint</summary><p>Hint: return an object literal with keys name, price, and reviews.</p></details></div>
 
-<div class="challenge"><h3>C2 — addReview</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Return a NEW product with the review appended (immutable).</p>
+<div class="challenge"><h3>C2 — addReview</h3> <span class="badge b-time">3m</span> <span class="badge b-green">🟢</span><p>Given a product like <code>{ name, price, reviews: [] }</code> and a review <code>{ rating, comment }</code>, return a <strong>NEW</strong> product with the review appended (immutable).</p>
 <textarea id="chal2" rows="4">function addReview(product, review) {
   // return { ...product, reviews: [...product.reviews, review] }
 }</textarea>
@@ -821,11 +882,11 @@ Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ new
 
 <h2 id="spot-bug4">Spot-the-Bug - final boss quiz</h2><div class="why"><strong>Why it matters:</strong> catch the classic MERN mistakes before they catch you.</div><div class="spotbug"><details><summary>Q1. <code>const notes = Note.find();</code> - what's the bug?</summary><p class="quiz-correct">Missing <code>await</code> - it's a promise, not the data array.</p></details><details><summary>Q2. <code>express.json()</code> left out, but you read <code>req.body</code>?</summary><p class="quiz-correct"><code>req.body</code> will be <code>undefined</code> - add the JSON middleware.</p></details><details><summary>Q3. React on port 5173 calls <code>localhost:3000</code> - blocked?</summary><p class="quiz-correct">CORS - enable <code>app.use(cors())</code> on the backend.</p></details><details><summary>Q4. <code>Note.findByIdAndUpdate(id, upd)</code> returns the OLD doc?</summary><p class="quiz-correct">Add <code>{ new: true }</code> to get the updated document.</p></details></div><div class="mood"><span>How was Spot-the-Bug?</span><input type="radio" id="mood-bug-1" name="mood-bug4"><label for="mood-bug-1">😅 tough</label><input type="radio" id="mood-bug-2" name="mood-bug4"><label for="mood-bug-2">🙂 okay</label><input type="radio" id="mood-bug-3" name="mood-bug4"><label for="mood-bug-3">😎 nailed it</label></div>
 <hr>
-<h2 id="predict-more4">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the MERN mental model fast.</div><div class="predict"><details><summary><code>await Note.create({text:"hi"})</code> — what does it return?</summary><p class="quiz-correct">the created note (a document with <code>_id</code>)</p></details><details><summary><code>res.ok</code> when the API returns 500?</summary><p class="quiz-correct"><code>false</code> — you should <code>throw</code> or handle it</p></details><details><summary><code>const all = await Note.find()</code> — what is <code>all</code>?</summary><p class="quiz-correct">an array of note documents</p></details><details><summary><code>setNotes([...notes, saved])</code> vs <code>notes.push(saved)</code>?</summary><p class="quiz-correct">the spread creates a new array (React re-renders); <code>push</code> mutates in place</p></details><details><summary><code>slugify("Hello World!")</code> using <code>/[^a-z0-9]+/g</code></summary><p class="quiz-correct"><code>"hello-world"</code></p></details></div>
+<h2 id="predict-more4">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the MERN mental model fast.</div><div class="predict"><details><summary><code>await Note.create({text:"hi"})</code> — what does it return?</summary><p class="quiz-correct">the created note (a document with <code>_id</code>)</p></details><details><summary><code>res.ok</code> when the API returns 500?</summary><p class="quiz-correct"><code>false</code> — you should <code>throw</code> or handle it</p></details><details><summary><code>const all = await Note.find()</code> — what is <code>all</code>?</summary><p class="quiz-correct">an array of note documents</p></details><details><summary><code>setNotes((prev) =&gt; [...prev, saved])</code> vs <code>notes.push(saved)</code>?</summary><p class="quiz-correct">the functional updater creates a new array (React re-renders); <code>push</code> mutates in place</p></details><details><summary><code>slugify("Hello World!")</code> using <code>/[^a-z0-9]+/g</code></summary><p class="quiz-correct"><code>"hello-world"</code></p></details></div>
 <hr>
 <h2 id="certificate4">🏆 Certificate of Completion</h2><div class="certificate" id="certPanel4"><h2>🎓 Certificate of Completion</h2><p>This certifies that <span class="big">You</span> have completed</p><p class="big">JavaScript Essentials Part 4 (MERN Foundations)</p><p id="certStatus4">Complete <strong>all 17 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p></div>
 
-<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 4 (MERN Foundations). You built a Notes app and a Product Store with Reviews, end-to-end.<br><span style="color:#a0aec0;font-size:13px;">Next: open a real terminal, npm install, and run the exact code from this guide against a real MongoDB.</span></div>
+<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 4 (MERN Foundations). You built a Notes app and a Product Store with Reviews, end-to-end.<br><span style="color:#a0aec0;font-size:13px;">Next: Part 5 — Production (Auth + Deployment). Open <code>Javascript_essentials_part5_study_app.html</code>.</span></div>
 
 <div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
 <hr>

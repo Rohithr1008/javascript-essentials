@@ -115,7 +115,7 @@ if (!ok) return res.status(401).json({ error: "Wrong password" });
 const token = jwt.sign({ userId: user._id, email: user.email }, SECRET, { expiresIn: "7d" });
 // token looks like:  header.payload.signature
 ```
-- **Header** — says "I'm a JWT" (`{ alg: "HS256", type: "JWT" }`).
+- **Header** — says "I'm a JWT" (`{ alg: "HS256", typ: "JWT" }`).
 - **Payload** — safe claims like `userId` and `email` (NEVER the password).
 - **Signature** — a cryptographic seal made from the server's secret. If anyone edits the token, the seal breaks → `jwt.verify` fails.
 
@@ -209,7 +209,7 @@ Notice `auth` is passed *between* the route path and the handler — Express run
 
 ## 8. Using the token in React
 
-> 🚩 **Why it matters:** the frontend stores the token (localStorage) and sends it in a header on every protected call.
+> 🚩 **Why it matters:** the frontend stores the token (this guide uses `localStorage` for a simple first ship) and sends it in a header on every protected call.
 
 ```javascript
 async function login(email, password) {
@@ -219,7 +219,7 @@ async function login(email, password) {
     body: JSON.stringify({ email, password }),
   });
   const data = await res.json();
-  localStorage.setItem("token", data.token);        // remember the badge
+  localStorage.setItem("token", data.token);        // remember the badge (demo)
   setUser(data.user);
 }
 async function loadMe() {
@@ -231,10 +231,12 @@ async function loadMe() {
   setUser(await res.json());
 }
 ```
-**memory aid:** login → `localStorage.setItem("token", …)` → every protected call sends `Authorization: Bearer token`.
+> ⚠️ **Caveat:** XSS can steal tokens from `localStorage`. Production often prefers **httpOnly Secure cookies** (or a BFF). This guide uses `localStorage` for a simple first-ship demo.
+
+**memory aid:** login → `localStorage.setItem("token", …)` (demo storage) → every protected call sends `Authorization: Bearer token`. Remember the XSS caveat above.
 
 ### 🧪 Quiz
-1. Where does the frontend store the token? → localStorage.
+1. Where does the frontend store the token in this guide's simple demo? → `localStorage` (common first-ship pattern; production often prefers httpOnly cookies).
 2. What header carries it? → `Authorization: Bearer <token>`.
 3. What if /api/me returns 401? → Log the user out (token expired).
 
@@ -329,12 +331,14 @@ fetch(import.meta.env.VITE_API_URL + "/api/notes");
 > 🚩 **Why it matters:** a test is code that checks your code — it catches regressions before users do.
 
 ```javascript
-test("hashPassword scrambles the password", () => {
-  expect(hashPassword("abc")).toBe("cba");
-  expect(hashPassword("abc")).not.toBe("abc");   // never returns the input
+// TOY ONLY — not bcrypt. Real apps: bcrypt.hash / bcrypt.compare
+function toyHash(pw) { return "h$" + pw.length + "$" + pw.charCodeAt(0); }
+test("toyHash never returns the plain password", () => {
+  expect(toyHash("abc")).not.toBe("abc");
+  expect(toyHash("abc")).toBe(toyHash("abc"));   // same input → same toy output
 });
 ```
-**Mental model:** write a small function that calls your real function and asserts the result. If something breaks later, the test turns red and tells you exactly where.
+**Mental model:** write a small function that calls your real function and asserts the result. If something breaks later, the test turns red and tells you exactly where. The toy above only teaches invariants (not plain, deterministic) — never ship it as a real hash.
 
 ### 🧪 Quiz
 1. What does a test do? → Asserts your code works, catching regressions.
@@ -402,6 +406,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 - **C3 — `attachAuthHeader(existing, token)`** → copy existing headers and add `Authorization: "Bearer " + token`.
 - **C4 — `authMiddleware(req)`** → return `"401"` if no token, else `"ok"`.
 - **C5 — `deployOrder(steps)`** → sort steps ascending by their `.sort` number (push code → env → backend → frontend → CORS).
+
+**🎬 Scenario check** (think before coding):
+- Plain `password: "secret123"` in the DB → always **hash** with bcrypt before save.
+- JWT secret hard-coded in source → use **`process.env.JWT_SECRET`**; never commit secrets.
+- Protected route with no `Authorization` header → **401**.
 ---
 
 ## 17. Answer key
@@ -437,7 +446,7 @@ function deployOrder(steps){ return steps.slice().sort((a, b) => a.sort - b.sort
 | 5 | register hashes + validates + 201 |
 | 6 | login compares + issues JWT (401 on bad) |
 | 7 | `auth` middleware → verify Bearer token → 401 or next() |
-| 8 | client stores token in localStorage, sends in header |
+| 8 | this guide: token in localStorage + Bearer header (prod often prefers httpOnly cookies) |
 | 9 | flow = register → hash → login → JWT → protected route |
 | 10 | deploy backend + frontend + database |
 | 11 | Render + env vars + Atlas |
@@ -456,5 +465,7 @@ You've completed **JavaScript Essentials — Part 5 (Production: Auth + Deployme
 - Deploy the backend (Render), frontend (Vercel/Netlify), and database (Atlas), keeping secrets in env vars.
 
 This completes the 5-part series: **Core → Async/OOP → MERN Bridge → Build MERN apps → Ship to production.** You're ready to take a real project end-to-end. 🚀
+
+> 💡 **Beyond this first ship** (not in scope here): httpOnly Secure cookies or a BFF, refresh tokens, rate limits, HTTPS security headers, and real CI — next steps after this part. Ties to the §8 localStorage caveat.
 
 <!--P5-END-->

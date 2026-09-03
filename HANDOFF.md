@@ -141,6 +141,7 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 - **Every app has all of these,** verified in the parity pass: predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug final quiz, completion certificate (unlocks at 100%), 🧭 scrollspy nav — plus the shared engine (quiz-boxes, SRS flashcards, progress + Mark Complete, learning path, Focus Mode, collapse/expand, theme, font zoom, XP/streak/confetti, skip link).
 - Parts 1–5 previously differed in *which* of these each had; the parity pass brought Parts 4–5 level with Parts 1–3 (and gave Parts 2–3 the certificate/scrollspy they lacked).
 - **Content is part-specific:** predict cards, 7-day plans, Spot-the-Bug questions, badges and hints are tailored to each part's material (e.g. Part 4 → MERN; Part 5 → auth/deploy). When you add/change one, keep each part's version distinct and re-run the inventory audit.
+- **App-primary practice (Parts 2–5):** live mocks, SRS engine, and the completion certificate stay primarily in the **study apps**. Interactive Markdown for Parts 2–5 now also includes **Spot-the-Bug** + dedicated **predict-the-output** decks (static details/summary — same Q&A substance as the apps). Plain Markdown keeps quizzes and why-it-matters without full app parity.
 
 ---
 ---
@@ -205,15 +206,15 @@ node --check _v.js
   - **Shared shell CSS:** edit `shared/study-shell.css`, then `node scripts/inline-shell.js` before commit. Markers `SHARED-SHELL-CSS:START/END` in Parts 1–5; `node scripts/inline-shell.js --check` fails if HTML drifts. Apps stay self-contained (offline single-file).
   - **Shared shell JS:** edit `shared/study-shell.js` (theme / font zoom / focus / collapse / a11y labels). Markers `SHARED-SHELL-JS:START/END`; same inliner writes both CSS + JS.
   - **Why-right/wrong quizzes:** Parts 2–5 study apps use `quiz-wrong` + `quiz-correct` explanations (interactive `.md` unchanged).
-  - **CI:** `.github/workflows/verify.yml` runs structural verify, shared-shell `--check`, then Playwright (axe a11y + keyboard/mobile E2E).
+  - **CI:** `.github/workflows/verify.yml` runs structural verify, shared-shell `--check`, then Playwright (axe a11y + keyboard/mobile E2E). Axe `color-contrast` is gated (chrome fixed in `study-shell.css`; decorative badges/chips/layer pills/code excluded in `tests/a11y.spec.js`).
   - Verify also asserts shared-shell markers and Parts 2–5 `quiz-wrong` presence.
-  - **Theme contrast fix:** callouts set explicit colors under `force-dark` / `force-light`; Parts 2–5 theme toggles use `StudyShell` (preserve font classes).
+  - **Content-audit P0/P1 (2026-09-03):** Part 5 localStorage honesty + toyHash (not reverse-as-hash); Part 1 join typo; README edition differences + app-primary practice note; Part 4 series next→Part 5; Part 4 functional `setNotes((prev)=>…)`; Part 5 first-ship / real-prod next tip.
 
 ### 🔜 Natural next steps (not started — only continue if asked)
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
 - **Part 6** (see `PART6_PLAN.md`)
-- Tighten axe `color-contrast` gate further (currently disabled in CI; chrome buttons already darkened in shared CSS)
+- Optional: dark-theme force scan for contrast; further decorative-token cleanup outside excluded regions
 
 ---
 

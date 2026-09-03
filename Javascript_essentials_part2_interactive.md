@@ -2,7 +2,7 @@
 
 A quick reference covering the JavaScript **intermediate** concepts: promises, async/await, error handling, classes/OOP, and modules.
 
-<div class="interactive-note">💡 <strong>Interactive guide — enhanced edition:</strong> clickable quizzes, flashcards, mood checks, predict-the-output cards, a live Promise Simulator, a working code sandbox, and collapsible hints/solutions. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds a live progress bar, spaced-repetition flashcards, quiz persistence and an auto-graded challenge runner.</div>
+<div class="interactive-note">💡 <strong>Interactive guide — enhanced edition:</strong> clickable quizzes, flashcards, mood checks, predict-the-output cards, Spot-the-Bug quiz, a live Promise Simulator, a working code sandbox, and collapsible hints/solutions. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds a live progress bar, spaced-repetition flashcards, quiz persistence and an auto-graded challenge runner.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
   <a href="index.html" style="color:#7dd3fc;font-weight:600;text-decoration:none;">Hub</a>
@@ -27,7 +27,11 @@ h2[id] { scroll-margin-top: 12px; }
 .quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
 .quiz-box summary { cursor: pointer; font-weight: 600; }
 .quiz-correct { color: #276749; font-weight: 700; }
+.quiz-wrong { color: #9b2c2c; }
 .answer { background: #edf2f7; border: 1px dashed #718096; border-radius: 6px; padding: 6px 10px; margin-top: 4px; }
+.spotbug { display: grid; gap: 10px; margin: 14px 0; }
+.spotbug details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 10px 14px; }
+.spotbug summary { cursor: pointer; font-weight: 600; }
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
 .flashcard .back { margin-top: 8px; }
@@ -70,6 +74,9 @@ pre code { background: transparent; color: inherit; font-family: "Cascadia Code"
   .quiz-box details { background: #0f1622; border-color: #2d3748; }
   .flashcard { background: #241d0e; border-color: #975a16; }
   .answer { background: #1a202c; border-color: #4a5568; color: #e2e8f0; }
+  .quiz-wrong { color: #fc8181; }
+  .spotbug details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
   .mind { color: #e2e8f0; }
 }
 </style>
@@ -1100,6 +1107,61 @@ async function loadMod(name) {
 ```
 </details>
 
+</div>
+
+---
+
+## 🐞 Spot-the-Bug — final boss quiz
+
+<div class="why">🚩 <strong>Why it matters:</strong> the #1 skill in async code is spotting <em>which promise never resolves</em>. Try each, then reveal.</div>
+
+<div class="spotbug">
+<details><summary>Q1. What's the bug?  <code>fetch(url).then(r =&gt; r.json());</code></summary>
+<p class="quiz-correct">✅ The result isn't returned/consumed — you must return it or attach another <code>.then()</code>. The chain ends with a dangling promise.</p>
+<p class="quiz-wrong">❌ Thinking <code>.then</code> alone "runs the request" for you — without consuming the promise, the JSON is never used.</p>
+</details>
+<details><summary>Q2. What's the bug?  <code>for (const x of arr) { await work(x); }</code> in a <em>non-async</em> function</summary>
+<p class="quiz-correct">✅ <code>await</code> is only valid inside an <code>async</code> function — this throws a SyntaxError. Wrap it in <code>async function(){...}</code>.</p>
+<p class="quiz-wrong">❌ Thinking <code>await</code> works anywhere a promise appears — it needs an <code>async</code> function (or top-level await in modules).</p>
+</details>
+<details><summary>Q3. What's the bug?  <code>Promise.all(fetch(a), fetch(b))</code></summary>
+<p class="quiz-correct">✅ <code>Promise.all</code> takes an <strong>array</strong>: <code>Promise.all([fetch(a), fetch(b)])</code>.</p>
+<p class="quiz-wrong">❌ Passing two arguments like <code>Promise.all(a, b)</code> — only the first argument is used; it must be iterable.</p>
+</details>
+<details><summary>Q4. What's the bug?  <code>new Promise((resolve) =&gt; { work(); });</code></summary>
+<p class="quiz-correct">✅ The promise never calls <code>resolve()</code>/<code>reject()</code> — it stays pending forever. It must resolve/reject once the work finishes.</p>
+<p class="quiz-wrong">❌ Assuming <code>work()</code> settling auto-settles the promise — you must call <code>resolve</code>/<code>reject</code> yourself.</p>
+</details>
+<details><summary>Q5. What's the bug?  <code>catch(async () =&gt; { await x(); })</code> on a promise chain</summary>
+<p class="quiz-correct">✅ You usually want <code>.catch(err =&gt; ...)</code> with a handler that consumes the error. Using an async arrow that returns a promise means the catch itself can fail silently — fixed error handling should be explicit.</p>
+</details>
+</div>
+
+<div class="mood"><span>How was Spot-the-Bug?</span>
+<input type="radio" name="mood-bug2" id="mb2a"><label for="mb2a">😅 tough</label>
+<input type="radio" name="mood-bug2" id="mb2b"><label for="mb2b">🙂 okay</label>
+<input type="radio" name="mood-bug2" id="mb2c"><label for="mb2c">😎 nailed it</label>
+</div>
+
+---
+
+## 🤔 More predict-the-output cards
+
+<div class="why">🚩 <strong>Why it matters:</strong> guessing the output trains the async mental model faster than reading.</div>
+
+<div class="predict">
+<details><summary><code>Promise.resolve(1).then(x =&gt; x + 1)</code> → ?</summary>
+<p class="quiz-correct">✅ 2 (a fulfilled promise with 2)</p>
+</details>
+<details><summary><code>await Promise.allSettled([Promise.resolve(1), Promise.reject(2)])</code> → ?</summary>
+<p class="quiz-correct">✅ <code>[{status:"fulfilled",value:1},{status:"rejected",reason:2}]</code> — allSettled never rejects</p>
+</details>
+<details><summary><code>setTimeout(() =&gt; console.log('b'),0); console.log('a');</code> → ?</summary>
+<p class="quiz-correct">✅ <code>a</code> then <code>b</code> (timers are async)</p>
+</details>
+<details><summary><code>Promise.reject('x').catch(() =&gt; 7)</code> → ?</summary>
+<p class="quiz-correct">✅ fulfilled with 7 (the catch's return value)</p>
+</details>
 </div>
 
 ---

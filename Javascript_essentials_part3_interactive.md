@@ -2,7 +2,7 @@
 
 A quick reference covering the JavaScript you need for **full-stack (MERN) development**: iterables, `Map`/`Set`, generators, regex, **DOM & events** (React), **`fetch` & Web APIs**, and **Node.js core** (Express/Mongoose).
 
-<div class="interactive-note">💡 <strong>Interactive guide — MERN Bridge:</strong> clickable quizzes, flashcards, mood checks, a Map/Set playground, RegExp tester, and Node quick-reference. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser. The standalone <strong>.html edition</strong> adds live progress, spaced-repetition flashcards, and auto-graded challenges.</div>
+<div class="interactive-note">💡 <strong>Interactive guide — MERN Bridge:</strong> clickable quizzes, flashcards, mood checks, predict-the-output cards, Spot-the-Bug quiz, a Map/Set playground, RegExp tester, and Node quick-reference. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser. The standalone <strong>.html edition</strong> adds live progress, spaced-repetition flashcards, and auto-graded challenges.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
   <a href="index.html" style="color:#7dd3fc;font-weight:600;text-decoration:none;">Hub</a>
@@ -31,7 +31,14 @@ h2[id] { scroll-margin-top: 12px; }
 .quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
 .quiz-box summary { cursor: pointer; font-weight: 600; }
 .quiz-correct { color: #276749; font-weight: 700; }
+.quiz-wrong { color: #9b2c2c; }
 .answer { background: #edf2f7; border: 1px dashed #718096; border-radius: 6px; padding: 6px 10px; margin-top: 4px; }
+.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin: 14px 0; }
+.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
+.predict summary { cursor: pointer; font-weight: 600; }
+.spotbug { display: grid; gap: 10px; margin: 14px 0; }
+.spotbug details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 10px 14px; }
+.spotbug summary { cursor: pointer; font-weight: 600; }
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
 .flashcard .back { margin-top: 8px; }
@@ -74,6 +81,9 @@ pre code { background: transparent; color: inherit; font-family: "Cascadia Code"
   .quiz-box details { background: #0f1622; border-color: #2d3748; }
   .flashcard { background: #241d0e; border-color: #975a16; }
   .answer { background: #1a202c; border-color: #4a5568; color: #e2e8f0; }
+  .quiz-wrong { color: #fc8181; }
+  .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .spotbug details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
 }
 </style>
 
@@ -511,6 +521,7 @@ if (!res.ok) throw new Error(`HTTP ${res.status}`);
 <div class="warn"><strong>3. Calling `.json()` twice</strong> — throws "body already read".
 <div class="warn"><strong>4. Blocking the event loop</strong> — sync `fs` in a handler blocks all requests.
 <div class="warn"><strong>5. Mutating React state in place</strong> — copy then set: `setItems([...items, x])`.
+<div class="tip">💡 <strong>Preview — full treatment in Part 4:</strong> this is the classic React immutability trap. Part 4 covers it with live demos and challenges — here it's just the foreshadow.</div>
 <div class="warn"><strong>6. Object where a Set/Map fits better</strong>.
 <div class="warn"><strong>7. Missing `g` flag</strong> — `"a1b2".match(/\d/)` gives only `["1"]`.
 
@@ -735,6 +746,63 @@ function p3iFetchDemo(){
     .catch(function(e){ if(o){ o.style.opacity = "1"; o.textContent = "⚠️ fetch failed: " + e.message + " (offline?)"; } if(s) s.textContent = "❌ Error"; });
 }
 </script>
+
+---
+
+## 🐞 Spot-the-Bug — final boss quiz
+
+<div class="why">🚩 <strong>Why it matters:</strong> catch the classic MERN mistakes before they catch you.</div>
+
+<div class="spotbug">
+<details><summary>Q1. What's the bug?  <code>const notes = Note.find();</code></summary>
+<p class="quiz-correct">✅ Missing <code>await</code> — it's a promise, not data. Use <code>await Note.find()</code>.</p>
+<p class="quiz-wrong">❌ Treating <code>Note.find()</code> like a sync array — without <code>await</code> you get a Query/Promise.</p>
+</details>
+<details><summary>Q2. What's the bug?  <code>setNotes(notes.push(newOne))</code></summary>
+<p class="quiz-correct">✅ <code>push</code> mutates and returns the length — use <code>setNotes([...notes, newOne])</code>.</p>
+<p class="quiz-wrong">❌ Expecting <code>push</code> to return the new array — it returns a number, so React state becomes wrong.</p>
+</details>
+<details><summary>Q3. What's the bug?  React frontend calling <code>http://localhost:3000</code> from a different port</summary>
+<p class="quiz-correct">✅ CORS — add <code>app.use(cors())</code> on the server.</p>
+<p class="quiz-wrong">❌ Fixing it only in React — CORS is enforced by the browser via response headers from the server.</p>
+</details>
+<details><summary>Q4. What's the bug?  <code>fetch(url); const d = await res.json();</code></summary>
+<p class="quiz-correct">✅ Never assigned the fetch result to <code>res</code>, and didn't check <code>res.ok</code>.</p>
+<p class="quiz-wrong">❌ Assuming <code>res</code> magically exists — you need <code>const res = await fetch(url)</code> first.</p>
+</details>
+<details><summary>Q5. What's the bug?  <code>Note.findByIdAndUpdate(id, upd)</code></summary>
+<p class="quiz-correct">✅ Returns the OLD doc — add <code>{ new: true }</code> to get the updated one.</p>
+</details>
+</div>
+
+<div class="mood"><span>How was Spot-the-Bug?</span>
+<input type="radio" name="mood-bug3" id="mb3a"><label for="mb3a">😅 tough</label>
+<input type="radio" name="mood-bug3" id="mb3b"><label for="mb3b">🙂 okay</label>
+<input type="radio" name="mood-bug3" id="mb3c"><label for="mb3c">😎 nailed it</label>
+</div>
+
+---
+
+## 🤔 More predict-the-output cards
+
+<div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the mental model fast.</div>
+
+<div class="predict">
+<details><summary><code>[...new Set([1,1,2,3,3])]</code> → ?</summary>
+<p class="quiz-correct">✅ <code>[1,2,3]</code></p>
+</details>
+<details><summary><code>"A  B!!".toLowerCase().replace(/[^a-z0-9]+/g,"-")</code> → ?</summary>
+<p class="quiz-correct">✅ <code>"a-b-"</code> (after slugify trims edges → <code>"a-b"</code>)</p>
+</details>
+<details><summary><code>new Map().set("a",1).size</code> → ?</summary>
+<p class="quiz-correct">✅ 1</p>
+</details>
+<details><summary><code>/a+/g.test("baaaad")</code> → ?</summary>
+<p class="quiz-correct">✅ true (one or more <code>a</code>)</p>
+</details>
+</div>
+
+---
 
 ## 🎉 Congratulations!
 

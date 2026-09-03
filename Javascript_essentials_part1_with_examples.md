@@ -3306,7 +3306,7 @@ console.log(fixed);                        // [2, 4, 6] ✅
 ```javascript
 const colors = ["red"];
 colors.push("yellow");
-console.log(colors.join(" ")); // "red yellow " — const only locks the binding
+console.log(colors.join(" ")); // "red yellow" — const only locks the binding
 ```
 
 ### 8. `typeof null` is `"object"` (a historical bug)

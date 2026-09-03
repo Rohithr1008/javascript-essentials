@@ -65,6 +65,15 @@ html.font-lg { font-size: 18px; }
 .mark-btn { background: #276749 !important; color: #ffffff !important; }
 .mark-btn.done { background: #4a5568 !important; color: #ffffff !important; }
 .theme-btn { background: #2d3748 !important; color: #ffffff !important; }
+.section-complete-btn { background: #276749 !important; color: #ffffff !important; }
+.copy-btn { background: #2d3748 !important; color: #ffffff !important; }
+/* Self-rating / focus hints — muted gray fails AA on light body */
+[id^="rating-section"] > span { color: #4a5568 !important; }
+.mood input:checked + label {
+  background: #276749 !important;
+  border-color: #276749 !important;
+  color: #ffffff !important;
+}
 #boostBar button[aria-label*="Surprise" i],
 #boostBar1 button[aria-label*="Surprise" i],
 button[onclick*="boostSurprise"] {
@@ -83,31 +92,71 @@ button[onclick*="showSRAnswer"],
 button[onclick*="srKnow"],
 button[onclick*="startSRReview"],
 button[onclick*="srFlip"],
-button[onclick*="srToggleShuffle"] {
+button[onclick*="srToggleShuffle"],
+button[onclick*="srAnswer"],
+button[onclick*="srFlip4"],
+button[onclick*="rateSR"],
+button[onclick*="setSelfRating"] {
   background: #2c5282 !important;
   color: #ffffff !important;
 }
-.tabs label { color: #1a365d !important; border-color: #2b6cb0 !important; }
-.sandbox button, .challenge button, .auth-box button, .mock-api button {
-  background: #1d4ed8 !important;
+/* Tabs: unselected dark-on-light; selected white-on-dark-blue (AA) */
+.tabs label {
+  color: #1a365d !important;
+  border-color: #2b6cb0 !important;
+  background: #ebf8ff !important;
+}
+#tab-arr:checked ~ label[for="tab-arr"],
+#tab-str:checked ~ label[for="tab-str"],
+.tabs input:checked + label {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+.sandbox button, .challenge button, .auth-box button, .mock-api button,
+.interactive-tool button, .chall button {
+  background: #1e40af !important;
   color: #ffffff !important;
 }
 .l-react, .l-express, .l-mongo, .l-node, .l-auth, .l-prod,
 .chip, .chip-h, .chip-p, .chip-s {
   color: #ffffff !important;
 }
-/* Part 1 playground / stepper buttons (inline pastel fills fail AA with white text) */
+/* Part 1 playground / stepper + Part 4 project demo buttons
+   (inline pastel fills fail AA with white text) */
 button[onclick*="checkTruthiness"],
 button[onclick*="runSandbox"],
 button[onclick*="clearSandbox"],
 button[onclick*="elvStep"],
+button[onclick*="elvPlay"],
+button[onclick*="elvReset"],
 button[onclick*="runChallenge"],
 button[onclick*="resetChallenge"],
 button[onclick*="checkAnswer"],
-button[onclick*="runTest"] {
+button[onclick*="runTest"],
+button[onclick*="hoistingPlay"],
+button[onclick*="hoistingReset"],
+button[onclick*="scopeStep"],
+button[onclick*="scopeReset"],
+button[onclick*="memReset"],
+button[onclick*="showOptional"],
+button[onclick*="showCoercion"],
+button[onclick*="filterExercises"],
+button[onclick*="resetCode"],
+button[onclick*="p4Add"],
+button[onclick*="p4Load"],
+button[onclick*="p4Reset"],
+button[onclick*="p4Show"] {
   background: #1e40af !important;
   color: #ffffff !important;
 }
+/* Lesson demo output inside light .chall panels used dark-theme text colors */
+.chall #p4-notes-list,
+.chall #p4-product-view,
+.chall #p4-reviews-list {
+  color: #1a202c !important;
+}
+.chall #p4-notes-log { color: #166534 !important; }
+.chall #p4-reviews-list small { color: #4a5568 !important; }
 .layer-diagram .ld-node { color: #ffffff !important; }
 
 /* Callouts — always set explicit color so dark body text never lands on light panels */
@@ -420,9 +469,9 @@ if (!ok) return res.status(401).json({ error: "Wrong password" });</code></pre>
 // → a long string:  header.payload.signature
 
  JWT = HEADER . PAYLOAD . SIGNATURE
-        (type)    (data)   (tamper-proof seal)</code></pre>
+        (meta)    (data)   (tamper-proof seal)</code></pre>
 <div class="tip">🧪 <strong>See it live:</strong> after Logging in the auth panel, the token shows as 3 coloured chips: <span class="chip chip-h">header</span> · <span class="chip chip-p">payload</span> · <span class="chip chip-s">signature</span>.</div>
-<ul><li><strong>Header</strong> — says "I'm a JWT".</li><li><strong>Payload</strong> — the safe claims like <code>userId</code> (NOT the password).</li><li><strong>Signature</strong> — a cryptographic seal from the server's secret; if anyone edits the token, the seal breaks.</li></ul>
+<ul><li><strong>Header</strong> — says "I'm a JWT" (<code>{ alg: "HS256", typ: "JWT" }</code> — note <code>typ</code>, not <code>type</code>).</li><li><strong>Payload</strong> — the safe claims like <code>userId</code> (NOT the password).</li><li><strong>Signature</strong> — a cryptographic seal from the server's secret; if anyone edits the token, the seal breaks.</li></ul>
 <div class="quiz-box"><h3>🎯 Section 4 quiz</h3><details><summary>How many parts does a JWT have?</summary>
 <p><span class="quiz-wrong">❌ 2</span> — JWT is header.payload.signature</p>
 <p><span class="quiz-correct">✅ 3 — header, payload, signature</span> — 3 — header, payload, signature</p></details><details><summary>Does the payload contain the password?</summary>
@@ -502,7 +551,7 @@ app.get("/api/me", auth, async (req, res) => {
 <p><span class="quiz-correct">✅ Pass `auth` as middleware before the handler</span> — pass `auth` as middleware before the handler</p></details></div>
 <hr>
 <h2 id="8-react-auth">8. Using the token in React</h2><button class="mark-btn" onclick="toggleSection(8)">✅ Mark Complete</button>
-<div class="why">🚩 <strong>Why it matters:</strong> the frontend stores the token (localStorage) and sends it in the request header.</div>
+<div class="why">🚩 <strong>Why it matters:</strong> the frontend stores the token (this guide uses <code>localStorage</code> for a simple first ship) and sends it in the request header.</div>
 <pre><code>async function login(email, password) {
   const res = await fetch("/api/auth/login", {
     method: "POST",
@@ -510,7 +559,7 @@ app.get("/api/me", auth, async (req, res) => {
     body: JSON.stringify({ email, password }),
   });
   const data = await res.json();
-  localStorage.setItem("token", data.token);        // remember the badge
+  localStorage.setItem("token", data.token);        // remember the badge (demo)
   setUser(data.user);
 }
 async function loadMe() {
@@ -521,10 +570,11 @@ async function loadMe() {
   if (res.status === 401) { setUser(null); return; } // expired → log out
   setUser(await res.json());
 }</code></pre>
-<div class="tip">🧠 <strong>memory aid:</strong> login → <code>localStorage.setItem("token", …)</code> → every protected call sends <code>Authorization: Bearer token</code>.</div>
-<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>Where does the frontend store the token?</summary>
-<p><span class="quiz-wrong">❌ In a CSS variable</span> — common pattern is localStorage</p>
-<p><span class="quiz-correct">✅ localStorage</span> — localStorage</p></details><details><summary>What header carries the token?</summary>
+<div class="warn">⚠️ <strong>Caveat:</strong> XSS can steal tokens from <code>localStorage</code>. Production often prefers <strong>httpOnly Secure cookies</strong> (or a BFF). This guide uses <code>localStorage</code> for a simple first-ship demo.</div>
+<div class="tip">🧠 <strong>memory aid:</strong> login → <code>localStorage.setItem("token", …)</code> (demo) → every protected call sends <code>Authorization: Bearer token</code>. Remember the XSS caveat.</div>
+<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>Where does the frontend store the token (this guide's simple demo)?</summary>
+<p><span class="quiz-wrong">❌ In a CSS variable</span> — not where tokens live</p>
+<p><span class="quiz-correct">✅ localStorage (common simple demo / this guide)</span> — first-ship demo; XSS can steal it — production often prefers httpOnly Secure cookies</p></details><details><summary>What header carries the token?</summary>
 <p><span class="quiz-wrong">❌ X-Password</span> — standard is Authorization Bearer</p>
 <p><span class="quiz-correct">✅ Authorization: Bearer &lt;token&gt;</span> — Authorization: Bearer <token></p></details><details><summary>What if /api/me returns 401?</summary>
 <p><span class="quiz-wrong">❌ Ignore it</span> — token is dead — log out</p>
@@ -608,12 +658,13 @@ fetch(import.meta.env.VITE_API_URL + "/api/notes");
 <div class="why">🚩 <strong>Why it matters:</strong> a test is just code that checks your code. It catches regressions before users do.</div>
 <pre><code>// A test = describe what should happen + assert it
 // Example (Vitest / Jest style):
-function hashPassword(pw){ return pw.split("").reverse().join(""); } // fake demo
-test("hashPassword scrambles", () => {
-  expect(hashPassword("abc")).toBe("cba");
-  expect(hashPassword("abc")).not.toBe("abc");
+// TOY ONLY — not bcrypt. Real apps: bcrypt.hash / bcrypt.compare
+function toyHash(pw){ return "h$" + pw.length + "$" + pw.charCodeAt(0); }
+test("toyHash never returns the plain password", () => {
+  expect(toyHash("abc")).not.toBe("abc");
+  expect(toyHash("abc")).toBe(toyHash("abc"));
 });</code></pre>
-<p><strong>Mental model:</strong> write a tiny function that calls your real function and asserts the result. If the function breaks later, the test turns red and tells you.</p>
+<p><strong>Mental model:</strong> write a tiny function that calls your real function and asserts the result. If the function breaks later, the test turns red and tells you. The toy above only teaches invariants — never ship it as a real hash.</p>
 <div class="quiz-box"><h3>🎯 Section 13 quiz</h3><details><summary>What does a test do?</summary>
 <p><span class="quiz-wrong">❌ Deploys the app</span> — tests assert expected behavior</p>
 <p><span class="quiz-correct">✅ Asserts your code behaves as expected, catching regressions</span> — asserts behavior and catches regressions</p></details><details><summary>When a test "goes red", what does it mean?</summary>
@@ -665,6 +716,18 @@ function App() {
 <h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
 <div class="why">🚩 <strong>Why it matters:</strong> these pure functions mirror real auth/deploy logic — safe place to practice, no install.</div>
 
+<div class="quiz-box"><h3>🎬 Scenario check (warm-up)</h3>
+<details><summary>DB dump shows <code>password: "secret123"</code> plain. What went wrong?</summary>
+<p><span class="quiz-wrong">❌ Fine if the DB is private</span> — dumps and breaches happen; plain text is never OK</p>
+<p><span class="quiz-correct">✅ Never store plain passwords — hash with bcrypt first</span> — <code>bcrypt.hash(password, 10)</code> before save</p></details>
+<details><summary><code>const SECRET = "my-secret"</code> hard-coded in source. Risk?</summary>
+<p><span class="quiz-wrong">❌ Only a problem if the file is public</span> — repos leak; anyone with the secret can forge tokens</p>
+<p><span class="quiz-correct">✅ Use <code>process.env.JWT_SECRET</code>; never commit secrets</span> — keep <code>.env</code> out of git</p></details>
+<details><summary>GET /api/me with no Authorization header → ?</summary>
+<p><span class="quiz-wrong">❌ 200 with empty user</span> — protected routes must reject</p>
+<p><span class="quiz-correct">✅ 401 Unauthorized</span> — auth middleware blocks before the handler</p></details>
+</div>
+
 <div class="challenge"><h3>C1 — neverPlainText</h3> <span class="badge b-time">2m</span> <span class="badge b-green">🟢</span><p>Return <code>true</code> if the stored value is a HASH (contains the marker <code>$</code>, as our demo hashes do), <code>false</code> if it's a plain password.</p>
 <textarea id="chal1" rows="3">function neverPlainText(stored) {
   // A hash contains a "$" marker; a plain password (e.g. "secret") does not.
@@ -698,7 +761,7 @@ function App() {
 
 <h2 id="spot-bug5">Spot-the-Bug - final boss quiz</h2><div class="why"><strong>Why it matters:</strong> catch the classic auth mistakes before they leak data.</div><div class="spotbug"><details><summary>Q1. Storing <code>user.password = req.body.password</code> (plain)?</summary><p class="quiz-correct">Never - always store <code>bcrypt.hash(password, 10)</code>.</p></details><details><summary>Q2. <code>jwt.sign({id}, SECRET)</code> - but SECRET hard-coded in code?</summary><p class="quiz-correct">Use an env var (<code>process.env.JWT_SECRET</code>), never commit it.</p></details><details><summary>Q3. Protected route not checking the Authorization header?</summary><p class="quiz-correct">Add middleware that verifies the Bearer token first, else 401.</p></details><details><summary>Q4. Putting the user's password in the JWT payload?</summary><p class="quiz-correct">Never - payload holds only safe claims like userId/email.</p></details></div><div class="mood"><span>How was Spot-the-Bug?</span><input type="radio" id="mood-bug-1" name="mood-bug5"><label for="mood-bug-1">😅 tough</label><input type="radio" id="mood-bug-2" name="mood-bug5"><label for="mood-bug-2">🙂 okay</label><input type="radio" id="mood-bug-3" name="mood-bug5"><label for="mood-bug-3">😎 nailed it</label></div><hr></div><hr><h2 id="predict-more5">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the auth mental model fast.</div><div class="predict"><details><summary><code>bcrypt.compare("pw", savedHash)</code> on a correct password?</summary><p class="quiz-correct"><code>true</code> (resolves to true)</p></details><details><summary>A signed JWT <code>token.split(".").length</code>?</summary><p class="quiz-correct"><code>3</code> — header, payload, signature</p></details><details><summary><code>localStorage.getItem("token")</code> right after a successful login?</summary><p class="quiz-correct">the token string (if <code>setItem</code> was called)</p></details><details><summary>Hitting a protected route with NO Authorization header → status?</summary><p class="quiz-correct"><code>401</code></p></details><details><summary>Can a hacker read a password from <code>bcrypt.hash("pw", 10)</code>?</summary><p class="quiz-correct">no — it's a one-way hash, never plain text</p></details></div><hr><h2 id="certificate5">🏆 Certificate of Completion</h2><div class="certificate" id="certPanel5"><h2>🎓 Certificate of Completion</h2><p>This certifies that <span class="big">You</span> have completed</p><p class="big">JavaScript Essentials Part 5 (Production)</p><p id="certStatus5">Complete <strong>all 16 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p></div>
 
-<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 5 (Production: Auth + Deployment). You can now explain auth &amp; deployment and are ready to ship a real MERN app.<br><span style="color:#a0aec0;font-size:13px;">Next: pick one real project, add auth, and deploy it to Render + Vercel + Atlas.</span></div>
+<div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 5 (Production: Auth + Deployment). You can now explain auth &amp; deployment and are ready to ship a real MERN app.<br><span style="color:#a0aec0;font-size:13px;">Next: pick one real project, add auth, and deploy it to Render + Vercel + Atlas.</span><br><span style="color:#a0aec0;font-size:13px;">Beyond this first ship (not covered here): httpOnly cookies or a BFF, refresh tokens, rate limits, HTTPS headers, real CI — see the §8 localStorage caveat.</span></div>
 
 <div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
 <script>
@@ -907,7 +970,7 @@ var srCards5=[
   {q:"How many parts does a JWT have?",a:"3 — header, payload, signature",lvl:1},
   {q:"What header carries the token?",a:"Authorization: Bearer <token>",lvl:1},
   {q:"What does a protected route return without a token?",a:"401",lvl:1},
-  {q:"Where does the React app store the token?",a:"localStorage",lvl:1},
+  {q:"Where does the React app store the token?",a:"localStorage (demo; XSS risk — prod often uses httpOnly cookies)",lvl:1},
   {q:"Where do production secrets live?",a:"Environment variables (.env) — never hard-coded",lvl:1},
   {q:"Where does the app's database live in production?",a:"MongoDB Atlas (cloud)",lvl:1},
   {q:"After deploying the frontend, what must you update on the backend?",a:"CORS to allow the new frontend origin",lvl:1},
@@ -947,7 +1010,7 @@ function authMakeToken(userId){
   // base64url: no "+", "/", or "=", and crucially NO dots — so a JWT is exactly 3 parts
   function b64url(o){ var s; try{ s=btoa(JSON.stringify(o)); }catch(e){ s=Buffer.from(JSON.stringify(o)).toString("base64"); }
     return s.replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_"); }
-  var header=b64url({alg:"HS256",type:"JWT"});
+  var header=b64url({alg:"HS256",typ:"JWT"});
   var payload=b64url({userId:userId,exp:Math.floor(Date.now()/1000)+604800});
   // A REAL signature is the HMAC output, base64url-encoded (dot-free). Demo uses a hex-style digest.
   var sig=authDigitHash("sig:"+userId);   // e.g. "h$1f2e3$..." — no dots

@@ -470,7 +470,7 @@ function App() {
   return (
     <div>
       <input value={text} onChange={(e) => setText(e.target.value)} />
-      <button onClick={() => setNotes([...notes, { text }])}>Add</button>
+      <button onClick={() => setNotes((prev) => [...prev, { text }])}>Add</button>
       <ul>{notes.map((n) => <NoteItem key={n._id} note={n} />)}</ul>
     </div>
   );
@@ -530,7 +530,7 @@ async function addNote(text) {
     body: JSON.stringify({ text }),
   });
   const saved = await res.json();
-  setNotes([saved, ...notes]);       // add the returned note to the list
+  setNotes((prev) => [saved, ...prev]);  // functional updater — safest after async
 }
 ```
 
@@ -552,7 +552,7 @@ setSomething(data);                       // 4. update state → React re-render
 
 ### 🧪 Quiz
 1. What does the `save` response give you back on POST? → the created note (`saved`)
-2. Why do we call `setNotes([...])` after? → to trigger a React re-render with the new data
+2. Why do we call `setNotes((prev) => [...])` after? → to trigger a React re-render with the new data
 3. Which fetch option sends a JSON body? → `method: "POST"`, `headers`, `body: JSON.stringify(...)`
 4. What's the one re-used 4-step fetch pattern? → fetch → check `res.ok` → `.json()` → setState
 
@@ -588,7 +588,7 @@ function App() {
       body: JSON.stringify({ text }),
     });
     const saved = await res.json();
-    setNotes([saved, ...notes]);
+    setNotes((prev) => [saved, ...prev]);
     setText("");
   }
 
@@ -624,7 +624,7 @@ export default App;
 1. `addNote()` runs → `fetch POST /api/notes` 🟣→🟢
 2. Express `Note.create(req.body)` saves it in MongoDB 🟢→🟡
 3. Express returns `201` + saved note 🟢→🟣
-4. `setNotes([saved, ...notes])` updates state → React re-renders, the note appears 🟣
+4. `setNotes((prev) => [saved, ...prev])` updates state → React re-renders, the note appears 🟣
 
 > 🧠 **ADHD-friendly "I did this!" prompt:** this is the minimum viable full-stack app. If you can make this Notes app work, you understand MERN. Everything else (Review apps, auth, more features) is the same loop.
 
@@ -902,8 +902,8 @@ Symptom: "No 'Access-Control-Allow-Origin' header". Fix: `app.use(cors())` on th
 
 ### 🐞 4. Mutating state directly in React
 ```javascript
-notes.push(newNote);                  // ❌ React won't re-render
-setNotes([...notes, newNote]);        // ✅ new array → re-render
+notes.push(newNote);                          // ❌ React won't re-render
+setNotes((prev) => [...prev, newNote]);       // ✅ new array via functional updater
 ```
 
 ### 🐞 5. `req.body` is empty / undefined
@@ -950,12 +950,17 @@ app.____("/api/notes", (req, res) => {
 **E3 — Which Mongoose method?**
 - create → `Note.create` · read all → `Note.find` · read one → `Note.findById` · update → `Note.findByIdAndUpdate` · delete → `Note.findByIdAndDelete`
 
-**E4 — React state.** Write the line that updates `notes` to add `newNote` (immediately, or more commonly from a fetch). → `setNotes([newNote, ...notes])`
+**E4 — React state.** Write the line that updates `notes` to add `newNote` (immediately, or more commonly from a fetch). → `setNotes((prev) => [newNote, ...prev])`
 
 **E5 — TypeScript interface.** Write an interface `Note` with `_id: string`, `text: string`. → `interface Note { _id: string; text: string; }`
 
 ### 🏆 Auto-graded challenges (5) — write pure functions, run in the app
 These mirror real MERN tasks but don't need a running server — the study app grades them instantly.
+
+**🎬 Scenario check** (think before coding):
+- Missing CORS between React (:5173) and Express (:5000) → fix on the **server** with `cors()`.
+- Wrong status after POST create → prefer **201**, not 200.
+- `notes.push(x); setNotes(notes)` → mutates in place; use a **new array** reference.
 
 **C1 — `makeProduct`** — a function that builds a product object from `(name, price)`.
 ```javascript
@@ -966,8 +971,10 @@ These mirror real MERN tasks but don't need a running server — the study app g
 
 **C2 — `addReview`** — add a review to a product's `reviews` array (immutably).
 ```javascript
-// addReview({reviews:[], rating:5, comment:"Great"}, {rating:5, comment:"Great"})
-//   → product.reviews has length 1
+// product first, then the review object:
+// const product = { name: "Shirt", price: 19, reviews: [] };
+// addReview(product, { rating: 5, comment: "Great" })
+//   → new product whose reviews has length 1 (original unchanged)
 ```
 
 **C3 — `routePath`** — given `"/api/products/:id/reviews"` and id `"abc"`, return the filled path.
@@ -1001,7 +1008,7 @@ These mirror real MERN tasks but don't need a running server — the study app g
 - **E1:** a) `POST` b) `GET` c) `DELETE` d) `PUT`
 - **E2:** `app.get("/api/notes", (req,res) => { res.json({ ok: true }); })`
 - **E3:** create→`Note.create`, read all→`Note.find`, read one→`Note.findById`, update→`Note.findByIdAndUpdate`, delete→`Note.findByIdAndDelete`
-- **E4:** `setNotes([newNote, ...notes])`
+- **E4:** `setNotes((prev) => [newNote, ...prev])`
 - **E5:** `interface Note { _id: string; text: string; }`
 
 ### Challenges
@@ -1072,8 +1079,8 @@ You've completed **JavaScript Essentials — Part 4 (MERN Foundations)**. You ca
 - Wire `fetch` from React to an Express API with CORS.
 - Read and write basic TypeScript.
 
-This completes the 4-part series: **Core language → Async/OOP → MERN Bridge → Build MERN apps.**
+This completes Part 4 of the series: **Core language → Async/OOP → MERN Bridge → Build MERN apps.**
 
-**Next step:** open `Javascript_essentials_part4_study_app.html` to click through a working (mock) MERN app and pass the auto-graded challenges — no install needed. Then run the real thing with the quick-start commands when you're ready to set up Node + MongoDB locally. 🚀
+**Next step:** open [Part 5 — Production: Auth + Deployment](Javascript_essentials_part5_with_examples.md) (or `Javascript_essentials_part5_study_app.html` for the live auth mock). Then run the real thing with the quick-start commands when you're ready to set up Node + MongoDB locally. 🚀
 
 <!--P4-END-->

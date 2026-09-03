@@ -2,7 +2,7 @@
 
 Extend **Part 4** from "works on my laptop" to the real world: real user accounts (**authentication**) and putting your app on the internet (**deployment**). Beginner-friendly, follow-along.
 
-<div class="interactive-note">💡 <strong>Interactive guide — click to reveal, flip, and run:</strong> quizzes, flashcards, mood checks, and a <strong>live mock auth flow</strong> (register → hash → login → JWT → protected route). Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds progress, SRS, Focus Mode, and auto-graded challenges.</div>
+<div class="interactive-note">💡 <strong>Interactive guide — click to reveal, flip, and run:</strong> quizzes, flashcards, mood checks, Spot-the-Bug, predict-the-output cards, and a <strong>live mock auth flow</strong> (register → hash → login → JWT → protected route). Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds progress, SRS, Focus Mode, and auto-graded challenges.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
   <a href="index.html" style="color:#7dd3fc;text-decoration:none;">Hub</a>
@@ -42,6 +42,13 @@ h2[id] { scroll-margin-top: 12px; }
 .quiz-box details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:8px 0; }
 .quiz-box summary { cursor:pointer; font-weight:600; }
 .quiz-correct { color:#276749; font-weight:700; }
+.quiz-wrong { color:#9b2c2c; }
+.predict { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:10px; margin:14px 0; }
+.predict details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; }
+.predict summary { cursor:pointer; font-weight:600; }
+.spotbug { display:grid; gap:10px; margin:14px 0; }
+.spotbug details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:10px 14px; }
+.spotbug summary { cursor:pointer; font-weight:600; }
 .flashcard { background:#fffbeb; border:2px solid #d69e2e; border-radius:10px; padding:10px 14px; margin:10px 0; }
 .flashcard summary { cursor:pointer; font-weight:700; color:#744210; }
 .flashcard .back { margin-top:8px; }
@@ -67,6 +74,9 @@ body.focus-mode .mood { display:none; }
   .why { background:#1c2333; border-left-color:#6366f1; color:#dbe4ef; }
   .quiz-box { background:#141c28; border-color:#2b6cb0; color:#e2e8f0; }
   .quiz-box h3 { color:#90cdf4; } .quiz-box details { background:#0f1622; border-color:#2d3748; }
+  .quiz-wrong { color:#fc8181; }
+  .predict details { background:#0f1622; border-color:#2d3748; color:#e2e8f0; }
+  .spotbug details { background:#0f1622; border-color:#2d3748; color:#e2e8f0; }
   .flashcard { background:#241d0e; border-color:#975a16; }
   code { background:#1f2937; color:#e2e8f0; }
   .layer-legend { background:#1a202c; border-color:#2d3748; }
@@ -157,7 +167,7 @@ if (!ok) return res.status(401).json({ error: "Wrong password" });
 const token = jwt.sign({ userId: user._id, email: user.email }, SECRET, { expiresIn: "7d" });
 //  header . payload . signature
 ```
-- **header** — "I'm a JWT" · **payload** — safe claims (userId/email, NEVER password) · **signature** — a seal; editing the token breaks it.
+- **header** — "I'm a JWT" (`{ alg: "HS256", typ: "JWT" }` — note `typ`, not `type`) · **payload** — safe claims (userId/email, NEVER password) · **signature** — a seal; editing the token breaks it.
 
 <div class="flashcard"><details><summary>🃏 What 3 parts make a JWT?</summary><div class="back">header · payload · signature</div></details></div>
 
@@ -228,7 +238,7 @@ app.get("/api/me", auth, async (req, res) => {
 ---
 <h2 id="8-token-in-react">8. Token in React</h2>
 
-<div class="why">🚩 **Why it matters:** the frontend stores the token (localStorage) and sends it in a header.
+<div class="why">🚩 **Why it matters:** the frontend stores the token (this guide uses `localStorage` for a simple first ship) and sends it in a header.
 
 ```javascript
 async function login(email, password) {
@@ -236,7 +246,7 @@ async function login(email, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }) });
   const data = await res.json();
-  localStorage.setItem("token", data.token);
+  localStorage.setItem("token", data.token);   // demo storage
   setUser(data.user);
 }
 async function loadMe() {
@@ -246,9 +256,11 @@ async function loadMe() {
   setUser(await res.json());
 }
 ```
-**memory aid:** login → store token → send `Authorization: Bearer token`.
+<div class="warn">⚠️ **Caveat:** XSS can steal tokens from `localStorage`. Production often prefers **httpOnly Secure cookies** (or a BFF). This guide uses `localStorage` for a simple first-ship demo.</div>
 
-<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>Where does the frontend store the token?</summary><div class="answer"><span class="quiz-correct">localStorage</span></div></details><details><summary>What header carries it?</summary><div class="answer"><span class="quiz-correct">Authorization: Bearer &lt;token&gt;</span></div></details><details><summary>If /api/me returns 401?</summary><div class="answer"><span class="quiz-correct">Log the user out (token expired)</span></div></details></div>
+**memory aid:** login → store token in `localStorage` (demo) → send `Authorization: Bearer token`. Remember the XSS caveat.
+
+<div class="quiz-box"><h3>🎯 Section 8 quiz</h3><details><summary>Where does the frontend store the token (this guide's simple demo)?</summary><div class="answer"><span class="quiz-correct">localStorage — common first-ship demo; production often prefers httpOnly cookies (XSS can steal localStorage tokens)</span></div></details><details><summary>What header carries it?</summary><div class="answer"><span class="quiz-correct">Authorization: Bearer &lt;token&gt;</span></div></details><details><summary>If /api/me returns 401?</summary><div class="answer"><span class="quiz-correct">Log the user out (token expired)</span></div></details></div>
 
 ---
 
@@ -333,9 +345,11 @@ fetch(import.meta.env.VITE_API_URL + "/api/notes");   // NOT localhost
 <div class="why">🚩 **Why it matters:** a test is code that checks your code — it catches regressions before users do.
 
 ```javascript
-test("hashPassword scrambles", () => {
-  expect(hashPassword("abc")).toBe("cba");
-  expect(hashPassword("abc")).not.toBe("abc");
+// TOY ONLY — not bcrypt. Real apps: bcrypt.hash / bcrypt.compare
+function toyHash(pw) { return "h$" + pw.length + "$" + pw.charCodeAt(0); }
+test("toyHash never returns the plain password", () => {
+  expect(toyHash("abc")).not.toBe("abc");
+  expect(toyHash("abc")).toBe(toyHash("abc"));
 });
 ```
 
@@ -384,6 +398,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 <div class="chall">🏆 <strong>5 auto-graded challenges live in the study app</strong> — C1 neverPlainText · C2 tokenPayload · C3 attachAuthHeader · C4 authMiddleware · C5 deployOrder. Each is a tiny pure function you run instantly, no install. Solutions in §17.</div>
 
+<div class="quiz-box"><h3>🎬 Scenario check (before you code)</h3>
+<details><summary>DB dump shows <code>password: "secret123"</code> in plain text. What went wrong?</summary><div class="answer"><span class="quiz-correct">Never store plain passwords — hash with <code>bcrypt.hash(password, 10)</code> before save.</span></div></details>
+<details><summary><code>const SECRET = "my-secret-in-source"</code> shipped in the repo. Risk?</summary><div class="answer"><span class="quiz-correct">Anyone with the repo can forge JWTs. Use <code>process.env.JWT_SECRET</code> and keep <code>.env</code> out of git.</span></div></details>
+<details><summary>GET /api/me with no Authorization header — what should happen?</summary><div class="answer"><span class="quiz-correct">401 Unauthorized — auth middleware blocks before the route runs.</span></div></details>
+</div>
+
 <div class="mood"><span>After the practice: </span><input type="radio" name="m5b" id="m5b1"><label for="m5b1">😕 tricky</label><input type="radio" name="m5b" id="m5b2"><label for="m5b2">👍 ok</label><input type="radio" name="m5b" id="m5b3"><label for="m5b3">😎 easy</label></div>
 
 ---
@@ -405,11 +425,69 @@ function authMiddleware(req){ return (req.headers && req.headers.authorization) 
 function deployOrder(steps){ return steps.slice().sort((a,b) => a.sort - b.sort); }
 ```
 
-**Quick recap:** S1 production = app online · S2 authn=WHO, authz=WHAT · S3 hash with bcrypt · S4 JWT=header·payload·signature · S5 register hashes → 201 · S6 login compares → JWT · S7 auth middleware → 401 or next() · S8 token in localStorage, Bearer header · S9 register→hash→login→JWT→protected · S10 host backend+frontend+db · S11 Render+env+Atlas · S12 Vercel+VITE_API_URL+CORS · S13 test catches regressions · S14 Router maps URL→page · S15 hash, env, CORS, no localhost, no password in JWT
+**Quick recap:** S1 production = app online · S2 authn=WHO, authz=WHAT · S3 hash with bcrypt · S4 JWT=header·payload·signature · S5 register hashes → 201 · S6 login compares → JWT · S7 auth middleware → 401 or next() · S8 this guide: token in localStorage + Bearer header (prod often prefers httpOnly cookies) · S9 register→hash→login→JWT→protected · S10 host backend+frontend+db · S11 Render+env+Atlas · S12 Vercel+VITE_API_URL+CORS · S13 test catches regressions · S14 Router maps URL→page · S15 hash, env, CORS, no localhost, no password in JWT
+
+---
+
+## 🐞 Spot-the-Bug — final boss quiz
+
+<div class="why">🚩 <strong>Why it matters:</strong> catch the classic auth mistakes before they leak data.</div>
+
+<div class="spotbug">
+<details><summary>Q1. Storing <code>user.password = req.body.password</code> (plain)?</summary>
+<p class="quiz-correct">✅ Never — always store <code>bcrypt.hash(password, 10)</code>.</p>
+<p class="quiz-wrong">❌ Saving the plain password "just for now" — if the DB leaks, every account is compromised.</p>
+</details>
+<details><summary>Q2. <code>jwt.sign({id}, SECRET)</code> — but SECRET hard-coded in code?</summary>
+<p class="quiz-correct">✅ Use an env var (<code>process.env.JWT_SECRET</code>), never commit it.</p>
+<p class="quiz-wrong">❌ Shipping secrets in source — anyone with the repo can forge tokens.</p>
+</details>
+<details><summary>Q3. Protected route not checking the Authorization header?</summary>
+<p class="quiz-correct">✅ Add middleware that verifies the Bearer token first, else 401.</p>
+<p class="quiz-wrong">❌ Trusting that "only logged-in users know the URL" — without middleware, anyone can hit the route.</p>
+</details>
+<details><summary>Q4. Putting the user's password in the JWT payload?</summary>
+<p class="quiz-correct">✅ Never — payload holds only safe claims like userId/email.</p>
+</details>
+</div>
+
+<div class="mood"><span>How was Spot-the-Bug?</span>
+<input type="radio" name="mood-bug5" id="mb5a"><label for="mb5a">😅 tough</label>
+<input type="radio" name="mood-bug5" id="mb5b"><label for="mb5b">🙂 okay</label>
+<input type="radio" name="mood-bug5" id="mb5c"><label for="mb5c">😎 nailed it</label>
+</div>
+
+---
+
+## 🤔 More predict-the-output cards
+
+<div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the auth mental model fast.</div>
+
+<div class="predict">
+<details><summary><code>bcrypt.compare("pw", savedHash)</code> on a correct password?</summary>
+<p class="quiz-correct">✅ <code>true</code> (resolves to true)</p>
+</details>
+<details><summary>A signed JWT <code>token.split(".").length</code>?</summary>
+<p class="quiz-correct">✅ <code>3</code> — header, payload, signature</p>
+</details>
+<details><summary><code>localStorage.getItem("token")</code> right after a successful login?</summary>
+<p class="quiz-correct">✅ the token string (if <code>setItem</code> was called)</p>
+</details>
+<details><summary>Hitting a protected route with NO Authorization header → status?</summary>
+<p class="quiz-correct">✅ <code>401</code></p>
+</details>
+<details><summary>Can a hacker read a password from <code>bcrypt.hash("pw", 10)</code>?</summary>
+<p class="quiz-correct">✅ no — it's a one-way hash, never plain text</p>
+</details>
+</div>
+
+---
 
 ## 🎉 Congratulations!
 
 You've completed **JavaScript Essentials — Part 5 (Production: Auth + Deployment)**. You can now build a secured login flow and deploy a real MERN app. This completes the 5-part series → **you're ready to ship.** 🚀
+
+<div class="tip">💡 **Beyond this first ship** (not in scope here): httpOnly Secure cookies or a BFF, refresh tokens, rate limits, HTTPS security headers, and real CI — next steps after this part. Ties to the §8 localStorage caveat.</div>
 
 <div class="totop"><a href="#table-of-contents">⬆ Back to top</a></div>
 

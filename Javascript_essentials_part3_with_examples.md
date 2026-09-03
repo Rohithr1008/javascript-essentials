@@ -554,6 +554,8 @@ app.get("/data", async (req, res) => res.send(await fs.readFile("big.txt", "utf8
 
 **5. Mutating state objects directly (React)**
 
+> 💡 **Preview (full treatment in Part 4):** this is the classic React immutability trap. Part 4 covers it with live demos and challenges — here it's just the foreshadow.
+
 ```javascript
 // ❌ mutates the original array/object React tracks
 items.push(newItem);

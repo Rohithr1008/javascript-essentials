@@ -2,7 +2,7 @@
 
 A beginner-friendly guide that turns your JS (Parts 1–3) into real websites. Two full projects: **Notes app** and **Product Store with Reviews**. Layered & colour-coded for easy skimming.
 
-<div class="interactive-note">💡 <strong>Interactive guide — click to reveal, flip, and run:</strong> clickable quizzes, flashcards, mood checks, and live in-page demos (a mock MERN server + two working mini-apps). Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds progress tracking, spaced-repetition, Focus Mode, and auto-graded challenges.</div>
+<div class="interactive-note">💡 <strong>Interactive guide — click to reveal, flip, and run:</strong> clickable quizzes, flashcards, mood checks, Spot-the-Bug, predict-the-output cards, and live in-page demos (a mock MERN server + two working mini-apps). Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds progress tracking, spaced-repetition, Focus Mode, and auto-graded challenges.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
   <a href="index.html" style="color:#7dd3fc;font-weight:600;text-decoration:none;">Hub</a>
@@ -56,6 +56,13 @@ h2[id] { scroll-margin-top: 12px; }
 .quiz-box details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; margin:8px 0; }
 .quiz-box summary { cursor:pointer; font-weight:600; }
 .quiz-correct { color:#276749; font-weight:700; }
+.quiz-wrong { color:#9b2c2c; }
+.predict { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:10px; margin:14px 0; }
+.predict details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; }
+.predict summary { cursor:pointer; font-weight:600; }
+.spotbug { display:grid; gap:10px; margin:14px 0; }
+.spotbug details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:10px 14px; }
+.spotbug summary { cursor:pointer; font-weight:600; }
 .flashcard { background:#fffbeb; border:2px solid #d69e2e; border-radius:10px; padding:10px 14px; margin:10px 0; }
 .flashcard summary { cursor:pointer; font-weight:700; color:#744210; }
 .flashcard .back { margin-top:8px; }
@@ -85,6 +92,9 @@ body.focus-mode .mood { display:none; }
   .why { background:#1c2333; border-left-color:#6366f1; color:#dbe4ef; }
   .quiz-box { background:#141c28; border-color:#2b6cb0; color:#e2e8f0; }
   .quiz-box h3 { color:#90cdf4; } .quiz-box details { background:#0f1622; border-color:#2d3748; }
+  .quiz-wrong { color:#fc8181; }
+  .predict details { background:#0f1622; border-color:#2d3748; color:#e2e8f0; }
+  .spotbug details { background:#0f1622; border-color:#2d3748; color:#e2e8f0; }
   .flashcard { background:#241d0e; border-color:#975a16; }
   code { background:#1f2937; color:#e2e8f0; }
   .layer-legend { background:#1a202c; border-color:#2d3748; }
@@ -345,7 +355,7 @@ async function addNote(text) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
-  setNotes([await res.json(), ...notes]);
+  setNotes((prev) => [await res.json(), ...prev]);
 }
 ```
 
@@ -383,7 +393,7 @@ function App() {
   async function add(){
     const res = await fetch("/api/notes", { method:"POST",
       headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ text }) });
-    setNotes([await res.json(), ...notes]);
+    setNotes((prev) => [await res.json(), ...prev]);
   }
 }
 ```
@@ -510,8 +520,8 @@ const notes = await Note.find();    // ✅
 const d = await res.json();         // ❌ confusing on 404/500
 if (!res.ok) throw new Error(...);  // ✅ check first
 
-notes.push(x); setNotes(notes);     // ❌ no re-render
-setNotes([...notes, x]);            // ✅ new array
+notes.push(x); setNotes(notes);              // ❌ no re-render
+setNotes((prev) => [...prev, x]);            // ✅ new array via functional updater
 
 Note.findByIdAndUpdate(id, upd);                   // ❌ returns OLD doc
 Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ returns NEW
@@ -532,10 +542,16 @@ Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ returns NEW
 - **E1.** Name the verb: create a note → POST · fetch all → GET · delete → DELETE · update → PUT
 - **E2.** Fill the blanks: `app.____("/api/notes", (req,res) => res.____({ok:true}))` → `get`, `json`
 - **E3.** Which Mongoose method for create / read all / update? → `create` / `find` / `findByIdAndUpdate`
-- **E4.** React: line to add `newNote` to `notes` → `setNotes([newNote, ...notes])`
+- **E4.** React: line to add `newNote` to `notes` → `setNotes((prev) => [newNote, ...prev])`
 - **E5.** TS interface `Note` with `_id:string, text:string` → `interface Note { _id:string; text:string; }`
 
 <div class="chall">🏆 <strong>6 auto-graded challenges live in the study app</strong> — C1 makeProduct, C2 addReview, C3 routePath, C4 pickStatus, C5 avgRating, C6 validateNote. Each is a tiny pure function you can type and run instantly (no install). Full solutions are in Section 17.</div>
+
+<div class="quiz-box"><h3>🎬 Scenario check (before you code)</h3>
+<details><summary>React on :5173 can't reach Express on :5000 — browser says CORS. Where do you fix it?</summary><div class="answer"><span class="quiz-correct">On the server: <code>app.use(cors())</code> (or allow that origin). CORS is a browser security rule enforced via response headers — not a React bug.</span></div></details>
+<details><summary><code>notes.push(x); setNotes(notes);</code> — UI doesn't update. Why?</summary><div class="answer"><span class="quiz-correct">You mutated the same array React already knows. Use a new reference: <code>setNotes([...notes, x])</code> or <code>setNotes(prev =&gt; [...prev, x])</code>.</span></div></details>
+<details><summary>POST created a note but you returned status 200. What's the better status?</summary><div class="answer"><span class="quiz-correct">201 Created — signals a new resource was made (GET stays 200; DELETE often 204).</span></div></details>
+</div>
 
 <div class="mood"><span>After the practice: </span><input type="radio" name="mood2" id="m2a"><label for="m2a">😕 tricky</label><input type="radio" name="mood2" id="m2b"><label for="m2b">👍 ok</label><input type="radio" name="mood2" id="m2c"><label for="m2c">😎 easy</label></div>
 
@@ -562,9 +578,67 @@ function validateNote(note){ if(!note.text || note.text.trim()==="") return {val
 
 **Quick recap:** S1 React→Express→MongoDB · S2 npm install · S3 5-step loop · S4 req/res · S5 POST create, GET read, PUT update, DELETE delete; 201 created, 404 missing · S6 schema=shape; create/find/findById/update/delete · S7 Notes API = cors + json + model + 5 routes · S8 component→JSX; useState re-renders · S9 fetch→res.ok→json→setState · S10 load on mount, POST add, DELETE filter · S11 cors() on server · S12 process.env, path.join, fs, http · S13 TS = JS+types, interface, .ts/.tsx · S14 ref+populate+nested routes · S15 await, res.ok, immutable, {new:true}
 
+---
+
+## 🐞 Spot-the-Bug — final boss quiz
+
+<div class="why">🚩 <strong>Why it matters:</strong> catch the classic MERN mistakes before they catch you.</div>
+
+<div class="spotbug">
+<details><summary>Q1. <code>const notes = Note.find();</code> — what's the bug?</summary>
+<p class="quiz-correct">✅ Missing <code>await</code> — it's a promise, not the data array.</p>
+<p class="quiz-wrong">❌ Treating the return value as a ready array — without <code>await</code> you hold a pending Query/Promise.</p>
+</details>
+<details><summary>Q2. <code>express.json()</code> left out, but you read <code>req.body</code>?</summary>
+<p class="quiz-correct">✅ <code>req.body</code> will be <code>undefined</code> — add the JSON middleware.</p>
+<p class="quiz-wrong">❌ Blaming the client JSON — Express won't parse the body until <code>app.use(express.json())</code>.</p>
+</details>
+<details><summary>Q3. React on port 5173 calls <code>localhost:3000</code> — blocked?</summary>
+<p class="quiz-correct">✅ CORS — enable <code>app.use(cors())</code> on the backend.</p>
+<p class="quiz-wrong">❌ Changing only the React fetch URL — the browser still needs CORS headers from the API.</p>
+</details>
+<details><summary>Q4. <code>Note.findByIdAndUpdate(id, upd)</code> returns the OLD doc?</summary>
+<p class="quiz-correct">✅ Add <code>{ new: true }</code> to get the updated document.</p>
+</details>
+</div>
+
+<div class="mood"><span>How was Spot-the-Bug?</span>
+<input type="radio" name="mood-bug4" id="mb4a"><label for="mb4a">😅 tough</label>
+<input type="radio" name="mood-bug4" id="mb4b"><label for="mb4b">🙂 okay</label>
+<input type="radio" name="mood-bug4" id="mb4c"><label for="mb4c">😎 nailed it</label>
+</div>
+
+---
+
+## 🤔 More predict-the-output cards
+
+<div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the MERN mental model fast.</div>
+
+<div class="predict">
+<details><summary><code>await Note.create({text:"hi"})</code> — what does it return?</summary>
+<p class="quiz-correct">✅ the created note (a document with <code>_id</code>)</p>
+</details>
+<details><summary><code>res.ok</code> when the API returns 500?</summary>
+<p class="quiz-correct">✅ <code>false</code> — you should <code>throw</code> or handle it</p>
+</details>
+<details><summary><code>const all = await Note.find()</code> — what is <code>all</code>?</summary>
+<p class="quiz-correct">✅ an array of note documents</p>
+</details>
+<details><summary><code>setNotes((prev) =&gt; [...prev, saved])</code> vs <code>notes.push(saved)</code>?</summary>
+<p class="quiz-correct">✅ the functional updater creates a new array (React re-renders); <code>push</code> mutates in place</p>
+</details>
+<details><summary><code>slugify("Hello World!")</code> using <code>/[^a-z0-9]+/g</code></summary>
+<p class="quiz-correct">✅ <code>"hello-world"</code></p>
+</details>
+</div>
+
+---
+
 ## 🎉 Congratulations!
 
 You've completed **JavaScript Essentials — Part 4 (MERN Foundations)**. You can now explain the MERN loop, build a **Notes app** and a **Product Store with Reviews** end-to-end, wire React→fetch→Express→MongoDB with CORS, and read/write basic TypeScript.
+
+**Next:** [Part 5 — Production: Auth + Deployment](Javascript_essentials_part5_interactive.md) (or open `Javascript_essentials_part5_study_app.html` for the live auth mock).
 
 <div class="totop"><a href="#table-of-contents">⬆ Back to top</a></div>
 
