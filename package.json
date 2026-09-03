@@ -1,0 +1,10 @@
+{
+  "name": "javascript-essentials",
+  "private": true,
+  "description": "Study-app tooling (verify + shared-shell inliner). Zero runtime deps.",
+  "scripts": {
+    "verify": "node verify-study-apps.js",
+    "inline-shell": "node scripts/inline-shell.js",
+    "inline-shell:check": "node scripts/inline-shell.js --check"
+  }
+}

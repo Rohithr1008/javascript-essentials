@@ -83,6 +83,24 @@ for (const file of APPS) {
   if (/<pre><code>[^<]*\n<h2\b/i.test(raw)) {
     fail(`${file}: likely unclosed <pre><code> before <h2>`);
   }
+
+  if (
+    !raw.includes("<!-- SHARED-SHELL-CSS:START -->") ||
+    !raw.includes("<!-- SHARED-SHELL-CSS:END -->")
+  ) {
+    fail(`${file}: missing SHARED-SHELL-CSS markers`);
+  } else {
+    ok(`${file}: shared-shell markers present`);
+  }
+
+  const partNum = Number((file.match(/part(\d)/) || [])[1]);
+  if (partNum >= 2) {
+    if (!/quiz-correct/.test(raw) || !/quiz-wrong/.test(raw)) {
+      fail(`${file}: Parts 2–5 must use both quiz-correct and quiz-wrong`);
+    } else {
+      ok(`${file}: quiz-correct + quiz-wrong present`);
+    }
+  }
 }
 
 const index = path.join(ROOT, "index.html");

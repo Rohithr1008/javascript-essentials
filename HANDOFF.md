@@ -160,6 +160,13 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 ## 7. Verification Checklist (run before any "done" claim)
 
 ```powershell
+# Preferred smoke (also what CI runs):
+node verify-study-apps.js
+node scripts/inline-shell.js --check
+
+# After editing shared/study-shell.css:
+node scripts/inline-shell.js
+
 # 1. JS compiles (extract the app's single script)
 $c  = Get-Content "Javascript_essentials_partN_study_app.html" -Raw
 $m  = [regex]::Match($c,'(?s)<script>(.*?)</script>')
@@ -191,14 +198,18 @@ node --check _v.js
 - **Audit fixes (2026-09-03):**
   - P0: Part 4 pitfalls markup restored; Part 3 certificate UTF-8 fixed; Hub + Parts 1–5 nav on all apps + interactive MD; premature `</body>` removed (P4/P5).
   - P1/P2: Part 1 storage migrated to `p1-*` (+ legacy migration); progress-gated Part 1 certificate; aria-labels on P3–P5 toolbar; duplicate Part 2 `.predict` CSS removed; `index.html` local MD links + series progress; Part 1 sandbox uses `new Function` (no `eval`); `verify-study-apps.js` for syntax/structure smoke checks (`node verify-study-apps.js`).
+- **Deferred follow-ups landed (2026-09-03):**
+  - **Shared shell CSS:** edit `shared/study-shell.css`, then `node scripts/inline-shell.js` before commit. Markers `SHARED-SHELL-CSS:START/END` in Parts 1–5; `node scripts/inline-shell.js --check` fails if HTML drifts. Apps stay self-contained (offline single-file).
+  - **Why-right/wrong quizzes:** Parts 2–5 study apps use `quiz-wrong` + `quiz-correct` explanations (interactive `.md` unchanged).
+  - **CI:** `.github/workflows/verify.yml` runs `node verify-study-apps.js` + `node scripts/inline-shell.js --check` on push/PR to `main`.
+  - Verify also asserts shared-shell markers and Parts 2–5 `quiz-wrong` presence.
 
 ### 🔜 Natural next steps (not started — only continue if asked)
-- **Shared shell / generator** to stop 5-way CSS+JS drift (architecture debt)
-- **Graded quiz explanations** rolled from Part 1 Phase enhancements into Parts 2–5
-- **Scaling / reliability**: wire `verify-study-apps.js` into GitHub Actions CI, monitoring & logging, performance tuning
+- **Shared JS shell / generator** (CSS is shared; per-part JS suffixes still duplicated)
+- **Formal a11y:** Playwright + axe gate (deferred — not wired yet)
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
-- Mobile/keyboard E2E pass (Playwright), or a one-time real **a11y scan** (axe DevTools) to *prove* compliance
+- Mobile/keyboard E2E pass (Playwright)
 
 ---
 

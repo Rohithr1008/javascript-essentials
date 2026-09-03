@@ -69,13 +69,105 @@
 </div>
 
 <style>
-body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
+<!-- SHARED-SHELL-CSS:START -->
+/* Shared study-app shell — source of truth.
+   Edit this file, then run: node scripts/inline-shell.js
+   CI fails if HTML between SHARED-SHELL-CSS markers drifts. */
+
+/* Skip link + part navigation */
 .skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-link:focus { position:fixed; left:8px; top:8px; z-index:9999; width:auto; height:auto; background:#fff; color:#2b6cb0; padding:8px 14px; border-radius:6px; font-weight:700; box-shadow:0 0 0 3px #2b6cb0; }
 .partnav { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#2d3748; color:#e2e8f0; padding:8px 12px; border-radius:8px; margin:6px 0 12px 0; font-size:0.95rem; }
 .partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
 .partnav a:hover { text-decoration:underline; }
 .partnav strong { color:#fff; }
+
+/* Focus Mode (common panels; part-specific panels stay in each app) */
+body.focus-mode #progressBar,
+body.focus-mode #boostBar,
+body.focus-mode #boostBar1,
+body.focus-mode #learningPathPanel,
+body.focus-mode #spacedRepetitionPanel { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+
+/* Quiz boxes + why-right/wrong */
+.quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
+.quiz-box h3 { margin-top: 0; color: #2b6cb0; }
+.quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+.quiz-box summary { cursor: pointer; font-weight: 600; }
+.quiz-correct { color: #276749; font-weight: 700; }
+.quiz-wrong { color: #9b2c2c; }
+
+/* Predict-the-output cards */
+.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin: 14px 0; }
+.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
+.predict summary { cursor: pointer; font-weight: 600; }
+
+/* Mood check */
+.mood { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mood > span { font-weight: 700; margin-right: 4px; }
+.mood input { display: none; }
+.mood label { cursor: pointer; border: 1px solid #a0aec0; border-radius: 999px; padding: 4px 12px; background: #fff; font-size: 14px; user-select: none; }
+.mood input:checked + label { background: #38a169; border-color: #38a169; color: #fff; font-weight: 700; }
+
+/* 7-day study plan + certificate + spot-the-bug */
+.studyplan7 { margin: 14px 0; }
+.studyplan7 summary { cursor: pointer; font-weight: 700; background: #eef2ff; padding: 8px 12px; border-radius: 8px; border: 1px solid #5a67d8; }
+.certificate { background: linear-gradient(135deg, #fffbeb, #fefcbf); border: 3px solid #d69e2e; border-radius: 14px; padding: 24px; text-align: center; margin: 24px 0; }
+.certificate h2 { color: #744210; margin-top: 0; border-bottom: none; }
+.certificate .big { font-size: 20px; font-weight: 700; color: #744210; }
+.spotbug { display: grid; gap: 10px; margin: 14px 0; }
+.spotbug details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 10px 14px; }
+
+/* Font size classes */
+html.font-sm { font-size: 15px; }
+html.font-md { font-size: 17px; }
+html.font-lg { font-size: 18px; }
+
+/* Dark: quiz / predict / mood / plan / cert / spotbug */
+@media (prefers-color-scheme: dark) {
+  .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+  .quiz-box h3 { color: #90cdf4; }
+  .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .quiz-correct { color: #68d391; }
+  .quiz-wrong { color: #fc8181; }
+  .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+  .studyplan7 summary { background: #1c2333; color: #e2e8f0; }
+  .spotbug details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+}
+html.force-light .quiz-box { background: #f7f9fc; color: #1a202c; }
+html.force-light .quiz-box details { background: #ffffff; color: #1a202c; }
+html.force-light .quiz-correct { color: #276749; }
+html.force-light .quiz-wrong { color: #9b2c2c; }
+html.force-dark .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+html.force-dark .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+html.force-dark .quiz-correct { color: #68d391; }
+html.force-dark .quiz-wrong { color: #fc8181; }
+html.force-dark .predict details,
+html.force-dark .spotbug details,
+html.force-dark .studyplan7 summary { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
+html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+html.force-dark .certificate { background: linear-gradient(135deg, #2b2013, #744210); border-color: #d69e2e; color: #fffbeb; }
+
+/* Reduced motion + print basics */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .toast, details[open] > :not(summary) { animation: none !important; }
+}
+@media print {
+  .theme-btn, #boostBar, #boostBar1, #toastZone, #toastZone1, #confettiCanvas, #confettiCanvas1,
+  .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, .quiz-box button,
+  button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; max-width: 100%; }
+  .quiz-box, .flashcard, pre { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
+  details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
+}
+<!-- SHARED-SHELL-CSS:END -->
+
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
 /* Focus Mode: calm, distraction-free reading */
 body.focus-mode #boostBar, body.focus-mode #learningPathPanel, body.focus-mode #spacedRepetitionPanel, body.focus-mode #progressBar { display:none !important; }
 body.focus-mode h1 { text-align:center; }
@@ -91,11 +183,6 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .tip    { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; }
 .warn   { background: #fffaf0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 6px; }
 .chall  { background: #f5f3ff; border-left: 4px solid #6b46c1; padding: 10px 14px; border-radius: 6px; }
-.quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
-.quiz-box h3 { margin-top: 0; color: #2b6cb0; }
-.quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
-.quiz-box summary { cursor: pointer; font-weight: 600; }
-.quiz-correct { color: #276749; font-weight: 700; }
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .flashcard summary { cursor: pointer; font-weight: 700; color: #744210; }
 .flashcard .back { margin-top: 8px; }
@@ -125,9 +212,6 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .totop { text-align: right; margin: 6px 0; }
 .totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
 .footer { text-align: center; padding: 18px; margin-top: 30px; background: #2d3748; border-radius: 10px; color: #e2e8f0; }
-html.font-sm { font-size: 15px; }
-html.font-md { font-size: 17px; }
-html.font-lg { font-size: 18px; }
 @media (prefers-color-scheme: dark) {
   body { background: #0d1117; color: #e6edf3; }
   h2 { border-bottom-color: #63b3ed; }
@@ -135,9 +219,6 @@ html.font-lg { font-size: 18px; }
   .tip { background: #132a1c; }
   .warn { background: #2b2013; }
   .chall { background: #221b3a; }
-  .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
-  .quiz-box h3 { color: #90cdf4; }
-  .quiz-box details { background: #0f1622; border-color: #2d3748; }
   .flashcard { background: #241d0e; border-color: #975a16; }
   .challenge { background: #141c28; border-color: #2d3748; }
   nav a { color: #90cdf4; }
@@ -146,24 +227,7 @@ html.font-lg { font-size: 18px; }
 @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 @media print { .theme-btn, #boostBar, #toastZone, #confettiCanvas, .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, button { display: none !important; } body { background:#fff!important; color:#000!important; } }
 /* ===== Part-1-style enhancements (parity) ===== */
-.predict { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px; margin:14px 0; }
-.predict details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:8px 12px; }
-.predict summary { cursor:pointer; font-weight:600; }
-.mood { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
-.mood > span { font-weight:700; margin-right:4px; }
-.mood input { display:none; }
-.mood label { cursor:pointer; border:1px solid #a0aec0; border-radius:999px; padding:4px 12px; background:#fff; font-size:14px; user-select:none; }
-.mood input:checked + label { background:#38a169; border-color:#38a169; color:#fff; font-weight:700; }
-.studyplan7 { margin:14px 0; }
-.studyplan7 summary { cursor:pointer; font-weight:700; background:#eef2ff; padding:8px 12px; border-radius:8px; border:1px solid #5a67d8; }
-.certificate { background:linear-gradient(135deg,#fffbeb,#fefcbf); border:3px solid #d69e2e; border-radius:14px; padding:24px; text-align:center; margin:24px 0; }
-.certificate h2 { color:#744210; margin-top:0; }
-.certificate .big { font-size:20px; font-weight:700; color:#744210; }
-.spotbug { display:grid; gap:10px; margin:14px 0; }
-.spotbug details { background:#fff; border:1px solid #cbd5e0; border-radius:8px; padding:10px 14px; }
-html.force-dark .predict details, html.force-dark .spotbug details, html.force-dark .studyplan7 summary { background:#241d0e; border-color:#975a16; color:#e2e8f0; }
-html.force-dark .mood label { background:#141c28; color:#cbd5e0; border-color:#2d3748; }
-html.force-dark .certificate { background:linear-gradient(135deg,#2b2013,#744210); border-color:#d69e2e; color:#fffbeb; }
+
 </style>
 
 <div class="interactive-note">💡 <strong>Interactive Study App — Part 3 (MERN Bridge):</strong> Map/Set playground, RegExp tester, DOM sandbox, Node quick-ref, 5 auto-graded challenges, Spaced Repetition, Learning Path, progress, dark mode, and ADHD-engagement (XP/streak).</div>
@@ -217,9 +281,15 @@ const unique = [...new Set([1,1,2,3,3])]; // [1,2,3]</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 Map &amp; Set quiz</h3>
-<details><summary>Q1. `new Set([1,1,2,3,3]).size` = ?</summary><p class="quiz-correct">3</p></details>
-<details><summary>Q2. Which allows any key type &amp; keeps order?</summary><p class="quiz-correct">Map</p></details>
-<details><summary>Q3. De-dupe `[...]` using a Set?</summary><p class="quiz-correct">[...new Set(arr)]</p></details>
+<details><summary>Q1. `new Set([1,1,2,3,3]).size` = ?</summary>
+<p><span class="quiz-wrong">❌ 5</span> — Set drops duplicates</p>
+<p><span class="quiz-correct">✅ 3</span> — unique values → size 3</p></details>
+<details><summary>Q2. Which allows any key type &amp; keeps order?</summary>
+<p><span class="quiz-wrong">❌ Object</span> — object keys are strings/symbols only</p>
+<p><span class="quiz-correct">✅ Map</span> — Map keeps insertion order and any key type</p></details>
+<details><summary>Q3. De-dupe `[...]` using a Set?</summary>
+<p><span class="quiz-wrong">❌ arr.filter((x,i)=>arr.indexOf(x)===i) only</span> — works but Set is the idiomatic one-liner</p>
+<p><span class="quiz-correct">✅ [...new Set(arr)]</span> — [...new Set(arr)]</p></details>
 </div>
 
 <hr>
@@ -238,8 +308,12 @@ f.next().value; // 0  (then 1, 1, 2...)</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 Generators quiz</h3>
-<details><summary>Q1. What does `.next()` return?</summary><p class="quiz-correct">{value, done}</p></details>
-<details><summary>Q2. What keyword marks a generator?</summary><p class="quiz-correct">function*</p></details>
+<details><summary>Q1. What does `.next()` return?</summary>
+<p><span class="quiz-wrong">❌ just the value</span> — generators return an iterator result object</p>
+<p><span class="quiz-correct">✅ {value, done}</span> — {value, done}</p></details>
+<details><summary>Q2. What keyword marks a generator?</summary>
+<p><span class="quiz-wrong">❌ async function</span> — async is different</p>
+<p><span class="quiz-correct">✅ function*</span> — function* marks a generator</p></details>
 </div>
 
 <hr>
@@ -261,8 +335,12 @@ f.next().value; // 0  (then 1, 1, 2...)</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 RegExp quiz</h3>
-<details><summary>Q1. Flag to find ALL matches?</summary><p class="quiz-correct">g</p></details>
-<details><summary>Q2. `"abc123".replace(/\d/g,"#")` = ?</summary><p class="quiz-correct">abc###</p></details>
+<details><summary>Q1. Flag to find ALL matches?</summary>
+<p><span class="quiz-wrong">❌ i</span> — i is case-insensitive</p>
+<p><span class="quiz-correct">✅ g</span> — g finds all matches</p></details>
+<details><summary>Q2. `"abc123".replace(/\d/g,"#")` = ?</summary>
+<p><span class="quiz-wrong">❌ abc123</span> — digits are replaced when /g is used</p>
+<p><span class="quiz-correct">✅ abc###</span> — abc###</p></details>
 </div>
 
 <hr>
@@ -289,9 +367,15 @@ form.addEventListener("submit", (e) => e.preventDefault());</code></pre>
 
 <div class="quiz-box">
 <h3>🎯 DOM quiz</h3>
-<details><summary>Q1. Which returns the FIRST match?</summary><p class="quiz-correct">querySelector</p></details>
-<details><summary>Q2. What stops a form reloading?</summary><p class="quiz-correct">preventDefault()</p></details>
-<details><summary>Q3. What is `event.target`?</summary><p class="quiz-correct">The element the event occurred on</p></details>
+<details><summary>Q1. Which returns the FIRST match?</summary>
+<p><span class="quiz-wrong">❌ querySelectorAll</span> — All returns a NodeList</p>
+<p><span class="quiz-correct">✅ querySelector</span> — querySelector returns the first match</p></details>
+<details><summary>Q2. What stops a form reloading?</summary>
+<p><span class="quiz-wrong">❌ stopPropagation()</span> — that stops bubbling, not the default submit</p>
+<p><span class="quiz-correct">✅ preventDefault()</span> — preventDefault()</p></details>
+<details><summary>Q3. What is `event.target`?</summary>
+<p><span class="quiz-wrong">❌ The listener element always</span> — currentTarget is the listener; target is the origin</p>
+<p><span class="quiz-correct">✅ The element the event occurred on</span> — the element the event occurred on</p></details>
 </div>
 
 <hr>
@@ -324,9 +408,15 @@ async function createUser(name){
 
 <div class="quiz-box">
 <h3>🎯 fetch quiz</h3>
-<details><summary>Q1. Does fetch reject on a 500?</summary><p class="quiz-correct">No — check res.ok</p></details>
-<details><summary>Q2. How to send JSON in POST?</summary><p class="quiz-correct">body: JSON.stringify(obj) + JSON header</p></details>
-<details><summary>Q3. Body methods you can call?</summary><p class="quiz-correct">One (json/text/formData)</p></details>
+<details><summary>Q1. Does fetch reject on a 500?</summary>
+<p><span class="quiz-wrong">❌ Yes</span> — fetch only rejects on network failure</p>
+<p><span class="quiz-correct">✅ No — check res.ok</span> — check res.ok yourself</p></details>
+<details><summary>Q2. How to send JSON in POST?</summary>
+<p><span class="quiz-wrong">❌ body: obj</span> — body must be a string + Content-Type header</p>
+<p><span class="quiz-correct">✅ body: JSON.stringify(obj) + JSON header</span> — JSON.stringify + JSON header</p></details>
+<details><summary>Q3. Body methods you can call?</summary>
+<p><span class="quiz-wrong">❌ As many as you want</span> — the body stream can be read only once</p>
+<p><span class="quiz-correct">✅ One (json/text/formData)</span> — One (json/text/formData)</p></details>
 </div>
 
 <hr>
@@ -348,9 +438,15 @@ createServer((req, res) => {
 
 <div class="quiz-box">
 <h3>🎯 Node quiz</h3>
-<details><summary>Q1. Sync file read?</summary><p class="quiz-correct">fs.readFileSync</p></details>
-<details><summary>Q2. `process.env.PORT`?</summary><p class="quiz-correct">An env variable</p></details>
-<details><summary>Q3. Best read in a handler?</summary><p class="quiz-correct">fs.promises.readFile (non-blocking)</p></details>
+<details><summary>Q1. Sync file read?</summary>
+<p><span class="quiz-wrong">❌ fs.readFile</span> — readFile is async (callback/promise)</p>
+<p><span class="quiz-correct">✅ fs.readFileSync</span> — fs.readFileSync</p></details>
+<details><summary>Q2. `process.env.PORT`?</summary>
+<p><span class="quiz-wrong">❌ A hard-coded constant</span> — env vars come from the environment</p>
+<p><span class="quiz-correct">✅ An env variable</span> — an env variable</p></details>
+<details><summary>Q3. Best read in a handler?</summary>
+<p><span class="quiz-wrong">❌ fs.readFileSync</span> — sync I/O blocks the event loop</p>
+<p><span class="quiz-correct">✅ fs.promises.readFile (non-blocking)</span> — fs.promises.readFile (non-blocking)</p></details>
 </div>
 
 <hr>
@@ -440,28 +536,40 @@ createServer((req, res) => {
 <button class="mark-btn" onclick="toggleSection(10)">✅ Mark Complete</button>
 <div class="quiz-box">
 <h3>✅ Quiz answers</h3>
-<details><summary>Reveal</summary><p>S1: 3 · Map · Set · S2: {value,done} · function* · S3: g · abc###<br>S4: querySelector · preventDefault · target · S5: No · JSON + header · One<br>S6: readFileSync · env · fs.promises</p></details>
+<details><summary>Reveal</summary>
+<p><span class="quiz-wrong">❌ Skipping the answer key</span> — checking answers locks in learning</p>
+<p><span class="quiz-correct">✅ S1: 3 · Map · Set · S2: {value,done} · function* · S3: g · abc###<br>S4: querySelector · preventDefault · target · S5: No · JSON + header · One<br>S6: readFileSync · env · fs.promises</span> — compare your picks to the section key</p></details>
 </div>
 
 <div class="quiz-box">
 <h3>🧪 Challenge solutions</h3>
 <details><summary>C1 — countWords</summary>
+<p><span class="quiz-wrong">❌ Using an object only and forgetting Map</span> — Map is the right tool here</p>
+<p><span class="quiz-correct">✅ Canonical solution</span> — count with Map.set/get</p>
 <pre><code>function countWords(text){
   const m = new Map();
   for (const w of text.split(/\s+/).filter(Boolean)) m.set(w,(m.get(w)||0)+1);
   return m; // Map
 }</code></pre></details>
 <details><summary>C2 — slugify</summary>
+<p><span class="quiz-wrong">❌ Leaving spaces and uppercase</span> — slugs are lowercase hyphenated</p>
+<p><span class="quiz-correct">✅ Canonical solution</span> — lower + replace non-alnum + trim hyphens</p>
 <pre><code>const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");</code></pre></details>
 <details><summary>C3 — range generator</summary>
+<p><span class="quiz-wrong">❌ Returning an array from a normal function</span> — generators use function* and yield</p>
+<p><span class="quiz-correct">✅ Canonical solution</span> — function* range with yield</p>
 <pre><code>function* range(s,e){ for(let i=s;i<=e;i++) yield i; }</code></pre></details>
 <details><summary>C4 — fetchWithTimeout</summary>
+<p><span class="quiz-wrong">❌ Ignoring AbortController</span> — timeouts need abort signals</p>
+<p><span class="quiz-correct">✅ Canonical solution</span> — AbortController + clearTimeout in finally</p>
 <pre><code>async function fetchWithTimeout(url,ms){
   const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms);
   try{ const res=await fetch(url,{signal:c.signal}); if(!res.ok) throw new Error(`HTTP ${res.status}`); return await res.json(); }
   finally{ clearTimeout(t); }
 }</code></pre></details>
 <details><summary>C5 — freq</summary>
+<p><span class="quiz-wrong">❌ Returning a Map when an object is required</span> — match the expected return type</p>
+<p><span class="quiz-correct">✅ Canonical solution</span> — plain object tallies</p>
 <pre><code>function freq(text){
   const o={};
   for (const w of text.split(/\s+/).filter(Boolean)) o[w]=(o[w]||0)+1;

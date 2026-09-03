@@ -76,14 +76,106 @@
 </div>
 
 <style>
-/* ===== JavaScript Essentials — Interactive Styles v2 ===== */
-body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
+<!-- SHARED-SHELL-CSS:START -->
+/* Shared study-app shell — source of truth.
+   Edit this file, then run: node scripts/inline-shell.js
+   CI fails if HTML between SHARED-SHELL-CSS markers drifts. */
+
+/* Skip link + part navigation */
 .skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-link:focus { position:fixed; left:8px; top:8px; z-index:9999; width:auto; height:auto; background:#fff; color:#2b6cb0; padding:8px 14px; border-radius:6px; font-weight:700; box-shadow:0 0 0 3px #2b6cb0; }
 .partnav { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#2d3748; color:#e2e8f0; padding:8px 12px; border-radius:8px; margin:6px 0 12px 0; font-size:0.95rem; }
 .partnav a { color:#7dd3fc; text-decoration:none; font-weight:600; }
 .partnav a:hover { text-decoration:underline; }
 .partnav strong { color:#fff; }
+
+/* Focus Mode (common panels; part-specific panels stay in each app) */
+body.focus-mode #progressBar,
+body.focus-mode #boostBar,
+body.focus-mode #boostBar1,
+body.focus-mode #learningPathPanel,
+body.focus-mode #spacedRepetitionPanel { display:none !important; }
+body.focus-mode h1 { text-align:center; }
+body.focus-mode h2 { background:#eef2ff; padding:8px 12px; border-radius:8px; }
+
+/* Quiz boxes + why-right/wrong */
+.quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
+.quiz-box h3 { margin-top: 0; color: #2b6cb0; }
+.quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+.quiz-box summary { cursor: pointer; font-weight: 600; }
+.quiz-correct { color: #276749; font-weight: 700; }
+.quiz-wrong { color: #9b2c2c; }
+
+/* Predict-the-output cards */
+.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin: 14px 0; }
+.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
+.predict summary { cursor: pointer; font-weight: 600; }
+
+/* Mood check */
+.mood { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mood > span { font-weight: 700; margin-right: 4px; }
+.mood input { display: none; }
+.mood label { cursor: pointer; border: 1px solid #a0aec0; border-radius: 999px; padding: 4px 12px; background: #fff; font-size: 14px; user-select: none; }
+.mood input:checked + label { background: #38a169; border-color: #38a169; color: #fff; font-weight: 700; }
+
+/* 7-day study plan + certificate + spot-the-bug */
+.studyplan7 { margin: 14px 0; }
+.studyplan7 summary { cursor: pointer; font-weight: 700; background: #eef2ff; padding: 8px 12px; border-radius: 8px; border: 1px solid #5a67d8; }
+.certificate { background: linear-gradient(135deg, #fffbeb, #fefcbf); border: 3px solid #d69e2e; border-radius: 14px; padding: 24px; text-align: center; margin: 24px 0; }
+.certificate h2 { color: #744210; margin-top: 0; border-bottom: none; }
+.certificate .big { font-size: 20px; font-weight: 700; color: #744210; }
+.spotbug { display: grid; gap: 10px; margin: 14px 0; }
+.spotbug details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 10px 14px; }
+
+/* Font size classes */
+html.font-sm { font-size: 15px; }
+html.font-md { font-size: 17px; }
+html.font-lg { font-size: 18px; }
+
+/* Dark: quiz / predict / mood / plan / cert / spotbug */
+@media (prefers-color-scheme: dark) {
+  .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+  .quiz-box h3 { color: #90cdf4; }
+  .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .quiz-correct { color: #68d391; }
+  .quiz-wrong { color: #fc8181; }
+  .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+  .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+  .studyplan7 summary { background: #1c2333; color: #e2e8f0; }
+  .spotbug details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+}
+html.force-light .quiz-box { background: #f7f9fc; color: #1a202c; }
+html.force-light .quiz-box details { background: #ffffff; color: #1a202c; }
+html.force-light .quiz-correct { color: #276749; }
+html.force-light .quiz-wrong { color: #9b2c2c; }
+html.force-dark .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
+html.force-dark .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
+html.force-dark .quiz-correct { color: #68d391; }
+html.force-dark .quiz-wrong { color: #fc8181; }
+html.force-dark .predict details,
+html.force-dark .spotbug details,
+html.force-dark .studyplan7 summary { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
+html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
+html.force-dark .certificate { background: linear-gradient(135deg, #2b2013, #744210); border-color: #d69e2e; color: #fffbeb; }
+
+/* Reduced motion + print basics */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .toast, details[open] > :not(summary) { animation: none !important; }
+}
+@media print {
+  .theme-btn, #boostBar, #boostBar1, #toastZone, #toastZone1, #confettiCanvas, #confettiCanvas1,
+  .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, .quiz-box button,
+  button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; max-width: 100%; }
+  .quiz-box, .flashcard, pre { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
+  details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
+}
+<!-- SHARED-SHELL-CSS:END -->
+
+/* ===== JavaScript Essentials — Interactive Styles v2 ===== */
+body { background: #f7f9fc; color: #1a202c; margin: 0 auto; max-width: 980px; padding: 16px 20px 60px 20px; font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; }
 /* Focus Mode: calm, distraction-free reading */
 body.focus-mode #progressBar, body.focus-mode #boostBar1, body.focus-mode #learningPathPanel, body.focus-mode #spacedRepetitionPanel { display:none !important; }
 body.focus-mode h1 { text-align:center; }
@@ -105,12 +197,6 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .danger { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 10px 14px; border-radius: 6px; }
 
 /* Quiz boxes */
-.quiz-box { background: #f7f9fc; border: 2px solid #4299e1; border-radius: 10px; padding: 14px 18px; margin: 18px 0; }
-.quiz-box h3 { margin-top: 0; color: #2b6cb0; }
-.quiz-box details { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
-.quiz-box summary { cursor: pointer; font-weight: 600; }
-.quiz-correct { color: #276749; font-weight: 700; }
-.quiz-wrong { color: #9b2c2c; }
 
 /* Flashcards */
 .flashcard { background: #fffbeb; border: 2px solid #d69e2e; border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
@@ -139,29 +225,18 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .b-time   { background: #e2e8f0; color: #2d3748; font-weight: 600; }
 
 /* v2: predict-the-output cards */
-.predict { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin: 14px 0; }
-.predict details { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 8px 12px; }
-.predict summary { cursor: pointer; font-weight: 600; }
 
 /* v2: hint cards */
 .hint { background: #fffbeb; border: 1px dashed #d69e2e; border-radius: 8px; padding: 8px 12px; margin: 10px 0; }
 .hint summary { cursor: pointer; font-weight: 700; color: #744210; }
 
 /* v2: mood check */
-.mood { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.mood > span { font-weight: 700; margin-right: 4px; }
-.mood input { display: none; }
-.mood label { cursor: pointer; border: 1px solid #a0aec0; border-radius: 999px; padding: 4px 12px; background: #fff; font-size: 14px; user-select: none; }
-.mood input:checked + label { background: #38a169; border-color: #38a169; color: #fff; font-weight: 700; }
 
 /* v2: study plan & certificate */
 .study-plan { background: #ebf8ff; border: 1px solid #4299e1; border-radius: 10px; padding: 10px 16px; margin: 14px 0; }
 .study-plan summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.05em; }
 .cert { background: linear-gradient(135deg, #2b6cb0, #6b46c1); color: #fff; border-radius: 14px; padding: 26px; text-align: center; margin: 30px 0; }
 .cert h2 { color: #fff; border-bottom: none; }
-.certificate { background:linear-gradient(135deg,#fffbeb,#fefcbf); border:3px solid #d69e2e; border-radius:14px; padding:24px; text-align:center; margin:24px 0; }
-.certificate h2 { color:#744210; margin-top:0; border-bottom:none; }
-.certificate .big { font-size:20px; font-weight:700; color:#744210; }
 .cert ul { text-align: left; display: inline-block; }
 .totop { text-align: right; margin: 6px 0; }
 .totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
@@ -177,21 +252,14 @@ h2 { border-bottom-color: #63b3ed; }
 .tip { background: #132a1c; }
 .warn { background: #2b2013; }
 .danger { background: #2b1414; }
-.quiz-box { background: #141c28; border-color: #2b6cb0; }
-.quiz-box h3 { color: #90cdf4; }
-.quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
-.quiz-correct { color: #68d391; }
-.quiz-wrong { color: #fc8181; }
 .flashcard { background: #241d0e; border-color: #975a16; }
 .flashcard summary { color: #f6e05e; }
 .tabs label { background: #141c28; color: #bee3f8; border-color: #2b6cb0; }
 .tabs .tab-page { background: #0f1622; color: #e2e8f0; }
 .solution, .answer-key details { background: #0e1c1b; border-color: #285e61; color: #e2e8f0; }
 .solution summary, .answer-key summary { color: #81e6d9; }
-.predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
 .hint { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
 .hint summary { color: #f6e05e; }
-.mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
 .study-plan { background: #141c28; color: #e2e8f0; }
 .study-plan summary { color: #90cdf4; }
 .totop a { color: #90cdf4; }
@@ -205,37 +273,25 @@ html.force-light .interactive-note { background: #eef6ff; color: #1a202c; }
 html.force-light .tip { background: #f0fff4; color: #1a202c; }
 html.force-light .warn { background: #fffaf0; color: #1a202c; }
 html.force-light .danger { background: #fff5f5; color: #1a202c; }
-html.force-light .quiz-box { background: #f7f9fc; color: #1a202c; }
-html.force-light .quiz-box details { background: #ffffff; color: #1a202c; }
-html.force-light .quiz-correct { color: #276749; }
-html.force-light .quiz-wrong { color: #9b2c2c; }
 html.force-light .flashcard { background: #fffbeb; color: #1a202c; }
 html.force-light .flashcard summary { color: #744210; }
 html.force-light .solution, html.force-light .answer-key details { background: #fafffe; color: #1a202c; }
 html.force-light .solution summary, html.force-light .answer-key summary { color: #2c7a7b; }
-html.force-light .predict details { background: #ffffff; color: #1a202c; }
 html.force-light .hint { background: #fffbeb; color: #1a202c; }
 html.force-light .hint summary { color: #744210; }
 html.force-light .tabs label { background: #ebf8ff; color: #2b6cb0; border-color: #4299e1; }
 html.force-light .tabs .tab-page { background: #ffffff; color: #1a202c; }
-html.force-light .mood label { background: #ffffff; color: #1a202c; border-color: #a0aec0; }
 html.force-dark .interactive-note { background: #17202b; color: #e2e8f0; }
 html.force-dark .tip { background: #132a1c; color: #e2e8f0; }
 html.force-dark .warn { background: #2b2013; color: #e2e8f0; }
 html.force-dark .danger { background: #2b1414; color: #e2e8f0; }
-html.force-dark .quiz-box { background: #141c28; border-color: #2b6cb0; color: #e2e8f0; }
-html.force-dark .quiz-box details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
-html.force-dark .quiz-correct { color: #68d391; }
-html.force-dark .quiz-wrong { color: #fc8181; }
 html.force-dark .flashcard { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
 html.force-dark .flashcard summary { color: #f6e05e; }
 html.force-dark .solution, html.force-dark .answer-key details { background: #0e1c1b; border-color: #285e61; color: #e2e8f0; }
 html.force-dark .solution summary, html.force-dark .answer-key summary { color: #81e6d9; }
-html.force-dark .predict details { background: #0f1622; border-color: #2d3748; color: #e2e8f0; }
 html.force-dark .hint { background: #241d0e; border-color: #975a16; color: #e2e8f0; }
 html.force-dark .tabs label { background: #141c28; color: #bee3f8; border-color: #2b6cb0; }
 html.force-dark .tabs .tab-page { background: #0f1622; color: #e2e8f0; }
-html.force-dark .mood label { background: #141c28; color: #cbd5e0; border-color: #2d3748; }
 html.force-dark body { background: #0f1216; color: #e2e8f0; }
 .toast { background: #1a202c; color: #e2e8f0; border-left: 4px solid #dd6b20; padding: 10px 14px; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.3); font-weight: 600; max-width: 280px; }
 .toast.celebrate { border-left-color: #38a169; }
@@ -243,9 +299,6 @@ html.force-dark body { background: #0f1216; color: #e2e8f0; }
 @keyframes slidein1 { from { opacity:0; transform: translateX(20px);} to { opacity:1; transform:none;} }
 .toast { animation: slidein1 .3s ease; }
 html { font-size: 16px; }
-html.font-sm { font-size: 15px; }
-html.font-md { font-size: 17px; }
-html.font-lg { font-size: 18px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -256,9 +309,9 @@ html.font-lg { font-size: 18px; }
   .mark-btn, .copy-btn, .sandbox, .challenge, .totop, nav, .quiz-box button,
   button { display: none !important; }
   body { background: #fff !important; color: #000 !important; max-width: 100%; }
-  .quiz-box, .flashcard, pre, .interactive-tool { background: #fff !important; border-color: #ccc !important; color: #000 !important; }
   details { border: 1px solid #ccc; margin: 4px 0; padding: 4px; page-break-inside: avoid; }
 }
+
 </style>
 
 <hr>
