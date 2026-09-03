@@ -11,21 +11,24 @@
 <h1>JavaScript Essentials - Part 3</h1>
 
 <div class="partnav" aria-label="Part navigation">
-  <a href="Javascript_essentials_part1_study_app.html">← 1 Core</a>
-  <a href="Javascript_essentials_part2_study_app.html">← 2 Async/OOP</a>
+  <a href="index.html">Hub</a>
+  <a href="Javascript_essentials_part1_study_app.html">1 Core</a>
+  <a href="Javascript_essentials_part2_study_app.html">2 Async/OOP</a>
   <strong>3 MERN Bridge</strong>
+  <a href="Javascript_essentials_part4_study_app.html">4 MERN Foundations</a>
+  <a href="Javascript_essentials_part5_study_app.html">5 Production →</a>
 </div>
 
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
 
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
   <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
-  <button onclick="fontZoom3(-1)" title="Decrease text size">A−</button>
-  <button onclick="fontZoom3(0)" title="Reset text size">A</button>
-  <button onclick="fontZoom3(1)" title="Increase text size">A+</button>
+  <button onclick="fontZoom3(-1)" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button onclick="fontZoom3(0)" title="Reset text size" aria-label="Reset text size">A</button>
+  <button onclick="fontZoom3(1)" title="Increase text size" aria-label="Increase text size">A+</button>
   <span style="width:14px;"></span>
-  <button onclick="collapseAll3(true)" title="Expand all quiz answers">📖 Expand all</button>
-  <button onclick="collapseAll3(false)" title="Collapse all quiz answers">📕 Collapse all</button>
+  <button onclick="collapseAll3(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAll3(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
   <span style="width:14px;"></span>
   <button id="focusBtn3" onclick="focusMode3(this)" title="Focus Mode hides distractions for calm, deep reading" aria-pressed="false">🧘 Focus Mode</button>
 </div>
@@ -780,7 +783,7 @@ function fetchDemo(){
 
 
 // ===== Certificate + scrollspy =====
-function updateCertificate3() {  var total = 10, done = 0;  for (var i = 1; i <= total; i++) if (localStorage.getItem("p3-sec-" + i) === "1") done++;  var panel = document.getElementById("certPanel3"), status = document.getElementById("certStatus3");  if (!panel) return;  if (done === total) {    panel.style.background = "linear-gradient(135deg,#c6f6d5,#68d391)";    panel.style.borderColor = "#38a169";    if (status) status.innerHTML = "ðŸŽ‰ <strong>Certificate earned!</strong> All 10 sections completed. Well done!";  } else {    panel.style.background = "";    panel.style.borderColor = "#d69e2e";    if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")";  }}function scrollspy3() {  var links = document.querySelectorAll("#table-of-contents a");  var find = "";  Array.prototype.forEach.call(links, function(a){ var el = document.getElementById(a.getAttribute("href").slice(1)); if (el && el.getBoundingClientRect && el.getBoundingClientRect().top <= 90) find = a.getAttribute("href").slice(1); });  Array.prototype.forEach.call(links, function(a){ var h = a.getAttribute("href").slice(1); a.style.fontWeight = (h === find) ? "700" : ""; a.style.color = (h === find) ? "#90cdf4" : ""; });}if (window.addEventListener) window.addEventListener("scroll", function(){ try{ scrollspy3(); }catch(e){} }, { passive:true });
+function updateCertificate3() {  var total = 10, done = 0;  for (var i = 1; i <= total; i++) if (localStorage.getItem("p3-sec-" + i) === "1") done++;  var panel = document.getElementById("certPanel3"), status = document.getElementById("certStatus3");  if (!panel) return;  if (done === total) {    panel.style.background = "linear-gradient(135deg,#c6f6d5,#68d391)";    panel.style.borderColor = "#38a169";    if (status) status.innerHTML = "🎉 <strong>Certificate earned!</strong> All 10 sections completed. Well done!";  } else {    panel.style.background = "";    panel.style.borderColor = "#d69e2e";    if (status) status.textContent = "Complete " + (total - done) + " more section(s) to unlock. (" + done + "/" + total + ")";  }}function scrollspy3() {  var links = document.querySelectorAll("#table-of-contents a");  var find = "";  Array.prototype.forEach.call(links, function(a){ var el = document.getElementById(a.getAttribute("href").slice(1)); if (el && el.getBoundingClientRect && el.getBoundingClientRect().top <= 90) find = a.getAttribute("href").slice(1); });  Array.prototype.forEach.call(links, function(a){ var h = a.getAttribute("href").slice(1); a.style.fontWeight = (h === find) ? "700" : ""; a.style.color = (h === find) ? "#90cdf4" : ""; });}if (window.addEventListener) window.addEventListener("scroll", function(){ try{ scrollspy3(); }catch(e){} }, { passive:true });
 
 // ===== Init =====
 markButtons();

@@ -12,9 +12,12 @@
 <h1>JavaScript Essentials - Part 1</h1>
 
 <div class="partnav" aria-label="Part navigation">
+  <a href="index.html">Hub</a>
   <strong>1 Core</strong>
-  <a href="Javascript_essentials_part2_study_app.html">2 Async/OOP →</a>
-  <a href="Javascript_essentials_part3_study_app.html">3 MERN Bridge →</a>
+  <a href="Javascript_essentials_part2_study_app.html">2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_study_app.html">3 MERN Bridge</a>
+  <a href="Javascript_essentials_part4_study_app.html">4 MERN Foundations</a>
+  <a href="Javascript_essentials_part5_study_app.html">5 Production →</a>
 </div>
 
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
@@ -156,6 +159,9 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; }
 .study-plan summary { cursor: pointer; font-weight: 700; color: #2b6cb0; font-size: 1.05em; }
 .cert { background: linear-gradient(135deg, #2b6cb0, #6b46c1); color: #fff; border-radius: 14px; padding: 26px; text-align: center; margin: 30px 0; }
 .cert h2 { color: #fff; border-bottom: none; }
+.certificate { background:linear-gradient(135deg,#fffbeb,#fefcbf); border:3px solid #d69e2e; border-radius:14px; padding:24px; text-align:center; margin:24px 0; }
+.certificate h2 { color:#744210; margin-top:0; border-bottom:none; }
+.certificate .big { font-size:20px; font-weight:700; color:#744210; }
 .cert ul { text-align: left; display: inline-block; }
 .totop { text-align: right; margin: 6px 0; }
 .totop a { font-size: 13px; color: #2b6cb0; text-decoration: none; }
@@ -4501,12 +4507,13 @@ console.log({ username, tag, domain });
   </div>
 </div>
 
-<div class="cert">
-<h2>🏆 Certificate of Completion</h2>
-<p>This certifies that <strong>Rohit</strong> has completed</p>
-<p><strong>JavaScript Essentials — Part 1</strong></p>
-<p><em>16 sections · 9 self-tests · 16 flashcards · 10 exercises · 9 challenges · 13 pitfalls survived</em></p>
-<p>Next stop: <strong>Part 2 — promises, async/await, classes &amp; modules</strong> 🚀</p>
+<div class="certificate" id="certPanel1">
+  <h2>🏆 Certificate of Completion</h2>
+  <p>This certifies that <span class="big">You</span> have completed</p>
+  <p class="big">JavaScript Essentials — Part 1</p>
+  <p><em>16 sections · quizzes · flashcards · exercises · challenges</em></p>
+  <p id="certStatus1">Complete <strong>all 16 sections</strong> (✅ on each "Mark complete" button) to unlock your certificate.</p>
+  <p>Next stop: <strong>Part 2 — promises, async/await, classes &amp; modules</strong></p>
 </div>
 <hr>
 
@@ -4520,6 +4527,53 @@ console.log({ username, tag, domain });
 
 <!-- ============ PHASE 1 & 2 INTERACTIVE FUNCTIONS ============ -->
 <script>
+// ===== Part 1 storage canon (p1-*) + one-time migration from legacy keys =====
+(function migrateP1Storage() {
+  try {
+    if (localStorage.getItem("p1-migrated") === "1") return;
+    var legacy = JSON.parse(localStorage.getItem("js-progress") || "{}");
+    for (var i = 1; i <= 16; i++) {
+      if (legacy["section-" + i] && localStorage.getItem("p1-sec-" + i) !== "1") {
+        localStorage.setItem("p1-sec-" + i, "1");
+      }
+    }
+    if (!localStorage.getItem("p1-theme") && localStorage.getItem("theme")) {
+      localStorage.setItem("p1-theme", localStorage.getItem("theme"));
+    }
+    if (!localStorage.getItem("p1-sr") && localStorage.getItem("sr-state")) {
+      localStorage.setItem("p1-sr", localStorage.getItem("sr-state"));
+    }
+    if (!localStorage.getItem("p1-chal") && localStorage.getItem("completed-challenges")) {
+      localStorage.setItem("p1-chal", localStorage.getItem("completed-challenges"));
+    }
+    if (!localStorage.getItem("p1-ratings") && localStorage.getItem("js-ratings")) {
+      localStorage.setItem("p1-ratings", localStorage.getItem("js-ratings"));
+    }
+    for (var j = localStorage.length - 1; j >= 0; j--) {
+      var k = localStorage.key(j);
+      if (k && /^quiz-\d+$/.test(k) && !localStorage.getItem("p1-" + k)) {
+        localStorage.setItem("p1-" + k, localStorage.getItem(k));
+      }
+    }
+    localStorage.setItem("p1-migrated", "1");
+  } catch (e) { /* ignore */ }
+})();
+var P1_TOTAL = 16;
+function p1SecDone(n) { return localStorage.getItem("p1-sec-" + n) === "1"; }
+function p1SecCount() {
+  var d = 0;
+  for (var i = 1; i <= P1_TOTAL; i++) if (p1SecDone(i)) d++;
+  return d;
+}
+function p1ProgressObj() {
+  var o = {};
+  for (var i = 1; i <= P1_TOTAL; i++) if (p1SecDone(i)) o["section-" + i] = true;
+  return o;
+}
+function sectionNumFromKey(key) {
+  var m = String(key).match(/^section-(\d+)$/);
+  return m ? Number(m[1]) : 0;
+}
 
 // ===== PHASE 1: Truthy/Falsy Checker =====
 function checkTruthiness() {
@@ -4533,7 +4587,7 @@ function checkTruthiness() {
   
   let value;
   try {
-    value = eval(input);
+    value = new Function("return (" + input + ")")();
   } catch(e) {
     value = input;
   }
@@ -4573,7 +4627,7 @@ function runSandboxCode() {
   };
   
   try {
-    eval(code);
+    new Function(code)();
     if (output) {
       output.innerHTML = outputBuffer.length > 0 
         ? outputBuffer.join('\n') 
@@ -4709,10 +4763,10 @@ function runTests(challengeId) {
 
 // Track challenge completions in localStorage
 function loadCompletedChallenges() {
-  try { return JSON.parse(localStorage.getItem('completed-challenges') || '{}'); } catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem('p1-chal') || '{}'); } catch(e) { return {}; }
 }
 function saveCompletedChallenges(c) {
-  localStorage.setItem('completed-challenges', JSON.stringify(c));
+  localStorage.setItem('p1-chal', JSON.stringify(c));
 }
 function markChallengeComplete(challengeId) {
   const c = loadCompletedChallenges();
@@ -5094,36 +5148,34 @@ function toggleAnswer(btn) {
 
 // ===== Progress Tracking (v2: wired UI + mark-complete buttons) =====
 function refreshProgressUI() {
-  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  const done = Object.keys(p).filter(k => k !== 'updated').length;
+  const done = p1SecCount();
   const el = document.getElementById('progressBar');
-  if (el) el.textContent = `📊 Progress: ${done}/16 sections (${Math.round(done/16*100)}%)`;
+  if (el) el.textContent = `📊 Progress: ${done}/${P1_TOTAL} sections (${Math.round(done/P1_TOTAL*100)}%)`;
   updateLearningPath();
+  updateCertificate1();
 }
 
 function saveProgress(id) {
-  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  p[id] = true; p.updated = new Date().toISOString();
-  localStorage.setItem('js-progress', JSON.stringify(p));
+  const n = sectionNumFromKey(id);
+  if (n) localStorage.setItem('p1-sec-' + n, '1');
   refreshProgressUI();
 }
 
 function toggleComplete(id, btn) {
-  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  const wasDone = !!p[id];
-  if (p[id]) {
-    delete p[id];
+  const n = sectionNumFromKey(id);
+  if (!n) return;
+  const wasDone = p1SecDone(n);
+  if (wasDone) {
+    localStorage.removeItem('p1-sec-' + n);
     btn.textContent = '✅ Mark complete';
     btn.style.background = '#38a169';
   } else {
-    p[id] = true;
+    localStorage.setItem('p1-sec-' + n, '1');
     btn.textContent = '✔ Completed';
     btn.style.background = '#4a5568';
   }
-  p.updated = new Date().toISOString();
-  localStorage.setItem('js-progress', JSON.stringify(p));
   refreshProgressUI();
-  if (!wasDone && p[id]) {
+  if (!wasDone && p1SecDone(n)) {
     addXP1(20); trackStreak1();
     const enc = ["You've got this! 🎯","One more and you're golden ✨","Progress > perfection 💪","Look at you go! 🚀","Tiny steps count! 🐾"];
     toast1(enc[Math.floor(Math.random() * enc.length)], 'celebrate');
@@ -5134,7 +5186,6 @@ function toggleComplete(id, btn) {
 
 // Inject a "Mark complete" button after every numbered section heading (1-16)
 function injectSectionButtons() {
-  const p = JSON.parse(localStorage.getItem('js-progress') || '{}');
   document.querySelectorAll('h2[id]').forEach(h2 => {
     const m = h2.id.match(/^(\d+)-/);
     if (!m) return;
@@ -5144,7 +5195,7 @@ function injectSectionButtons() {
     const btn = document.createElement('button');
     btn.className = 'section-complete-btn';
     btn.style.cssText = 'margin:4px 0 14px 0;padding:6px 14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;';
-    if (p[key]) {
+    if (p1SecDone(m[1])) {
       btn.textContent = '✔ Completed';
       btn.style.background = '#4a5568';
       btn.style.color = '#e2e8f0';
@@ -5197,7 +5248,7 @@ function injectCopyButtons() {
 function setupQuizPersistence() {
   const quizzes = document.querySelectorAll('.quiz-box details, .solution details, .answer-key details');
   quizzes.forEach((d, i) => {
-    const key = 'quiz-' + i;
+    const key = 'p1-quiz-' + i;
     if (localStorage.getItem(key) === 'open') d.open = true;
     d.addEventListener('toggle', () => {
       localStorage.setItem(key, d.open ? 'open' : 'closed');
@@ -5220,7 +5271,7 @@ const srCards = [
   { q: "What's the difference between var and let?", a: "var is function-scoped and hoisted as undefined. let is block-scoped with TDZ." },
   { q: "What does the spread operator (...) do?", a: "Expands an iterable into individual elements. Used for copying/merging arrays and objects." }
 ];
-let srState = JSON.parse(localStorage.getItem('sr-state') || '{}');
+let srState = JSON.parse(localStorage.getItem('p1-sr') || '{}');
 let srCurrent = null;
 
 let srShuffle = false;
@@ -5294,21 +5345,21 @@ function rateSR(quality) {
   }
   state.nextReview = Date.now() + state.interval * 86400000;
   srState[srCurrent] = state;
-  localStorage.setItem('sr-state', JSON.stringify(srState));
+  localStorage.setItem('p1-sr', JSON.stringify(srState));
   startSRReview();
 }
 
 // ===== Learning Path (v3: quiz engagement + self-rating + prerequisites) =====
 function setSelfRating(key, value) {
-  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  const ratings = JSON.parse(localStorage.getItem('p1-ratings') || '{}');
   if (ratings[key] === value) { delete ratings[key]; } else { ratings[key] = value; }
-  localStorage.setItem('js-ratings', JSON.stringify(ratings));
+  localStorage.setItem('p1-ratings', JSON.stringify(ratings));
   renderSelfRating(key);
   updateLearningPath();
 }
 
 function renderSelfRating(key) {
-  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  const ratings = JSON.parse(localStorage.getItem('p1-ratings') || '{}');
   const box = document.getElementById('rating-' + key);
   if (!box) return;
   const got = ratings[key] === 'got';
@@ -5320,19 +5371,20 @@ function renderSelfRating(key) {
 }
 
 function updateLearningPath() {
-  const progress = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  const completed = Object.keys(progress).filter(k => k !== 'updated').length;
+  const progress = p1ProgressObj();
+  const completed = p1SecCount();
   const content = document.getElementById('learningPathContent');
   if (!content) return;
 
-  const ratings = JSON.parse(localStorage.getItem('js-ratings') || '{}');
+  const ratings = JSON.parse(localStorage.getItem('p1-ratings') || '{}');
   const ratedKeys = Object.keys(ratings);
   const needsKeys = ratedKeys.filter(k => ratings[k] === 'needs');
   const needsPct = ratedKeys.length ? Math.round(needsKeys.length / ratedKeys.length * 100) : 0;
 
   let quizEngaged = 0;
   for (let i = 0; i < localStorage.length; i++) {
-    if (localStorage.key(i).startsWith('quiz-') && localStorage.getItem(localStorage.key(i)) === 'open') quizEngaged++;
+    const k = localStorage.key(i);
+    if (k && k.startsWith('p1-quiz-') && localStorage.getItem(k) === 'open') quizEngaged++;
   }
 
   if (completed === 0 && quizEngaged === 0 && ratedKeys.length === 0) {
@@ -5399,13 +5451,13 @@ function currentTheme() {
 function toggleTheme() {
   const next = currentTheme() === 'dark' ? 'light' : 'dark';
   applyTheme(next);
-  localStorage.setItem('theme', next);
+  localStorage.setItem('p1-theme', next);
 }
 
 // Add event listener for Truthy/Falsy input
 document.addEventListener('DOMContentLoaded', function() {
   // Restore saved theme (or follow system preference)
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = localStorage.getItem('p1-theme');
   if (savedTheme) applyTheme(savedTheme);
   else applyTheme(currentTheme());
 
@@ -5414,6 +5466,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setupQuizPersistence();
   refreshProgressUI();
   updateLearningPath();
+  updateCertificate1();
   
   // Show SRS stats on load
   if (document.getElementById('srStats')) startSRReview();
@@ -5507,12 +5560,14 @@ function celebrate1() {
 }
 function boostSurprise1() {
   const ids = Array.from(document.querySelectorAll('h2[id]')).map(h => h.id).filter(id => /^[0-9]+-/.test(id));
-  const progress = JSON.parse(localStorage.getItem('js-progress') || '{}');
-  const undone = ids.filter(id => !progress[id]);
+  const undone = ids.filter(id => {
+    const m = id.match(/^(\d+)-/);
+    return m && !p1SecDone(m[1]);
+  });
   const pool = undone.length ? undone : ids;
   const pick = pool[Math.floor(Math.random() * pool.length)];
   const el = document.getElementById(pick);
-  toast1('🎲 Surprise! Let\'s explore Section ' + pick[0], 'badge');
+  toast1('🎲 Surprise! Let\'s explore Section ' + (pick.match(/^(\d+)/)||[])[1], 'badge');
   if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 var focusLen1 = 25 * 60, focusLeft1 = focusLen1, focusTimer1 = null, focusRunning1 = false;
@@ -5569,6 +5624,22 @@ function focusMode1(btn) {
 
 function collapseAllQuizzes1(expandEls) {
   document.querySelectorAll('.quiz-box details').forEach(d => { if (expandEls) d.setAttribute('open','open'); else d.removeAttribute('open'); });
+}
+
+function updateCertificate1() {
+  var done = p1SecCount();
+  var panel = document.getElementById('certPanel1');
+  var status = document.getElementById('certStatus1');
+  if (!panel) return;
+  if (done === P1_TOTAL) {
+    panel.style.background = 'linear-gradient(135deg,#c6f6d5,#68d391)';
+    panel.style.borderColor = '#38a169';
+    if (status) status.innerHTML = '🎉 <strong>Certificate earned!</strong> All 16 sections completed. Well done!';
+  } else {
+    panel.style.background = '';
+    panel.style.borderColor = '#d69e2e';
+    if (status) status.textContent = 'Complete ' + (P1_TOTAL - done) + ' more section(s) to unlock. (' + done + '/' + P1_TOTAL + ')';
+  }
 }
 
 // ===== Event Loop Visualizer (async preview) =====

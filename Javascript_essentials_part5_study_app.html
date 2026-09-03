@@ -32,7 +32,11 @@ h2 { border-bottom: 3px solid #3182ce; padding-bottom: 6px; color:#2b6cb0; }
 <h1>JavaScript Essentials - Part 5</h1>
 
 <div class="partnav" aria-label="Part navigation">
-  <a href="Javascript_essentials_part4_study_app.html">← 4 MERN Foundations</a>
+  <a href="index.html">Hub</a>
+  <a href="Javascript_essentials_part1_study_app.html">1 Core</a>
+  <a href="Javascript_essentials_part2_study_app.html">2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_study_app.html">3 MERN Bridge</a>
+  <a href="Javascript_essentials_part4_study_app.html">4 MERN Foundations</a>
   <strong>5 Production: Auth + Deployment</strong>
 </div>
 <style>
@@ -110,14 +114,14 @@ html.force-dark .certificate { background:linear-gradient(135deg,#2b2013,#744210
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
   <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
-  <button onclick="fontZoom5(-1)">A−</button>
-  <button onclick="fontZoom5(0)">A</button>
-  <button onclick="fontZoom5(1)">A+</button>
+  <button onclick="fontZoom5(-1)" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button onclick="fontZoom5(0)" title="Reset text size" aria-label="Reset text size">A</button>
+  <button onclick="fontZoom5(1)" title="Increase text size" aria-label="Increase text size">A+</button>
   <span style="width:14px;"></span>
-  <button onclick="collapseAll5(true)">📖 Expand all</button>
-  <button onclick="collapseAll5(false)">📕 Collapse all</button>
+  <button onclick="collapseAll5(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAll5(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
   <span style="width:14px;"></span>
-  <button id="focusBtn5" onclick="focusMode5(this)" aria-pressed="false">🧘 Focus Mode</button>
+  <button id="focusBtn5" onclick="focusMode5(this)" title="Focus Mode hides distractions for calm, deep reading" aria-pressed="false">🧘 Focus Mode</button>
 </div>
 <div id="focusHint5" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — panels hidden, quizzes closed for calm reading. Click it again to restore.</div>
 
@@ -675,6 +679,3 @@ applyFontZoom5();
 </body>
 </html>
 <!--P5H-END-->
-
-</body>
-</html>

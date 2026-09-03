@@ -5,9 +5,12 @@ A quick reference covering the JavaScript fundamentals you have learned so far.
 <div class="interactive-note">💡 <strong>Interactive guide v3 — enhanced with Phase 1 & 2 features:</strong> Truthy/Falsy checker, JavaScript Sandbox, Hoisting Visualizer, Type Coercion Flowchart, Worked Examples (Closures, reduce, Destructuring), 12 Spot-the-Bug challenges, Difficulty Filters, Predict-Output cards, Learning Path, and more! Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds a live progress bar, spaced-repetition flashcards, quiz persistence and personalized recommendations.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
+  <a href="index.html" style="color:#7dd3fc;font-weight:600;text-decoration:none;">Hub</a>
   <strong style="color:#fff;">1 Core</strong>
-  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">2 Async/OOP →</a>
-  <a href="Javascript_essentials_part3_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">3 MERN Bridge →</a>
+  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">3 MERN Bridge</a>
+  <a href="Javascript_essentials_part4_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">4 MERN Foundations</a>
+  <a href="Javascript_essentials_part5_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">5 Production →</a>
 </div>
 
 <style>

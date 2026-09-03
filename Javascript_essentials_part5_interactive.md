@@ -5,10 +5,11 @@ Extend **Part 4** from "works on my laptop" to the real world: real user account
 <div class="interactive-note">💡 <strong>Interactive guide — click to reveal, flip, and run:</strong> quizzes, flashcards, mood checks, and a <strong>live mock auth flow</strong> (register → hash → login → JWT → protected route). Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser; the standalone <strong>.html edition</strong> adds progress, SRS, Focus Mode, and auto-graded challenges.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
-  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;text-decoration:none;">← 1</a>
-  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;text-decoration:none;">← 2</a>
-  <a href="Javascript_essentials_part3_interactive.md" style="color:#7dd3fc;text-decoration:none;">← 3</a>
-  <a href="Javascript_essentials_part4_interactive.md" style="color:#7dd3fc;text-decoration:none;">← 4 MERN</a>
+  <a href="index.html" style="color:#7dd3fc;text-decoration:none;">Hub</a>
+  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;text-decoration:none;">1 Core</a>
+  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;text-decoration:none;">2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_interactive.md" style="color:#7dd3fc;text-decoration:none;">3 MERN Bridge</a>
+  <a href="Javascript_essentials_part4_interactive.md" style="color:#7dd3fc;text-decoration:none;">4 MERN</a>
   <strong style="color:#fff;">5 Production</strong>
   <span style="flex:1;"></span>
   <button onclick="p5iExpand(1)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📖 Expand all</button>

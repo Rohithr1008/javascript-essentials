@@ -32,13 +32,13 @@ h2 { border-bottom: 3px solid #4299e1; padding-bottom: 6px; color:#2b6cb0; }
 <h1>JavaScript Essentials - Part 4</h1>
 
 <div class="partnav" aria-label="Part navigation">
-  <a href="Javascript_essentials_part1_study_app.html">← 1 Core</a>
-  <a href="Javascript_essentials_part2_study_app.html">← 2 Async/OOP</a>
-  <a href="Javascript_essentials_part3_study_app.html">← 3 MERN Bridge</a>
+  <a href="index.html">Hub</a>
+  <a href="Javascript_essentials_part1_study_app.html">1 Core</a>
+  <a href="Javascript_essentials_part2_study_app.html">2 Async/OOP</a>
+  <a href="Javascript_essentials_part3_study_app.html">3 MERN Bridge</a>
   <strong>4 MERN Foundations</strong>
+  <a href="Javascript_essentials_part5_study_app.html">5 Production →</a>
 </div>
-</body>
-</html>
 
 <style>
 .sandbox { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:14px; color:#e2e8f0; margin:12px 0; }
@@ -123,14 +123,14 @@ html.force-dark .certificate { background:linear-gradient(135deg,#2b2013,#744210
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark theme" aria-label="Toggle light/dark theme">🌙 Dark mode</button>
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px 0;align-items:center;">
   <span style="font-weight:600;margin-right:4px;">📐 Size:</span>
-  <button onclick="fontZoom4(-1)">A−</button>
-  <button onclick="fontZoom4(0)">A</button>
-  <button onclick="fontZoom4(1)">A+</button>
+  <button onclick="fontZoom4(-1)" title="Decrease text size" aria-label="Decrease text size">A−</button>
+  <button onclick="fontZoom4(0)" title="Reset text size" aria-label="Reset text size">A</button>
+  <button onclick="fontZoom4(1)" title="Increase text size" aria-label="Increase text size">A+</button>
   <span style="width:14px;"></span>
-  <button onclick="collapseAll4(true)">📖 Expand all</button>
-  <button onclick="collapseAll4(false)">📕 Collapse all</button>
+  <button onclick="collapseAll4(true)" title="Expand all quiz answers" aria-label="Expand all quiz answers">📖 Expand all</button>
+  <button onclick="collapseAll4(false)" title="Collapse all quiz answers" aria-label="Collapse all quiz answers">📕 Collapse all</button>
   <span style="width:14px;"></span>
-  <button id="focusBtn4" onclick="focusMode4(this)" aria-pressed="false">🧘 Focus Mode</button>
+  <button id="focusBtn4" onclick="focusMode4(this)" title="Focus Mode hides distractions for calm, deep reading" aria-pressed="false">🧘 Focus Mode</button>
 </div>
 <div id="focusHint4" style="display:none;background:#eef2ff;border:2px solid #5a67d8;border-radius:8px;padding:8px 14px;margin:6px 0;color:#3730a3;font-weight:600;">🧘 <strong>Focus Mode ON</strong> — panels hidden, quizzes closed for calm reading. Click it again to restore.</div>
 
@@ -453,6 +453,24 @@ app.get("/api/products/:id/reviews", async (req,res) =&gt;
 <pre><code>// 1. Forgot await on Mongoose
 const notes = Note.find();          // ❌ promise, not data
 const notes = await Note.find();    // ✅
+
+// 2. Forgot res.ok check
+const d = await res.json();         // ❌ confusing on 404/500
+if (!res.ok) throw new Error(...);  // ✅ check first
+
+// 3. Mutating state
+notes.push(x); setNotes(notes);     // ❌ no re-render
+setNotes([...notes, x]);            // ✅ new array
+
+// 4. findByIdAndUpdate returns OLD doc without { new: true }
+Note.findByIdAndUpdate(id, upd);                   // ❌ old
+Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ new
+
+// 5. CORS: add app.use(cors()) on the SERVER
+// 6. Empty req.body: add app.use(express.json())</code></pre>
+<div class="quiz-box"><h3>🎯 Section 15 quiz</h3><details><summary>const n = Note.create({...}); — what's wrong?</summary><p class="quiz-correct">Missing await</p></details><details><summary>notes.push(x); setNotes(notes); — why no update?</summary><p class="quiz-correct">Mutating state instead of a new array</p></details><details><summary>Where do you fix a CORS error?</summary><p class="quiz-correct">On the server, app.use(cors())</p></details></div>
+<hr>
+
 <h2 id="16-challenges">16. Auto-graded challenges</h2><button class="mark-btn" onclick="toggleSection(16)">✅ Mark Complete</button>
 <div class="why">🚩 <strong>Why it matters:</strong> these mirror real MERN coding tasks — a safe place to make and fix mistakes. No install needed; write a function, click Run.</div>
 
@@ -523,27 +541,15 @@ const notes = await Note.find();    // ✅
 
 <div class="quiz-box"><h3>🎯 All section answers</h3><details><summary>Quick recap</summary><p>S1: React(screen) → Express(routes) → MongoDB(db) · S2: npm install reads package.json · S3: 5-step loop · S4: req=in, res=out · S5: POST create, GET read, PUT update, DELETE delete; 201 created, 404 missing · S6: schema=shape; create/find/findById/update/delete · S7: Notes API = cors + json + model + 5 routes · S8: component=function→JSX; useState re-renders · S9: fetch→res.ok→json→setState · S10: load on mount, POST add, DELETE filter · S11: cors() on server · S12: process.env, path.join, fs, http · S13: TS = JS + types, interface, .ts/.tsx · S14: ref + populate + nested routes · S15: await, res.ok, immutable, {new:true}</p></details></div>
 
-<h2 id="spot-bug4">Spot-the-Bug - final boss quiz</h2><div class="why"><strong>Why it matters:</strong> catch the classic MERN mistakes before they catch you.</div><div class="spotbug"><details><summary>Q1. <code>const notes = Note.find();</code> - what's the bug?</summary><p class="quiz-correct">Missing <code>await</code> - it's a promise, not the data array.</p></details><details><summary>Q2. <code>express.json()</code> left out, but you read <code>req.body</code>?</summary><p class="quiz-correct"><code>req.body</code> will be <code>undefined</code> - add the JSON middleware.</p></details><details><summary>Q3. React on port 5173 calls <code>localhost:3000</code> - blocked?</summary><p class="quiz-correct">CORS - enable <code>app.use(cors())</code> on the backend.</p></details><details><summary>Q4. <code>Note.findByIdAndUpdate(id, upd)</code> returns the OLD doc?</summary><p class="quiz-correct">Add <code>{ new: true }</code> to get the updated document.</p></details></div><div class="mood"><span>How was Spot-the-Bug?</span><input type="radio" id="mood-bug-1" name="mood-bug4"><label for="mood-bug-1">😅 tough</label><input type="radio" id="mood-bug-2" name="mood-bug4"><label for="mood-bug-2">🙂 okay</label><input type="radio" id="mood-bug-3" name="mood-bug4"><label for="mood-bug-3">😎 nailed it</label></div><hr></div><hr><h2 id="predict-more4">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the MERN mental model fast.</div><div class="predict"><details><summary><code>await Note.create({text:"hi"})</code> — what does it return?</summary><p class="quiz-correct">the created note (a document with <code>_id</code>)</p></details><details><summary><code>res.ok</code> when the API returns 500?</summary><p class="quiz-correct"><code>false</code> — you should <code>throw</code> or handle it</p></details><details><summary><code>const all = await Note.find()</code> — what is <code>all</code>?</summary><p class="quiz-correct">an array of note documents</p></details><details><summary><code>setNotes([...notes, saved])</code> vs <code>notes.push(saved)</code>?</summary><p class="quiz-correct">the spread creates a new array (React re-renders); <code>push</code> mutates in place</p></details><details><summary><code>slugify("Hello World!")</code> using <code>/[^a-z0-9]+/g</code></summary><p class="quiz-correct"><code>"hello-world"</code></p></details></div><hr><h2 id="certificate4">🏆 Certificate of Completion</h2><div class="certificate" id="certPanel4"><h2>🎓 Certificate of Completion</h2><p>This certifies that <span class="big">You</span> have completed</p><p class="big">JavaScript Essentials Part 4 (MERN Foundations)</p><p id="certStatus4">Complete <strong>all 17 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p></div>
+<h2 id="spot-bug4">Spot-the-Bug - final boss quiz</h2><div class="why"><strong>Why it matters:</strong> catch the classic MERN mistakes before they catch you.</div><div class="spotbug"><details><summary>Q1. <code>const notes = Note.find();</code> - what's the bug?</summary><p class="quiz-correct">Missing <code>await</code> - it's a promise, not the data array.</p></details><details><summary>Q2. <code>express.json()</code> left out, but you read <code>req.body</code>?</summary><p class="quiz-correct"><code>req.body</code> will be <code>undefined</code> - add the JSON middleware.</p></details><details><summary>Q3. React on port 5173 calls <code>localhost:3000</code> - blocked?</summary><p class="quiz-correct">CORS - enable <code>app.use(cors())</code> on the backend.</p></details><details><summary>Q4. <code>Note.findByIdAndUpdate(id, upd)</code> returns the OLD doc?</summary><p class="quiz-correct">Add <code>{ new: true }</code> to get the updated document.</p></details></div><div class="mood"><span>How was Spot-the-Bug?</span><input type="radio" id="mood-bug-1" name="mood-bug4"><label for="mood-bug-1">😅 tough</label><input type="radio" id="mood-bug-2" name="mood-bug4"><label for="mood-bug-2">🙂 okay</label><input type="radio" id="mood-bug-3" name="mood-bug4"><label for="mood-bug-3">😎 nailed it</label></div>
+<hr>
+<h2 id="predict-more4">🤔 More predict-the-output cards</h2><div class="why">🚩 <strong>Why it matters:</strong> guessing the output builds the MERN mental model fast.</div><div class="predict"><details><summary><code>await Note.create({text:"hi"})</code> — what does it return?</summary><p class="quiz-correct">the created note (a document with <code>_id</code>)</p></details><details><summary><code>res.ok</code> when the API returns 500?</summary><p class="quiz-correct"><code>false</code> — you should <code>throw</code> or handle it</p></details><details><summary><code>const all = await Note.find()</code> — what is <code>all</code>?</summary><p class="quiz-correct">an array of note documents</p></details><details><summary><code>setNotes([...notes, saved])</code> vs <code>notes.push(saved)</code>?</summary><p class="quiz-correct">the spread creates a new array (React re-renders); <code>push</code> mutates in place</p></details><details><summary><code>slugify("Hello World!")</code> using <code>/[^a-z0-9]+/g</code></summary><p class="quiz-correct"><code>"hello-world"</code></p></details></div>
+<hr>
+<h2 id="certificate4">🏆 Certificate of Completion</h2><div class="certificate" id="certPanel4"><h2>🎓 Certificate of Completion</h2><p>This certifies that <span class="big">You</span> have completed</p><p class="big">JavaScript Essentials Part 4 (MERN Foundations)</p><p id="certStatus4">Complete <strong>all 17 sections</strong> (✅ on each "Mark Complete" button) to unlock your certificate.</p></div>
 
 <div class="footer" style="text-align:center;padding:18px;margin-top:30px;background:#2d3748;border-radius:10px;color:#e2e8f0;">🎉 <strong>Congratulations!</strong> You've completed JavaScript Essentials — Part 4 (MERN Foundations). You built a Notes app and a Product Store with Reviews, end-to-end.<br><span style="color:#a0aec0;font-size:13px;">Next: open a real terminal, npm install, and run the exact code from this guide against a real MongoDB.</span></div>
 
 <div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
-
-// 2. Forgot res.ok check
-const d = await res.json();         // ❌ confusing on 404/500
-if (!res.ok) throw new Error(...);  // ✅ check first
-
-// 3. Mutating state
-notes.push(x); setNotes(notes);     // ❌ no re-render
-setNotes([...notes, x]);            // ✅ new array
-
-// 4. findByIdAndUpdate returns OLD doc without { new: true }
-Note.findByIdAndUpdate(id, upd);                   // ❌ old
-Note.findByIdAndUpdate(id, upd, { new: true });    // ✅ new
-
-// 5. CORS: add app.use(cors()) on the SERVER
-// 6. Empty req.body: add app.use(express.json())</code></pre>
-<div class="quiz-box"><h3>🎯 Section 15 quiz</h3><details><summary>const n = Note.create({...}); — what's wrong?</summary><p class="quiz-correct">Missing await</p></details><details><summary>notes.push(x); setNotes(notes); — why no update?</summary><p class="quiz-correct">Mutating state instead of a new array</p></details><details><summary>Where do you fix a CORS error?</summary><p class="quiz-correct">On the server, app.use(cors())</p></details></div>
 <hr>
 <script>
 // ===== Part 4 Study App — Script =====

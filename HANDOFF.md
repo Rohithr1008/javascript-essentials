@@ -83,7 +83,7 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 
 - 🌙 **Theme toggle** (`force-dark`/`force-light`) with `applySysDark()` on load
 - 🔤 **Font zoom** (A−/A/A+): classes `font-sm/font-md/font-lg`
-- 📊 **Progress bar** + "Mark Complete" via `toggleSection(n)` (localStorage keys `pN-sec-N`)
+- 📊 **Progress bar** + "Mark Complete" via `toggleSection(n)` (localStorage keys `pN-sec-N`) — Part 1 uses the same `p1-sec-N` keys (legacy `js-progress` is migrated once on load)
 - 🧭 **Learning Path** recommendations (`updateLearningPathN`)
 - 🃏 **SRS flashcards** (new→learning→mastered) + shuffle; keys `pN-sr`, `pN-sr-shuffle`
 - ⚡ **XP / streak / confetti / toast**; keys `pN-boost`
@@ -188,9 +188,14 @@ node --check _v.js
 - Full smoke test: all scripts compile; core systems load/run; 11/11 challenge solutions pass
 - **Feature parity (2026):** the Part 1 feature set (predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug quiz, completion certificate, scrollspy nav) is now in **Parts 2–5 study apps** too — no two parts share identical interactivity; each is content-tailored.
 - **Part 4/5 interactive content tailored** to MERN (Part 4) and Auth/Deploy (Part 5) — predict cards, Spot-the-Bug questions, and 7-day plans are distinct per part.
+- **Audit fixes (2026-09-03):**
+  - P0: Part 4 pitfalls markup restored; Part 3 certificate UTF-8 fixed; Hub + Parts 1–5 nav on all apps + interactive MD; premature `</body>` removed (P4/P5).
+  - P1/P2: Part 1 storage migrated to `p1-*` (+ legacy migration); progress-gated Part 1 certificate; aria-labels on P3–P5 toolbar; duplicate Part 2 `.predict` CSS removed; `index.html` local MD links + series progress; Part 1 sandbox uses `new Function` (no `eval`); `verify-study-apps.js` for syntax/structure smoke checks (`node verify-study-apps.js`).
 
 ### 🔜 Natural next steps (not started — only continue if asked)
-- **Scaling / reliability**: CI/CD (auto-deploy on push), monitoring & logging, performance tuning
+- **Shared shell / generator** to stop 5-way CSS+JS drift (architecture debt)
+- **Graded quiz explanations** rolled from Part 1 Phase enhancements into Parts 2–5
+- **Scaling / reliability**: wire `verify-study-apps.js` into GitHub Actions CI, monitoring & logging, performance tuning
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
 - Mobile/keyboard E2E pass (Playwright), or a one-time real **a11y scan** (axe DevTools) to *prove* compliance

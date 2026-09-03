@@ -5,9 +5,12 @@ A quick reference covering the JavaScript you need for **full-stack (MERN) devel
 <div class="interactive-note">💡 <strong>Interactive guide — MERN Bridge:</strong> clickable quizzes, flashcards, mood checks, a Map/Set playground, RegExp tester, and Node quick-reference. Best in <strong>VS Code preview</strong> (<code>Ctrl+Shift+V</code>) or a browser. The standalone <strong>.html edition</strong> adds live progress, spaced-repetition flashcards, and auto-graded challenges.</div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#2d3748;color:#e2e8f0;padding:8px 12px;border-radius:8px;margin:10px 0;font-size:0.95rem;">
-  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">← 1 Core</a>
-  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">← 2 Async/OOP</a>
+  <a href="index.html" style="color:#7dd3fc;font-weight:600;text-decoration:none;">Hub</a>
+  <a href="Javascript_essentials_part1_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">1 Core</a>
+  <a href="Javascript_essentials_part2_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">2 Async/OOP</a>
   <strong style="color:#fff;">3 MERN Bridge</strong>
+  <a href="Javascript_essentials_part4_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">4 MERN Foundations</a>
+  <a href="Javascript_essentials_part5_interactive.md" style="color:#7dd3fc;font-weight:600;text-decoration:none;">5 Production →</a>
   <span style="flex:1;"></span>
   <button onclick="p3iExpand(1)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📖 Expand all</button>
   <button onclick="p3iExpand(0)" style="cursor:pointer;border:none;border-radius:6px;padding:4px 10px;">📕 Collapse all</button>
