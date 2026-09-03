@@ -8,7 +8,7 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const ROOT = __dirname;
-const APPS = [1, 2, 3, 4, 5].map(
+const APPS = [1, 2, 3, 4, 5, 6].map(
   (n) => `Javascript_essentials_part${n}_study_app.html`
 );
 
@@ -111,7 +111,7 @@ for (const file of APPS) {
   const partNum = Number((file.match(/part(\d)/) || [])[1]);
   if (partNum >= 2) {
     if (!/quiz-correct/.test(raw) || !/quiz-wrong/.test(raw)) {
-      fail(`${file}: Parts 2–5 must use both quiz-correct and quiz-wrong`);
+      fail(`${file}: Parts 2–6 must use both quiz-correct and quiz-wrong`);
     } else {
       ok(`${file}: quiz-correct + quiz-wrong present`);
     }

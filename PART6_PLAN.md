@@ -1,9 +1,8 @@
 # PART 6 — Production Hardening: CI/CD, Testing & Scale (Plan)
 
-> **Forward-looking plan.** The series is complete through Part 5 (Core → Async/OOP → MERN Bridge →
-> Build MERN apps → Auth & Deployment). Part 6 turns a *working, deployed* app into a *professional,
-> maintainable, scalable* app. Intended to be built in a future session — everything below is the plan,
-> matching the exact conventions of Parts 1–5 (three editions + context doc + index/README updates).
+> **Built plan.** The series is complete through Part 6 (Core → Async/OOP → MERN Bridge →
+> Build MERN apps → Auth & Deployment → Production Hardening). Part 6 turns a *working, deployed* app into a *professional,
+> maintainable, scalable* app. Delivered in the same three-edition format as Parts 1–5.
 
 ## Goal
 Take the Part 4 + Part 5 app and make it production-grade: **automated testing**, **CI/CD** (auto-test
@@ -66,4 +65,4 @@ limiting, RBAC), **performance**, and **scaling patterns**. Same three-edition f
   keep challenge solutions as pure functions validated via the real `runTest` harness (with a canvas mock).
 
 ---
-_Created: 2026-09-02 · Status: PLANNED, not yet built._
+_Created: 2026-09-02 · Status: ✅ BUILT (2026-09-03) — three editions + context + hub updates._

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JavaScript Essentials — Parts 1–5</title>
+<title>JavaScript Essentials — Parts 1–6</title>
 <style>
   :root{color-scheme:light dark}
   body{margin:0;min-height:100vh;display:grid;place-items:center;font:16px/1.6 "Segoe UI",system-ui,sans-serif;background:#f4f7fb;color:#182333}
@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
   <h1>JavaScript Essentials</h1>
-  <p class="sub">Parts 1–5 — study in three formats (works offline)</p>
+  <p class="sub">Parts 1–6 — study in three formats (works offline)</p>
 
   <div id="seriesProgress" aria-live="polite">
     <div id="seriesLabel">Series progress: loading…</div>
@@ -75,7 +75,23 @@
     <a class="card" href="Javascript_essentials_part5_with_examples.md"><b>Part 5 · Plain Markdown</b><span>Clean reading / printing / PDF edition</span></a>
   </div>
 
-  <footer>Made for hands-on learning · Part 1: 16 · 2: 9 · 3: 10 · 4: 17 · 5: 16 sections</footer>
+  <h2 style="color:#0f766e;margin:22px 0 6px;font-size:20px;">Part 6 — Production Hardening: CI/CD, Testing &amp; Scale</h2>
+  <p class="part-meta" data-part-progress="6">Progress: —</p>
+  <div class="cards">
+    <a class="card" href="Javascript_essentials_part6_study_app.html"><b>Part 6 · Interactive Study App</b><span>Vitest/Jest, RTL, GitHub Actions CI/CD, monitoring, RBAC — mock CI runner + coverage + rate-limit panel, 5 challenges, Focus Mode</span></a>
+    <a class="card" href="Javascript_essentials_part6_interactive.md"><b>Part 6 · Interactive Markdown</b><span>CI story, quizzes, Spot-the-Bug — VS Code preview</span></a>
+    <a class="card" href="Javascript_essentials_part6_with_examples.md"><b>Part 6 · Plain Markdown</b><span>Clean reading / printing / PDF edition</span></a>
+  </div>
+
+  <p class="sub" style="margin:28px 0 8px;text-align:left">
+    <strong>Automation Tester Path</strong> —
+    <a href="../automation-tester-path/README.md">path map</a> ·
+    next: <a href="../playwright-essentials/index.html">Playwright Essentials</a> ·
+    then return for Part 6 ·
+    <a href="../api-data-essentials/index.html">API &amp; Data</a> ·
+    <a href="../perf-basics/index.html">Perf Basics</a>
+  </p>
+  <footer>Made for hands-on learning · Part 1: 16 · 2: 9 · 3: 10 · 4: 17 · 5: 16 · 6: 16 sections</footer>
 </div>
 <script>
 (function () {
@@ -84,7 +100,8 @@
     { n: 2, total: 9 },
     { n: 3, total: 10 },
     { n: 4, total: 17 },
-    { n: 5, total: 16 }
+    { n: 5, total: 16 },
+    { n: 6, total: 16 }
   ];
   function countDone(part, total) {
     var done = 0;

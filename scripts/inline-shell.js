@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
-const APPS = [1, 2, 3, 4, 5].map(
+const APPS = [1, 2, 3, 4, 5, 6].map(
   (n) => `Javascript_essentials_part${n}_study_app.html`
 );
 

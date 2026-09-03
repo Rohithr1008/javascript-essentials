@@ -1,4 +1,4 @@
-# 📌 Project Handoff — JavaScript Essentials (5-Part Series)
+# 📌 Project Handoff — JavaScript Essentials (6-Part Series)
 
 > **Purpose:** Everything a fresh session (human or AI) needs to continue this repo confidently — rules, conventions, architecture, verification steps, and what's done vs. left for later. Read this first.
 
@@ -15,10 +15,22 @@ A complete, beginner-friendly, **ADHD/autistic-friendly** study guide that teach
 | 3 | MERN Bridge | 10 | Map/Set, generators, regex, DOM/events, fetch, Node core |
 | 4 | MERN Foundations | 17 | Express, Mongoose/MongoDB, React, fetch, CORS, Node, TypeScript + 2 mini-projects |
 | 5 | Production | 16 | bcrypt hashing, JWT, protected routes, React token flow, deployment (Render/Vercel/Atlas), testing, React Router |
+| 6 | Hardening | 16 | Vitest/Jest, Express/RTL tests, coverage/TDD, GitHub Actions CI/CD, secrets, monitoring, perf, refresh/rate-limit/RBAC, scale |
 
-**Status:** ✅ Complete. All committed & pushed to `main`. Working tree clean.
+**Status:** ✅ Complete through Part 6. Prefer leaving working-tree changes for the coordinator unless asked to commit.
 
 **Repo:** https://github.com/Rohithr1008/javascript-essentials
+
+### Automation Tester Path
+
+| | |
+|---|---|
+| Umbrella | [`../automation-tester-path/README.md`](../automation-tester-path/README.md) · [`START_HERE`](../automation-tester-path/START_HERE.md) |
+| Role | Fundamentals (Parts 1–5) → after Playwright, Part 6 hardening |
+| Previous kit | — (path start) |
+| Next kit | [`../playwright-essentials/`](../playwright-essentials/README.md) |
+| After Part 6 | [`../api-data-essentials/`](../api-data-essentials/README.md) → [`../perf-basics/`](../perf-basics/README.md) |
+| E2E depth | Playwright Essentials (not Part 6) |
 
 ---
 
@@ -61,7 +73,7 @@ For each Part N:
 ### Study app (`.html`)
 - Single `<script>` pair (never more). Self-contained (inline CSS + JS, no external deps).
 - Feature set reused across ALL parts (see §5) — keep it consistent.
-- Sentinel `<!--PNH-END-->` at EOF (Parts 2–5; Part 1 historically has none — don't add one there).
+- Sentinel `<!--PNH-END-->` at EOF (Parts 2–6; Part 1 historically has none — don't add one there).
 - **Skip link**: `<a class="skip-link" href="#progressBar">Skip to content</a>` right after `<body>`.
 
 ---
@@ -94,6 +106,7 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 - Per-part **live in-page mock** (learners interact with zero install):
   - Part 4: mock MERN server (`mockRun`) + animated layer diagram (`layerLit4`, `mockAutoplay`) + 2 mini-app demos
   - Part 5: mock auth server (`authDemo`) + JWT viewer (3 chips)
+  - Part 6: mock CI runner (`ciDemo`) + coverage sim (`covDemo`) + logger/rate-limit/RBAC (`secDemo`)
 - **Auto-graded challenges**: `runTest(n)` builds a `new Function` harness combining user code + `PN_TESTS[n]`, plus XP/confetti on pass.
 
 **Naming rule:** every global in app N is suffixed with its part (`fontZoom3`, `boostSurprise4`, `focusMode5`, etc.) to keep the parts isolated.
@@ -137,11 +150,18 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 - **JWT viewer** (3 colour chips: header·payload·signature) · **hash demo**
 - Auth/deploy jargon glossary (4) · 5 auto-graded challenges
 
+### Part 6 — Hardening (mock CI / coverage / RBAC)
+- **Quiz-boxes** with `quiz-correct` + `quiz-wrong` · **SRS flashcards engine** · predict cards · Spot-the-Bug · 7-day plan · certificate · scrollspy
+- **Live mock CI/CD runner** (`ciDemo`): Push / fail-lint / reset — lint→test→build→deploy
+- **Coverage simulator** (`covDemo`) · **Logger / rate-limit / RBAC panel** (`secDemo`)
+- Hardening jargon glossary · 5 auto-graded challenges (`testAssert`, `ciStepsOrder`, `statusFromLint`, `tokenRefresh`, `rbacAllowed`)
+- Links out to **Playwright Essentials** for deep browser E2E (not re-taught here)
+
 ### 📋 Interaction consistency (now at parity)
 - **Every app has all of these,** verified in the parity pass: predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug final quiz, completion certificate (unlocks at 100%), 🧭 scrollspy nav — plus the shared engine (quiz-boxes, SRS flashcards, progress + Mark Complete, learning path, Focus Mode, collapse/expand, theme, font zoom, XP/streak/confetti, skip link).
-- Parts 1–5 previously differed in *which* of these each had; the parity pass brought Parts 4–5 level with Parts 1–3 (and gave Parts 2–3 the certificate/scrollspy they lacked).
-- **Content is part-specific:** predict cards, 7-day plans, Spot-the-Bug questions, badges and hints are tailored to each part's material (e.g. Part 4 → MERN; Part 5 → auth/deploy). When you add/change one, keep each part's version distinct and re-run the inventory audit.
-- **App-primary practice (Parts 2–5):** live mocks, SRS engine, and the completion certificate stay primarily in the **study apps**. Interactive Markdown for Parts 2–5 now also includes **Spot-the-Bug** + dedicated **predict-the-output** decks (static details/summary — same Q&A substance as the apps). Plain Markdown keeps quizzes and why-it-matters without full app parity.
+- Parts 1–6 previously differed in *which* of these each had; the parity pass brought Parts 4–6 level with Parts 1–3 (and gave Parts 2–3 the certificate/scrollspy they lacked).
+- **Content is part-specific:** predict cards, 7-day plans, Spot-the-Bug questions, badges and hints are tailored to each part's material (e.g. Part 4 → MERN; Part 5 → auth/deploy; Part 6 → CI/testing/security). When you add/change one, keep each part's version distinct and re-run the inventory audit.
+- **App-primary practice (Parts 2–6):** live mocks, SRS engine, and the completion certificate stay primarily in the **study apps**. Interactive Markdown for Parts 2–6 now also includes **Spot-the-Bug** + dedicated **predict-the-output** decks (static details/summary — same Q&A substance as the apps). Plain Markdown keeps quizzes and why-it-matters without full app parity.
 
 ---
 ---
@@ -194,27 +214,29 @@ node --check _v.js
 ## 8. What's Done vs. Later
 
 ### ✅ Done
-- Parts 1–5, three editions each, all pushed
+- Parts 1–6, three editions each (Part 6: hardening — unit/CI/CD/security/scale)
 - Part 4 + 5 polish (animated mock demos, glossaries, onboarding, skip links)
-- Full smoke test: all scripts compile; core systems load/run; 11/11 challenge solutions pass
-- **Feature parity (2026):** the Part 1 feature set (predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug quiz, completion certificate, scrollspy nav) is now in **Parts 2–5 study apps** too — no two parts share identical interactivity; each is content-tailored.
-- **Part 4/5 interactive content tailored** to MERN (Part 4) and Auth/Deploy (Part 5) — predict cards, Spot-the-Bug questions, and 7-day plans are distinct per part.
+- Part 6 mocks: CI runner, coverage simulator, logger/rate-limit/RBAC panel; Playwright Essentials linked for E2E
+- Full smoke test: `node verify-study-apps.js` (Parts 1–6); shared-shell `--check`; challenge solutions for Part 6 validated
+- **Feature parity (2026):** the Part 1 feature set (predict-the-output cards, difficulty/time badges, per-challenge hints, mood checks, 7-day study plan, Spot-the-Bug quiz, completion certificate, scrollspy nav) is now in **Parts 2–6 study apps** too — no two parts share identical interactivity; each is content-tailored.
+- **Part 4/5/6 interactive content tailored** to MERN (Part 4), Auth/Deploy (Part 5), and CI/testing/security (Part 6).
 - **Audit fixes (2026-09-03):**
   - P0: Part 4 pitfalls markup restored; Part 3 certificate UTF-8 fixed; Hub + Parts 1–5 nav on all apps + interactive MD; premature `</body>` removed (P4/P5).
   - P1/P2: Part 1 storage migrated to `p1-*` (+ legacy migration); progress-gated Part 1 certificate; aria-labels on P3–P5 toolbar; duplicate Part 2 `.predict` CSS removed; `index.html` local MD links + series progress; Part 1 sandbox uses `new Function` (no `eval`); `verify-study-apps.js` for syntax/structure smoke checks (`node verify-study-apps.js`).
 - **Deferred follow-ups landed (2026-09-03):**
-  - **Shared shell CSS:** edit `shared/study-shell.css`, then `node scripts/inline-shell.js` before commit. Markers `SHARED-SHELL-CSS:START/END` in Parts 1–5; `node scripts/inline-shell.js --check` fails if HTML drifts. Apps stay self-contained (offline single-file).
+  - **Shared shell CSS:** edit `shared/study-shell.css`, then `node scripts/inline-shell.js` before commit. Markers `SHARED-SHELL-CSS:START/END` in Parts 1–6; `node scripts/inline-shell.js --check` fails if HTML drifts. Apps stay self-contained (offline single-file).
   - **Shared shell JS:** edit `shared/study-shell.js` (theme / font zoom / focus / collapse / a11y labels). Markers `SHARED-SHELL-JS:START/END`; same inliner writes both CSS + JS.
-  - **Why-right/wrong quizzes:** Parts 2–5 study apps use `quiz-wrong` + `quiz-correct` explanations (interactive `.md` unchanged).
+  - **Why-right/wrong quizzes:** Parts 2–6 study apps use `quiz-wrong` + `quiz-correct` explanations (interactive `.md` unchanged).
   - **CI:** `.github/workflows/verify.yml` runs structural verify, shared-shell `--check`, then Playwright (axe a11y + keyboard/mobile E2E). Axe `color-contrast` is gated (chrome fixed in `study-shell.css`; decorative badges/chips/layer pills/code excluded in `tests/a11y.spec.js`).
-  - Verify also asserts shared-shell markers and Parts 2–5 `quiz-wrong` presence.
+  - Verify also asserts shared-shell markers and Parts 2–6 `quiz-wrong` presence.
   - **Content-audit P0/P1 (2026-09-03):** Part 5 localStorage honesty + toyHash (not reverse-as-hash); Part 1 join typo; README edition differences + app-primary practice note; Part 4 series next→Part 5; Part 4 functional `setNotes((prev)=>…)`; Part 5 first-ship / real-prod next tip.
 
 ### 🔜 Natural next steps (not started — only continue if asked)
-- **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
-- **Part 6** (see `PART6_PLAN.md`)
 - Optional: dark-theme force scan for contrast; further decorative-token cleanup outside excluded regions
+
+### ✅ Path cross-links
+- Sibling kits + umbrella: [`../automation-tester-path/`](../automation-tester-path/README.md) (Playwright, API & Data, Perf Basics)
 
 ---
 
@@ -222,7 +244,7 @@ node --check _v.js
 - A **focus-mode harness false-positive** was a mock artifact — isolate the function in a minimal test to confirm app code is fine.
 - **README/interactive demos** that show `node -e` output should be run once to confirm the comment matches.
 - "Part N complete" was corrected twice when the **context doc / index.html / README** were still missing Part N — always update those three together with a new part.
-- **Certificate must reset on lock too:** an earned certificate turned green stays green unless the locked branch also clears the background — set `panel.style.background = ""` in the "incomplete" path (fixed across Parts 2–5).
+- **Certificate must reset on lock too:** an earned certificate turned green stays green unless the locked branch also clears the background — set `panel.style.background = ""` in the "incomplete" path (fixed across Parts 2–6).
 - **Challenge-runner tests need a real canvas mock:** when evaluating `runTest` in Node, the confetti path calls `canvas.getContext("2d")`. Without it the promise rejects and "result pass" is overwritten to "result fail" — a harness artifact, not an app bug. Provide a `getContext` stub.
 - **Watch the path** — the recurring `.cline` vs `.clinete` typo creates a stray temp folder; always type `C:\Users\rohit\.cline\data\workspaces\chat\javascript-essentials` exactly.
 

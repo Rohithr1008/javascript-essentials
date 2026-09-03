@@ -2,7 +2,19 @@
 
 A hands-on study kit covering the JavaScript fundamentals: variables, control flow, functions, closures, arrays, strings, objects, and the classic pitfalls — in **three editions**, from print-friendly to fully interactive.
 
-> **Progress:** Part 1 ✅ · Part 2 ✅ · Part 3 (MERN Bridge) ✅ · Part 4 (MERN Foundations) ✅ · Part 5 (Production: Auth + Deployment) ✅ complete
+> **Progress:** Part 1 ✅ · Part 2 ✅ · Part 3 (MERN Bridge) ✅ · Part 4 (MERN Foundations) ✅ · Part 5 (Production: Auth + Deployment) ✅ · Part 6 (Production Hardening) ✅ complete
+
+### 🧭 Automation Tester Path
+
+Part of the **[Automation Tester Path](../automation-tester-path/README.md)** · [`START_HERE`](../automation-tester-path/START_HERE.md)
+
+| | |
+|---|---|
+| **On the path** | **Start here** for language/app foundations (Parts 1–5), then Playwright, then **Part 6** hardening |
+| **Previous** | — (first kit) |
+| **Next** | [Playwright Essentials](../playwright-essentials/README.md) (strategy + browser E2E) |
+| **After Playwright** | Come back for [Part 6 study app](Javascript_essentials_part6_study_app.html) · then [API & Data](../api-data-essentials/README.md) → [Perf Basics](../perf-basics/README.md) |
+| **Sibling** | Deep E2E → Playwright · Deep REST/SQL → API & Data · Load literacy → Perf |
 
 ---
 
@@ -25,7 +37,7 @@ Same curriculum across all three editions; features differ by format — pick wh
 
 1. Variables: `let`, `const`, `var` · 2. Conditions · 3. Loops · 4. Logical operators · 5. Data types & NaN · 6. Mutable vs immutable (+ `Object.freeze`) · 7. Operators & `Math` · 8. Functions, arrows, closures, hoisting · 9. Arrays & methods (incl. ES2023 `toSorted`/`with`) · 10. Strings & methods (+ template literals) · 11. Objects, methods & `this` · 12. Symbols cheat sheet · 13. 13 common pitfalls · 14. 10 practice exercises · 15. 9 challenges · 16. Answer key
 
-## 🧪 Built-in interactivity (in every part's study app — parts 1–5)
+## 🧪 Built-in interactivity (in every part's study app — parts 1–6)
 
 - 🧪 **Self-test quizzes** with click-to-reveal answers
 - 🤔 **Predict-the-output cards** (logic, mutability, async, MERN/auth traps)
@@ -34,8 +46,8 @@ Same curriculum across all three editions; features differ by format — pick wh
 - 🐞 **Spot-the-bug** final boss quiz *(in interactive Markdown + study apps; study apps also have live mocks / SRS / certificate)*
 - 😅 **Mood checks** · 📅 **7-day study plan** · 🏆 **completion certificate** *(certificate + live mocks + SRS engine: study-app primary)*
 - *(App edition)* 🌙 dark mode · 📊 progress that persists via localStorage · 🧭 scrollspy navigation · 🧘 Focus Mode
-- Interactive Markdown now includes Spot-the-Bug + predict decks for Parts 2–5 (static). Live mocks, SRS, progress, and certificates stay study-app primary.
-- Every feature is **content-tailored to its part** (Part 4 → MERN, Part 5 → auth/deploy), so no two parts share identical material.
+- Interactive Markdown now includes Spot-the-Bug + predict decks for Parts 2–6 (static). Live mocks, SRS, progress, and certificates stay study-app primary.
+- Every feature is **content-tailored to its part** (Part 4 → MERN, Part 5 → auth/deploy, Part 6 → CI/testing/security), so no two parts share identical material.
 
 ## 🚀 Quick start
 
@@ -113,7 +125,7 @@ node -e "console.log([...new Set([1,1,2,3,3])]); const slugify=s=>s.toLowerCase(
 ### 🧩 Series at a glance
 
 ```
-Part 1  Core  →  Part 2  Async/OOP  →  Part 3  MERN Bridge  →  Part 4  MERN Foundations  →  Part 5  Production
+Part 1  Core  →  Part 2  Async/OOP  →  Part 3  MERN Bridge  →  Part 4  MERN Foundations  →  Part 5  Production  →  Part 6  Hardening
 ```
 
 ---
@@ -169,7 +181,27 @@ See [`JAVASCRIPT_ESSENTIALS_PART5_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART5_CONTE
 
 ---
 
-*The full 5-part series covers JavaScript → MERN apps → production.* ❤️
+## ⚡ Part 6 — Production Hardening: CI/CD, Testing & Scale
+
+Take your Part 5 app and make it bulletproof: **unit/integration tests** (Vitest/Jest, Express mocks, React Testing Library), **CI/CD** (GitHub Actions → lint/test/build → Render/Vercel), **monitoring**, **advanced security** (refresh tokens, rate limits, RBAC), and **scaling**. Offline **mock CI runner**, coverage simulator, and logger/RBAC panel — no install. Deep browser E2E → **[Playwright Essentials](../playwright-essentials/README.md)** (separate series on the same path).
+
+### 📚 Choose your edition
+
+| Edition | Best for | Link |
+|---|---|---|
+| 🖥️ **Interactive Study App** | **Mock CI runner** + coverage + RBAC panel, 5 auto-graded challenges, Focus Mode | [Open live](https://rohithr1008.github.io/javascript-essentials/Javascript_essentials_part6_study_app.html) — or open offline |
+| 📝 **Interactive Markdown** | VS Code / Typora — CI story, quizzes, Spot-the-Bug | [`Javascript_essentials_part6_interactive.md`](Javascript_essentials_part6_interactive.md) — `Ctrl+Shift+V` |
+| 📄 **Plain Markdown** | Printing / PDF / distraction-free reading | [`Javascript_essentials_part6_with_examples.md`](Javascript_essentials_part6_with_examples.md) |
+
+### 🗂️ What's covered (16 sections)
+
+1. Why harden · 2. Vitest/Jest · 3. Express/Mongoose tests · 4. React Testing Library · 5. Coverage & TDD · 6. CI/CD & Actions · 7. CI pipeline · 8. CD deploy · 9. Secrets in CI · 10. Monitoring · 11. Performance · 12. Refresh tokens & rate limits · 13. RBAC/CORS/HTTPS · 14. Scaling · 15. Pitfalls · 16. Practice & challenges
+
+See [`JAVASCRIPT_ESSENTIALS_PART6_CONTEXT.md`](JAVASCRIPT_ESSENTIALS_PART6_CONTEXT.md) for full context/transfer notes.
+
+---
+
+*The full 6-part series covers JavaScript → MERN apps → production → hardening.* ❤️
 
 ---
 
