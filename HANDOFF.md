@@ -161,10 +161,13 @@ Every section opens with a **`> 🚩 Why it matters:`** line (the ADHD/context a
 
 ```powershell
 # Preferred smoke (also what CI runs):
+npm ci
 node verify-study-apps.js
 node scripts/inline-shell.js --check
+npx playwright install chromium   # once per machine / in CI
+npx playwright test
 
-# After editing shared/study-shell.css:
+# After editing shared/study-shell.css or shared/study-shell.js:
 node scripts/inline-shell.js
 
 # 1. JS compiles (extract the app's single script)
@@ -200,16 +203,17 @@ node --check _v.js
   - P1/P2: Part 1 storage migrated to `p1-*` (+ legacy migration); progress-gated Part 1 certificate; aria-labels on P3–P5 toolbar; duplicate Part 2 `.predict` CSS removed; `index.html` local MD links + series progress; Part 1 sandbox uses `new Function` (no `eval`); `verify-study-apps.js` for syntax/structure smoke checks (`node verify-study-apps.js`).
 - **Deferred follow-ups landed (2026-09-03):**
   - **Shared shell CSS:** edit `shared/study-shell.css`, then `node scripts/inline-shell.js` before commit. Markers `SHARED-SHELL-CSS:START/END` in Parts 1–5; `node scripts/inline-shell.js --check` fails if HTML drifts. Apps stay self-contained (offline single-file).
+  - **Shared shell JS:** edit `shared/study-shell.js` (theme / font zoom / focus / collapse / a11y labels). Markers `SHARED-SHELL-JS:START/END`; same inliner writes both CSS + JS.
   - **Why-right/wrong quizzes:** Parts 2–5 study apps use `quiz-wrong` + `quiz-correct` explanations (interactive `.md` unchanged).
-  - **CI:** `.github/workflows/verify.yml` runs `node verify-study-apps.js` + `node scripts/inline-shell.js --check` on push/PR to `main`.
+  - **CI:** `.github/workflows/verify.yml` runs structural verify, shared-shell `--check`, then Playwright (axe a11y + keyboard/mobile E2E).
   - Verify also asserts shared-shell markers and Parts 2–5 `quiz-wrong` presence.
+  - **Theme contrast fix:** callouts set explicit colors under `force-dark` / `force-light`; Parts 2–5 theme toggles use `StudyShell` (preserve font classes).
 
 ### 🔜 Natural next steps (not started — only continue if asked)
-- **Shared JS shell / generator** (CSS is shared; per-part JS suffixes still duplicated)
-- **Formal a11y:** Playwright + axe gate (deferred — not wired yet)
 - **Advanced security**: refresh tokens, rate limiting, HTTPS/headers, role-based access control (RBAC)
 - **Deploy-to-cloud walkthrough** with a real (free) account, or a "deploy one real project" applied exercise
-- Mobile/keyboard E2E pass (Playwright)
+- **Part 6** (see `PART6_PLAN.md`)
+- Tighten axe `color-contrast` gate further (currently disabled in CI; chrome buttons already darkened in shared CSS)
 
 ---
 

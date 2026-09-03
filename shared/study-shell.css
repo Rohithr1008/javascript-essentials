@@ -53,6 +53,55 @@ html.font-sm { font-size: 15px; }
 html.font-md { font-size: 17px; }
 html.font-lg { font-size: 18px; }
 
+/* Interactive chrome — WCAG AA contrast for white-on-fill buttons */
+.mark-btn { background: #276749 !important; color: #ffffff !important; }
+.mark-btn.done { background: #4a5568 !important; color: #ffffff !important; }
+.theme-btn { background: #2d3748 !important; color: #ffffff !important; }
+#boostBar button[aria-label*="Surprise" i],
+#boostBar1 button[aria-label*="Surprise" i],
+button[onclick*="boostSurprise"] {
+  background: #9c4221 !important;
+  color: #ffffff !important;
+}
+#boostBar button[aria-label*="Focus sprint" i],
+#boostBar button[aria-label*="focus sprint" i],
+#boostBar1 button[aria-label*="Focus sprint" i],
+#boostBar1 button[aria-label*="focus sprint" i],
+button[onclick*="startFocusTimer"] {
+  background: #234e52 !important;
+  color: #ffffff !important;
+}
+button[onclick*="showSRAnswer"],
+button[onclick*="srKnow"],
+button[onclick*="startSRReview"],
+button[onclick*="srFlip"],
+button[onclick*="srToggleShuffle"] {
+  background: #2c5282 !important;
+  color: #ffffff !important;
+}
+.tabs label { color: #1a365d !important; border-color: #2b6cb0 !important; }
+.sandbox button, .challenge button, .auth-box button, .mock-api button {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+.l-react, .l-express, .l-mongo, .l-node, .l-auth, .l-prod,
+.chip, .chip-h, .chip-p, .chip-s {
+  color: #ffffff !important;
+}
+/* Part 1 playground / stepper buttons (inline pastel fills fail AA with white text) */
+button[onclick*="checkTruthiness"],
+button[onclick*="runSandbox"],
+button[onclick*="clearSandbox"],
+button[onclick*="elvStep"],
+button[onclick*="runChallenge"],
+button[onclick*="resetChallenge"],
+button[onclick*="checkAnswer"],
+button[onclick*="runTest"] {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+.layer-diagram .ld-node { color: #ffffff !important; }
+
 /* Callouts — always set explicit color so dark body text never lands on light panels */
 .tip, .warn, .chall, .tipbox, .why, .interactive-note { color: #1a202c; }
 .tip { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }

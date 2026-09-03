@@ -61,6 +61,55 @@ html.font-sm { font-size: 15px; }
 html.font-md { font-size: 17px; }
 html.font-lg { font-size: 18px; }
 
+/* Interactive chrome — WCAG AA contrast for white-on-fill buttons */
+.mark-btn { background: #276749 !important; color: #ffffff !important; }
+.mark-btn.done { background: #4a5568 !important; color: #ffffff !important; }
+.theme-btn { background: #2d3748 !important; color: #ffffff !important; }
+#boostBar button[aria-label*="Surprise" i],
+#boostBar1 button[aria-label*="Surprise" i],
+button[onclick*="boostSurprise"] {
+  background: #9c4221 !important;
+  color: #ffffff !important;
+}
+#boostBar button[aria-label*="Focus sprint" i],
+#boostBar button[aria-label*="focus sprint" i],
+#boostBar1 button[aria-label*="Focus sprint" i],
+#boostBar1 button[aria-label*="focus sprint" i],
+button[onclick*="startFocusTimer"] {
+  background: #234e52 !important;
+  color: #ffffff !important;
+}
+button[onclick*="showSRAnswer"],
+button[onclick*="srKnow"],
+button[onclick*="startSRReview"],
+button[onclick*="srFlip"],
+button[onclick*="srToggleShuffle"] {
+  background: #2c5282 !important;
+  color: #ffffff !important;
+}
+.tabs label { color: #1a365d !important; border-color: #2b6cb0 !important; }
+.sandbox button, .challenge button, .auth-box button, .mock-api button {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+.l-react, .l-express, .l-mongo, .l-node, .l-auth, .l-prod,
+.chip, .chip-h, .chip-p, .chip-s {
+  color: #ffffff !important;
+}
+/* Part 1 playground / stepper buttons (inline pastel fills fail AA with white text) */
+button[onclick*="checkTruthiness"],
+button[onclick*="runSandbox"],
+button[onclick*="clearSandbox"],
+button[onclick*="elvStep"],
+button[onclick*="runChallenge"],
+button[onclick*="resetChallenge"],
+button[onclick*="checkAnswer"],
+button[onclick*="runTest"] {
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+.layer-diagram .ld-node { color: #ffffff !important; }
+
 /* Callouts — always set explicit color so dark body text never lands on light panels */
 .tip, .warn, .chall, .tipbox, .why, .interactive-note { color: #1a202c; }
 .tip { background: #f0fff4; border-left: 4px solid #38a169; padding: 10px 14px; border-radius: 6px; margin: 8px 0; }
@@ -654,45 +703,161 @@ function App() {
 <div class="totop"><a href="#table-of-contents" style="color:#2b6cb0;text-decoration:none;">⬆ Back to top</a></div>
 <script>
 // ===== Part 5 Study App — Script =====
-function setThemeClass5(mode){
-  var root=document.documentElement;
-  root.classList.remove("force-dark","force-light");
-  root.classList.add(mode);
-  var btn=document.getElementById("themeBtn");
-  if(btn) btn.textContent=mode==="force-dark"?"☀️ Light mode":"🌙 Dark mode";
-}
-function toggleTheme(){
-  var dark=document.documentElement.classList.contains("force-dark")
-    || (!document.documentElement.classList.contains("force-light")
-        && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  var next=dark?"force-light":"force-dark";
-  setThemeClass5(next);
-  localStorage.setItem("p5-theme",next);
-}
-function applySysDark(){
-  var saved=localStorage.getItem("p5-theme");
-  if(saved==="force-dark"||saved==="force-light"){ setThemeClass5(saved); return; }
-  if(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
-    setThemeClass5("force-dark");
-  } else {
-    setThemeClass5("force-light");
+<!-- SHARED-SHELL-JS:START -->
+/* Shared study-app shell JS — source of truth.
+   Edit this file, then run: node scripts/inline-shell.js
+   CI fails if HTML between SHARED-SHELL-JS markers drifts. */
+(function (global) {
+  "use strict";
+
+  var FONT_CLASSES = ["font-sm", "font-md", "font-lg"];
+  var FONT_LEVELS = ["font-sm", "", "font-md", "font-lg"];
+
+  function normalizeThemeMode(value) {
+    if (value === "dark" || value === "force-dark") return "force-dark";
+    if (value === "light" || value === "force-light") return "force-light";
+    return null;
   }
-}
+
+  function setThemeMode(mode, btnId) {
+    var root = document.documentElement;
+    root.classList.remove("force-dark", "force-light");
+    root.classList.add(mode);
+    var btn = document.getElementById(btnId || "themeBtn");
+    if (btn) btn.textContent = mode === "force-dark" ? "☀️ Light mode" : "🌙 Dark mode";
+    return mode;
+  }
+
+  function isDark() {
+    var root = document.documentElement;
+    if (root.classList.contains("force-dark")) return true;
+    if (root.classList.contains("force-light")) return false;
+    return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+
+  function applyTheme(storageKey, btnId) {
+    var saved = normalizeThemeMode(localStorage.getItem(storageKey));
+    if (saved) return setThemeMode(saved, btnId);
+    return setThemeMode(isDark() ? "force-dark" : "force-light", btnId);
+  }
+
+  function toggleTheme(storageKey, btnId) {
+    var next = isDark() ? "force-light" : "force-dark";
+    setThemeMode(next, btnId);
+    localStorage.setItem(storageKey, next);
+    return next;
+  }
+
+  function clearFontClasses(html) {
+    FONT_CLASSES.forEach(function (c) {
+      html.classList.remove(c);
+    });
+  }
+
+  function fontZoom(dir, storageKey) {
+    var html = document.documentElement;
+    var cur = "";
+    FONT_CLASSES.forEach(function (c) {
+      if (html.classList.contains(c)) cur = c;
+    });
+    clearFontClasses(html);
+    if (dir !== 0) {
+      var idx = cur === "font-md" ? 2 : cur === "font-lg" ? 3 : cur === "font-sm" ? 0 : 1;
+      var nxt = Math.max(0, Math.min(3, idx + dir));
+      var addCls = FONT_LEVELS[nxt];
+      if (addCls) html.classList.add(addCls);
+      localStorage.setItem(storageKey, addCls || "normal");
+    } else {
+      localStorage.setItem(storageKey, "normal");
+    }
+  }
+
+  function applyFontZoom(storageKey) {
+    var saved = localStorage.getItem(storageKey);
+    if (saved && saved !== "normal" && FONT_CLASSES.indexOf(saved) >= 0) {
+      clearFontClasses(document.documentElement);
+      document.documentElement.classList.add(saved);
+    }
+  }
+
+  function focusMode(btn, hintId) {
+    var on = !document.body.classList.contains("focus-mode");
+    document.body.classList.toggle("focus-mode", on);
+    var hint = hintId ? document.getElementById(hintId) : null;
+    if (hint) hint.style.display = on ? "block" : "none";
+    if (btn) {
+      btn.textContent = on ? "🧘 Focus ON" : "🧘 Focus Mode";
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.style.background = on ? "#319795" : "";
+    }
+    document.querySelectorAll("details").forEach(function (d) {
+      try {
+        d.open = false;
+      } catch (e) {}
+    });
+    if (on) {
+      try {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (e) {}
+    }
+    return on;
+  }
+
+  function collapseDetails(expand, selector) {
+    var sel = selector || ".quiz-box details";
+    document.querySelectorAll(sel).forEach(function (d) {
+      if (expand) d.setAttribute("open", "open");
+      else d.removeAttribute("open");
+    });
+  }
+
+  function enhanceA11y() {
+    document
+      .querySelectorAll(
+        '.code-editor:not([aria-label]):not([aria-labelledby]), [contenteditable="true"]:not([aria-label]):not([aria-labelledby])'
+      )
+      .forEach(function (el, i) {
+        if (!el.getAttribute("role")) el.setAttribute("role", "textbox");
+        el.setAttribute("aria-multiline", "true");
+        el.setAttribute("aria-label", "Code editor " + (i + 1));
+      });
+    document.querySelectorAll("textarea:not([aria-label]):not([aria-labelledby])").forEach(function (el, i) {
+      if (!el.id && !el.getAttribute("name")) {
+        el.setAttribute("aria-label", "Code input " + (i + 1));
+      } else if (el.id && !document.querySelector('label[for="' + el.id + '"]')) {
+        el.setAttribute("aria-label", el.getAttribute("placeholder") || "Code input " + (i + 1));
+      }
+    });
+  }
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", enhanceA11y);
+    } else {
+      enhanceA11y();
+    }
+  }
+
+  global.StudyShell = {
+    setThemeMode: setThemeMode,
+    isDark: isDark,
+    applyTheme: applyTheme,
+    toggleTheme: toggleTheme,
+    fontZoom: fontZoom,
+    applyFontZoom: applyFontZoom,
+    focusMode: focusMode,
+    collapseDetails: collapseDetails,
+    enhanceA11y: enhanceA11y,
+  };
+})(typeof window !== "undefined" ? window : globalThis);
+<!-- SHARED-SHELL-JS:END -->
+
+function toggleTheme(){ StudyShell.toggleTheme("p5-theme"); }
+function applySysDark(){ StudyShell.applyTheme("p5-theme"); }
 applySysDark();
 
-var fontLevels5=["font-sm","","font-md","font-lg"];
-function fontZoom5(dir){
-  var html=document.documentElement, cur="";
-  ["font-sm","font-md","font-lg"].forEach(function(c){ if(html.classList.contains(c)) cur=c; });
-  html.className=html.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ").trim();
-  if(dir!==0){
-    var idx=cur==="font-md"?2:cur==="font-lg"?3:cur==="font-sm"?0:1;
-    var nxt=Math.max(0,Math.min(3,idx+dir)), add=fontLevels5[nxt];
-    if(add) html.className=(html.className+" "+add).trim();
-    localStorage.setItem("p5-font",add||"normal");
-  } else { localStorage.setItem("p5-font","normal"); }
-}
-function applyFontZoom5(){ var s=localStorage.getItem("p5-font"); if(s && s!=="normal") document.documentElement.className=(document.documentElement.className.split(" ").filter(function(c){return ["font-sm","font-md","font-lg"].indexOf(c)===-1;}).join(" ")+" "+s).trim(); }
+function fontZoom5(dir){ StudyShell.fontZoom(dir, "p5-font"); }
+function applyFontZoom5(){ StudyShell.applyFontZoom("p5-font"); }
 
 var P5_TOTAL=16;
 function toggleSection(n){
@@ -763,15 +928,8 @@ function srFlip5(){ var a=document.getElementById("srAnswer5"); if(a) a.style.di
 function srAnswer5About(know){ var c=srCards5[srIdx5]; var m=srState5[c.q]||{lvl:0}; var next=know?Math.min(3,m.lvl+1):0; var hours=next===0?0.02:next===1?0.03:next===2?0.05:0.1; srState5[c.q]={lvl:next,next:Date.now()+hours*3600*1000}; localStorage.setItem("p5-sr",JSON.stringify(srState5)); srIdx5++; if(srIdx5>=srCards5.length){ srIdx5=-1; } showSRCard5(); }
 function renderSRStats5(){ var s=document.getElementById("srStats5"); if(!s) return; var n=0,l=0,ma=0; srCards5.forEach(function(c){ var lvl=(srState5[c.q]||{lvl:0}).lvl||0; if(lvl===0)n++; else if(lvl<3)l++; else ma++; }); s.textContent="🆕 "+n+" new · 📖 "+l+" learning · 🏆 "+ma+" mastered"; }
 
-function focusMode5(btn){
-  var on=!document.body.classList.contains("focus-mode");
-  document.body.classList.toggle("focus-mode",on);
-  var h=document.getElementById("focusHint5"); if(h) h.style.display=on?"block":"none";
-  if(btn){ btn.textContent=on?"🧘 Focus ON":"🧘 Focus Mode"; btn.setAttribute("aria-pressed",on?"true":"false"); btn.style.background=on?"#319795":""; }
-  document.querySelectorAll("details").forEach(function(d){ try{d.open=false;}catch(e){} });
-  if(on){ try{ window.scrollTo({top:0,behavior:"smooth" });}catch(e){} }
-}
-function collapseAll5(open){ document.querySelectorAll("details").forEach(function(d){ try{ d.open=open; }catch(e){} }); }
+function focusMode5(btn){ StudyShell.focusMode(btn, "focusHint5"); }
+function collapseAll5(open){ StudyShell.collapseDetails(open, "details"); }
 
 // ===== Mock Auth (in-page "server") =====
 var authDB={ users:[] }; var activeToken="";

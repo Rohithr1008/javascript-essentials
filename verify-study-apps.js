@@ -90,7 +90,22 @@ for (const file of APPS) {
   ) {
     fail(`${file}: missing SHARED-SHELL-CSS markers`);
   } else {
-    ok(`${file}: shared-shell markers present`);
+    ok(`${file}: shared-shell CSS markers present`);
+  }
+
+  if (
+    !raw.includes("<!-- SHARED-SHELL-JS:START -->") ||
+    !raw.includes("<!-- SHARED-SHELL-JS:END -->")
+  ) {
+    fail(`${file}: missing SHARED-SHELL-JS markers`);
+  } else {
+    ok(`${file}: shared-shell JS markers present`);
+  }
+
+  if (!/StudyShell\.(toggleTheme|applyTheme|fontZoom|focusMode)/.test(raw)) {
+    fail(`${file}: expected StudyShell shell wrappers`);
+  } else {
+    ok(`${file}: StudyShell wrappers present`);
   }
 
   const partNum = Number((file.match(/part(\d)/) || [])[1]);
