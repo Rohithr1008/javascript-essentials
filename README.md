@@ -6,15 +6,15 @@ A hands-on study kit covering the JavaScript fundamentals: variables, control fl
 
 ### 🧭 Automation Tester Path
 
-Part of the **[Automation Tester Path](../automation-tester-path/README.md)** · [`START_HERE`](../automation-tester-path/START_HERE.md)
+Part of the **[Automation Tester Path](../automation-tester-path/README.md)** · [`START_HERE`](../automation-tester-path/START_HERE.md) · [`ROADMAP`](../automation-tester-path/ROADMAP.md)
 
 | | |
 |---|---|
 | **On the path** | **Start here** for language/app foundations (Parts 1–5), then Playwright, then **Part 6** hardening |
 | **Previous** | — (first kit) |
-| **Next** | [Playwright Essentials](../playwright-essentials/README.md) (strategy + browser E2E) |
+| **Next** | [HTML & CSS Essentials](../html-css-essentials/) Part 1 → [TypeScript for Testers](../typescript-for-testers/) → [Playwright Essentials](../playwright-essentials/README.md) |
 | **After Playwright** | Come back for [Part 6 study app](Javascript_essentials_part6_study_app.html) · then [API & Data](../api-data-essentials/README.md) → [Perf Basics](../perf-basics/README.md) |
-| **Sibling** | Deep E2E → Playwright · Deep REST/SQL → API & Data · Load literacy → Perf |
+| **Sibling** | Deep E2E → Playwright · Deep REST/SQL → API & Data · Load literacy → Perf · Phase B TS → [TypeScript Develop + Test](../typescript-develop-test/README.md) |
 
 ---
 
